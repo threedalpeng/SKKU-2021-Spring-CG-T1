@@ -162,7 +162,7 @@
     <ClCompile Include="include\engine\Script\Script.cpp" />
     <ClCompile Include="include\engine\Transform\Transform.cpp" />
     <ClCompile Include="include\engine\Graphics\Mesh.cpp" />
-    <ClCompile Include="include\engine\Graphics\Renderer.cpp" />
+    <ClCompile Include="include\engine\Graphics\MeshRenderer.cpp" />
     <ClCompile Include="include\engine\Graphics\Shader.cpp" />
     <ClCompile Include="include\engine\Object\Factory.cpp" />
     <ClCompile Include="include\engine\Object\GameObject.cpp" />
@@ -188,7 +188,7 @@
     <ClInclude Include="include\engine\Component\ComponentManager.h" />
     <ClInclude Include="include\engine\Graphics\Camera.h" />
     <ClInclude Include="include\engine\Graphics\Mesh.h" />
-    <ClInclude Include="include\engine\Graphics\Renderer.h" />
+    <ClInclude Include="include\engine\Graphics\MeshRenderer.h" />
     <ClInclude Include="include\engine\Graphics\Shader.h" />
     <ClInclude Include="include\engine\Script\Script.h" />
     <ClInclude Include="include\engine\ServiceLocator.h" />
@@ -204,13 +204,15 @@
     <ClInclude Include="include\engine\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
-    <ClInclude Include="src\Scripts\BustScript.h" />
-    <ClInclude Include="src\Scripts\CameraScript.h" />
-    <ClInclude Include="src\SpaceSwimScene.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
+    <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin" />
     <None Include="bin\mesh\dragon.vertex.bin" />
+    <None Include="bin\shaders\solar-system.frag" />
+    <None Include="bin\shaders\solar-system.vert" />
     <None Include="bin\shaders\transform.frag" />
     <None Include="bin\shaders\transform.vert" />
   </ItemGroup>

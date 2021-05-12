@@ -1,5 +1,5 @@
 #include "engine/Core.h"
-#include "SpaceSwimScene.h"
+#include "StartMenuScene/StartMenuScene.h"
 
 class SpaceSwimApplication : public Application {
 public:
@@ -14,7 +14,7 @@ private:
 		glEnable(GL_TEXTURE_2D);									// enable texturing
 		glActiveTexture(GL_TEXTURE0);								// notify GL the current texture slot is 0
 
-		Scene* scene = new SpaceSwimScene();
+		Scene* scene = new StartMenuScene();
 		loadScene(scene);
 	}
 

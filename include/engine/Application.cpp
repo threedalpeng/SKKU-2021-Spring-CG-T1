@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "engine/Application.h"
-#include "engine/Graphics/Renderer.h"
+#include "engine/Graphics/MeshRenderer.h"
 #include "engine/Graphics/Light.h"
 #include "engine/Graphics/Camera.h"
 #include "engine/Transform/Transform.h"
@@ -148,9 +148,9 @@ void Application::render()
 		}
 	}
 
-	if (auto componentList = _componentManager.getComponentList<Renderer>()) {
+	if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
 		for (auto componentPair : *componentList) {
-			Renderer* renderer = componentPair.second.get();
+			MeshRenderer* renderer = componentPair.second.get();
 			renderer->render(shader);
 		}
 	}
