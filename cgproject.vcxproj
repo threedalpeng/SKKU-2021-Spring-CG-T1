@@ -178,6 +178,7 @@
     <ClCompile Include="include\engine\Time.cpp" />
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
     <ClCompile Include="include\engine\Screen.cpp" />
+    <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
   </ItemGroup>
@@ -212,9 +213,12 @@
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
     <ClInclude Include="include\engine\Screen.h" />
+    <ClInclude Include="src\Manager\ResourceManager.h" />
+    <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\GameStartButtonScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="include\engine\Graphics\Texture.h" />
   </ItemGroup>

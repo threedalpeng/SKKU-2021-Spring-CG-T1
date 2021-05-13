@@ -33,6 +33,15 @@ void TextRenderer::setText(std::string text, vec4 color)
 	_color = color;
 }
 
+float TextRenderer::getTextWidth() {
+	float width = 0.f;
+	for (auto c : _text) {
+		stbtt_char_t ch = _font->getCharacterInfo(c);
+		width += ch.advance;
+	}
+	return width;
+}
+
 void TextRenderer::loadMesh(Mesh* mesh)
 {
 	_mesh = mesh;

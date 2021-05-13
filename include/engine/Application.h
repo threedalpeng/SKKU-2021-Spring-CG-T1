@@ -13,6 +13,7 @@ public:
 
 	// run application
 	virtual void run();
+	void loadScene(Scene* scene);
 
 protected:
 	std::string _title;
@@ -26,7 +27,7 @@ protected:
 
 	// Scene
 	Scene* _current_scene = nullptr;
-	void loadScene(Scene* scene);
+	
 
 	// Managers
 	ComponentManager _componentManager;

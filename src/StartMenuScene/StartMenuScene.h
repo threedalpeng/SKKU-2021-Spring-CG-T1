@@ -11,7 +11,7 @@
 #include "Scripts/BackgroundScript.h"
 #include "Scripts/GameStartButtonScript.h"
 
-#include "../Meshbox/MeshMaker.h"
+#include "../Tool/MeshMaker.h"
 
 class StartMenuScene : public Scene {
 public:
@@ -90,9 +90,6 @@ public:
 		transform->scale = vec3(3.0f, 1.0f, 0.1f);
 		GameStartButtonScript* gameStartButtonScript = new GameStartButtonScript();
 		gameStartButton->addComponent<ScriptLoader>()->addScript(gameStartButtonScript);
-
-		addObject(background);
-		addObject(mainCamera);
 	}
 
 	Mesh* createCylinderMesh() {

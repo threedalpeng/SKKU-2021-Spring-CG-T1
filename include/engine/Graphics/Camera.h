@@ -65,7 +65,14 @@ public:
 	}
 
 	vec3 worldToViewportPoint(vec3 v) {
-		return mat3(view_matrix) * v;
+		vec4 vp = view_matrix * vec4(v, 1.f);
+		return vec3(vp.x, vp.y, vp.z);
+	}
+
+	vec3 worldToScreenPoint(vec3 v) {
+		vec4 sp = projection_matrix * view_matrix * vec4(v, 1.f);
+		vec3 spv = vec3(sp.x, sp.y, 0.f) / sp.w;
+		return vec3((1.f + spv.x) / 2.f * Screen::width(), (1.f - spv.y) / 2.f * Screen::height(), 0.f);
 	}
 
 	float fovy = PI / 4.0f; // must be in radian

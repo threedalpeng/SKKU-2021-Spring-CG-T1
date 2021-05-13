@@ -15,6 +15,9 @@ public:
 
 	void setText(std::string text, vec4 color);
 
+	float getTextWidth();
+	//float getTextHeight();
+
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
 	void loadFont(Font* font);

@@ -7,7 +7,7 @@
 // irrKlang objects
 irrklang::ISoundEngine* engine;
 irrklang::ISoundSource* mp3_src = nullptr;
-static const char*	mp3_path = "../bin/sounds/space.mp3";
+static const char* mp3_path = "../bin/sounds/space.mp3";
 
 class SpaceSwimApplication : public Application {
 public:
@@ -31,18 +31,20 @@ private:
 		if (!engine) return;
 
 		//add sound source from the sound file
-		mp3_src = engine->addSoundSourceFromFile( mp3_path );
-		
+		mp3_src = engine->addSoundSourceFromFile(mp3_path);
+
 		//set default volume
 		mp3_src->setDefaultVolume(0.5f);
 
 		//play the sound file
-		engine->play2D( mp3_src, true );
-		printf( "> playing %s\n", "mp3" );
-
+		engine->play2D(mp3_src, true);
+		printf("> playing %s\n", "mp3");
 	}
 
 	void update() {
+		/*
+		if(GameManager::getChanged())	GameManager::changeScene(this);
+		*/
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE) || Input::getKeyDown(GLFW_KEY_Q)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);

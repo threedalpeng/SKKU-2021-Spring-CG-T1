@@ -29,6 +29,7 @@
     <ClCompile Include="include\engine\Screen.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
+    <ClCompile Include="src\Manager\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -66,6 +67,9 @@
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="include\engine\Graphics\Texture.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\GameStartButtonScript.h" />
+    <ClInclude Include="src\Manager\ResourceManager.h" />
+    <ClInclude Include="src\GameScene\Stage_1.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
