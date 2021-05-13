@@ -26,9 +26,6 @@ public:
 		Mesh* cylinderMesh = createCylinderMesh();
 		Mesh* boxMesh = MeshMaker::makeBoxMesh();
 
-		MeshRenderer* meshRenderer;
-		Transform* transform;
-
 		/* Texture */
 		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
 
@@ -38,10 +35,11 @@ public:
 
 		/* GameObject */
 		GameObject* background = GameObject::create("Background Space");
-    
+
 		GameObject* mainCamera = GameObject::create("Main Camera");
 
 		GameObject* gameStartText = GameObject::create("Game Start Text");
+		GameObject* gameStartButton = GameObject::create("GameStart Button");
 
 		/* Link Objects */
 		addObject(background);
@@ -49,8 +47,14 @@ public:
 		addObject(gameStartText);
 		addObject(gameStartButton);
 
+		/* Initialize Objects with Components */
+		MeshRenderer* meshRenderer;
+		Camera* camera;
+		TextRenderer* textRenderer;
+		Transform* transform;
+
 		// background
-		MeshRenderer* meshRenderer = background->addComponent<MeshRenderer>();
+		meshRenderer = background->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(cylinderMesh);
 		meshRenderer->loadTexture(backgroundTexture);
 		meshRenderer->loadShader(basicShader);
@@ -61,24 +65,24 @@ public:
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 
 		// main camera
-		Camera* camera = mainCamera->addComponent<Camera>();
+		camera = mainCamera->addComponent<Camera>();
 		CameraScript* cameraScript = new CameraScript();
 		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 		camera->addShader(basicShader);
 		camera->setThisMainCamera();
 
 		// game start text
-		TextRenderer* textRenderer = gameStartText->addComponent<TextRenderer>();
+		textRenderer = gameStartText->addComponent<TextRenderer>();
 		textRenderer->loadFont(textFont);
 		textRenderer->loadShader(textShader);
 		transform = gameStartText->getComponent<Transform>();
 		transform->position = vec3(100.f, 200.f, 0.f);
 		//transform->scale = vec3(10.f, 10.f, 0.f);
 		textRenderer->setText("Hello, World!", vec4(0.2f, 0.8f, 0.2f, 1.0f));
-    
-		GameObject* gameStartButton = GameObject::create("GameStart Button");
+
 		meshRenderer = gameStartButton->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(boxMesh);
+		meshRenderer->loadShader(basicShader);
 		meshRenderer->isShaded = false;
 		meshRenderer->isColored = true;
 		meshRenderer->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);

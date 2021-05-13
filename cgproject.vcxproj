@@ -120,7 +120,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>lib\gl\glfw\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib\gl\glfw\;lib\irrKlang;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,7 +155,6 @@
     <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
     <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
-    <ClCompile Include="include\engine\Graphics\text.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
