@@ -13,7 +13,7 @@
 
 #include "Graphics/Camera.h"
 #include "Graphics/Mesh.h"
-#include "Graphics/Renderer.h"
+#include "Graphics/MeshRenderer.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Light.h"
 #include "Graphics/Material.h"

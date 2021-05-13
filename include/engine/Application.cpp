@@ -1,12 +1,17 @@
 #include <iostream>
 
 #include "engine/Application.h"
-#include "engine/Graphics/Renderer.h"
+#include "engine/Graphics/MeshRenderer.h"
 #include "engine/Graphics/Light.h"
 #include "engine/Graphics/Camera.h"
 #include "engine/Transform/Transform.h"
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Time.h"
+
+//*******************************************************************
+// forward declarations for freetype text
+bool init_text();
+void render_text( std::string text, GLint x, GLint y, GLfloat scale, vec4 color, GLfloat dpi_scale=1.0f );
 
 void iterateTransform(GameObject* obj) {
 	Transform* transform = obj->getComponent<Transform>();
@@ -76,6 +81,8 @@ void Application::init()
 		});
 
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
+
+	init_text();
 }
 
 void Application::loadScene(Scene* scene)
@@ -148,13 +155,16 @@ void Application::render()
 		}
 	}
 
-	if (auto componentList = _componentManager.getComponentList<Renderer>()) {
+	if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
 		for (auto componentPair : *componentList) {
-			Renderer* renderer = componentPair.second.get();
+			MeshRenderer* renderer = componentPair.second.get();
 			renderer->render(shader);
 		}
 	}
 
+	float dpi_scale = cg_get_dpi_scale();
+	render_text( "Hello text!", 100, 100, 1.0f, vec4(0.5f, 0.8f, 0.2f, 1.0f), dpi_scale );
+	
 	glfwSwapBuffers(_window);
 }
 

@@ -57,7 +57,7 @@
     <ClCompile Include="include\engine\Graphics\Mesh.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="include\engine\Graphics\Renderer.cpp">
+    <ClCompile Include="include\engine\Graphics\MeshRenderer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="include\engine\Graphics\Shader.cpp">
@@ -91,6 +91,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="src\SpaceSwimApplication.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="include\engine\text.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,7 +137,7 @@
     <ClInclude Include="include\engine\Graphics\Mesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="include\engine\Graphics\Renderer.h">
+    <ClInclude Include="include\engine\Graphics\MeshRenderer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="include\engine\Graphics\Shader.h">
@@ -173,13 +176,13 @@
     <ClInclude Include="include\engine\Math.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\SpaceSwimScene.h">
+    <ClInclude Include="src\StartMenuScene\StartMenuScene.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scripts\BustScript.h">
+    <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scripts\CameraScript.h">
+    <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -192,6 +195,8 @@
     </None>
     <None Include="bin\shaders\transform.frag" />
     <None Include="bin\shaders\transform.vert" />
+    <None Include="bin\shaders\solar-system.vert" />
+    <None Include="bin\shaders\solar-system.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="bin\mesh\dragon.license.txt">
