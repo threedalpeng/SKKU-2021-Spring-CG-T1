@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
+    <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -175,12 +176,14 @@
     <ClCompile Include="include\engine\ServiceLocator.cpp" />
     <ClCompile Include="include\engine\Time.cpp" />
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
+    <ClCompile Include="include\engine\Screen.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\engine\Core.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
+    <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />
@@ -204,6 +207,7 @@
     <ClInclude Include="include\engine\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
+    <ClInclude Include="include\engine\Screen.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />

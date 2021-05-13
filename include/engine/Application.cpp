@@ -7,6 +7,7 @@
 #include "engine/Transform/Transform.h"
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Time.h"
+#include "engine/Screen.h"
 
 void iterateTransform(GameObject* obj) {
 	Transform* transform = obj->getComponent<Transform>();
@@ -18,8 +19,8 @@ void iterateTransform(GameObject* obj) {
 	}
 }
 
-Application::Application(std::string title, ivec2 window_size)
-	: _title(title), _window_size(window_size) {}
+Application::Application(std::string title)
+	: _title(title) {}
 
 void Application::run()
 {
@@ -55,6 +56,8 @@ void Application::init()
 		glfwTerminate();
 		exit(1);
 	}
+
+	Screen::window = _window;
 
 	if (!cg_init_extensions(_window)) {
 		glfwTerminate();
@@ -165,8 +168,8 @@ void Application::terminate()
 
 void Application::reshape(GLFWwindow* window, int width, int height)
 {
-	_window_size = ivec2(width, height);
 	glViewport(0, 0, width, height);
+	Screen::processWindowResizeEvent(width, height);
 }
 
 void Application::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
