@@ -9,6 +9,9 @@
 // My Application
 #include "Scripts/CameraScript.h"
 #include "Scripts/BackgroundScript.h"
+#include "Scripts/GameStartButtonScript.h"
+
+#include "../Meshbox/MeshMaker.h"
 
 class StartMenuScene : public Scene {
 public:
@@ -20,13 +23,17 @@ public:
 
 	void init() {
 		Mesh* cylinderMesh = createCylinderMesh();
+		Mesh* boxMesh = MeshMaker::makeBoxMesh();
+
+		MeshRenderer* meshRenderer;
+		Transform* transform;
 
 		GameObject* background = GameObject::create("Background Space");
-		MeshRenderer* meshRenderer = background->addComponent<MeshRenderer>();
+		meshRenderer = background->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(cylinderMesh);
 		meshRenderer->loadTexture("textures/Milky_Way.jpg");
 		meshRenderer->isShaded = false;
-		Transform* transform = background->getComponent<Transform>();
+		transform = background->getComponent<Transform>();
 		transform->scale = vec3(50, 100, 50);
 		BackgroundScript* backgroundScript = new BackgroundScript();
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
@@ -37,8 +44,20 @@ public:
 		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 		camera->setThisMainCamera();
 
+		GameObject* gameStartButton = GameObject::create("GameStart Button");
+		meshRenderer = gameStartButton->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(boxMesh);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = true;
+		meshRenderer->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
+		transform = gameStartButton->getComponent<Transform>();
+		transform->scale = vec3(3.0f, 1.0f, 0.1f);
+		GameStartButtonScript* gameStartButtonScript = new GameStartButtonScript();
+		gameStartButton->addComponent<ScriptLoader>()->addScript(gameStartButtonScript);
+
 		addObject(background);
 		addObject(mainCamera);
+		addObject(gameStartButton);
 	}
 
 	Mesh* createCylinderMesh() {

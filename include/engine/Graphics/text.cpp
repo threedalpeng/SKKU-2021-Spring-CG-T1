@@ -1,7 +1,7 @@
 #include "cg/cgmath.h"	// slee's simple math library
 #include "cg/cgut.h"	// slee's OpenGL utility
 #define STB_TRUETYPE_IMPLEMENTATION
-#include "stb_truetype.h"
+#include "cg/stb_truetype.h"
 #include <iostream>
 
 // stb_truetype object
