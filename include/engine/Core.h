@@ -18,6 +18,7 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Light.h"
 #include "Graphics/Material.h"
+#include "Graphics/Texture.h"
 
 #include "Script/ScriptLoader.h"
 #include "Script/Script.h"

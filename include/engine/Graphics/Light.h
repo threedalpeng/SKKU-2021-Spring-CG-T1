@@ -19,7 +19,7 @@ public:
 	Light(std::shared_ptr<GameObject> obj) : Component(obj) {}
 
 	void setType(Type type) {
-		_lightType = type;
+		_type = type;
 		switch (type) {
 		case Type::Directional:
 			lightSource = 0.f;
@@ -30,14 +30,21 @@ public:
 		}
 	}
 
-	void render(Shader& shader) {
+	void loadShader(Shader* shader) {
+		_shader = shader;
+	}
+
+	void render() {
+		glUseProgram(_shader->getProgram());
+
 		vec4 position = vec4(getComponent<Transform>()->worldPosition, lightSource);
-		glUniform4fv(shader.getUniformLocation("light_position"), 1, position);
-		glUniform4fv(shader.getUniformLocation("Ia"), 1, ambient);
-		glUniform4fv(shader.getUniformLocation("Id"), 1, diffuse);
-		glUniform4fv(shader.getUniformLocation("Is"), 1, specular);
+		glUniform4fv(_shader->getUniformLocation("light_position"), 1, position);
+		glUniform4fv(_shader->getUniformLocation("Ia"), 1, ambient);
+		glUniform4fv(_shader->getUniformLocation("Id"), 1, diffuse);
+		glUniform4fv(_shader->getUniformLocation("Is"), 1, specular);
 	}
 
 private:
-	Type _lightType = Type::Directional;
+	Type _type = Type::Directional;
+	Shader* _shader = nullptr;
 };

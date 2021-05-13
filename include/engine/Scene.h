@@ -15,9 +15,6 @@ public:
 		return _rootObjects;
 	}
 
-	std::string vert_shader_path;
-	std::string frag_shader_path;
-
 private:
 	std::unordered_set<GameObject*> _rootObjects;
 };

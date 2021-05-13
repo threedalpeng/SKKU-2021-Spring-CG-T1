@@ -3,13 +3,14 @@
 #include "engine/Object/GameObject.h"
 #include "engine/Graphics/Shader.h"
 #include "engine/Transform/Transform.h"
+#include "engine/Screen.h"
 
 class Camera : public Component
 {
 public:
 	Camera(std::shared_ptr<GameObject> obj) : Component(obj) {};
 
-	void update(ivec2 window_size, Shader& shader) {
+	void update() {
 		Transform* transform = getComponent<Transform>();
 		eye = transform->worldPosition;
 		//at = transform->localToWorldPos(vec3(0.f, 0.f, 1.f));
@@ -19,8 +20,16 @@ public:
 		}
 		view_matrix = mat4::look_at(eye, at, up);
 
-		aspect_ratio = window_size.x / static_cast<float>(window_size.y);
+		aspect_ratio = Screen::width() / static_cast<float>(Screen::height());
 		projection_matrix = mat4::perspective(fovy, aspect_ratio, dNear, dFar);
+	}
+
+	void render() {
+		for (auto shader : _shaders) {
+			glUseProgram(shader->getProgram());
+			glUniformMatrix4fv(shader->getUniformLocation("view_matrix"), 1, GL_TRUE, view_matrix);
+			glUniformMatrix4fv(shader->getUniformLocation("projection_matrix"), 1, GL_TRUE, projection_matrix);
+		}
 	}
 
 	void setCameraUp(vec3 _up) {
@@ -41,6 +50,10 @@ public:
 	void deactivateTracking() {
 		trackingMode = false;
 		target = nullptr;
+	}
+
+	void addShader(Shader* shader) {
+		_shaders.push_back(shader);
 	}
 
 	void setThisMainCamera() {
@@ -70,4 +83,5 @@ public:
 private:
 	bool trackingMode = false;
 	Transform* target = nullptr;
+	std::vector<Shader*> _shaders = std::vector<Shader*>();
 };

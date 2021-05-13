@@ -12,29 +12,30 @@
 
 class StartMenuScene : public Scene {
 public:
-	StartMenuScene() : Scene() {
-		// register shader path
-		vert_shader_path = "shaders/solar-system.vert";
-		frag_shader_path = "shaders/solar-system.frag";
-	};
+	StartMenuScene() : Scene() {};
 
 	void init() {
 		Mesh* cylinderMesh = createCylinderMesh();
+		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
+		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 
 		GameObject* background = GameObject::create("Background Space");
+		GameObject* mainCamera = GameObject::create("Main Camera");
+
 		MeshRenderer* meshRenderer = background->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(cylinderMesh);
-		meshRenderer->loadTexture("textures/Milky_Way.jpg");
+		meshRenderer->loadTexture(backgroundTexture);
+		meshRenderer->loadShader(basicShader);
 		meshRenderer->isShaded = false;
 		Transform* transform = background->getComponent<Transform>();
 		transform->scale = vec3(50, 100, 50);
 		BackgroundScript* backgroundScript = new BackgroundScript();
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 
-		GameObject* mainCamera = GameObject::create("Main Camera");
 		Camera* camera = mainCamera->addComponent<Camera>();
 		CameraScript* cameraScript = new CameraScript();
 		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
+		camera->addShader(basicShader);
 		camera->setThisMainCamera();
 
 		addObject(background);

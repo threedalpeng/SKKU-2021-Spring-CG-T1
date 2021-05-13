@@ -19,7 +19,7 @@ public:
 
 	static void processKeyEvent(int key, int scancode, int action, int mods);
 	static void processMouseClickEvent(int button, int action, int mods);
-	static void processMouseMoveEvent(dvec2 pos, ivec2 windowSize);
+	static void processMouseMoveEvent(dvec2 pos);
 
 	static dvec2 getCursorPoint();
 	static dvec2 getCursorAxis();

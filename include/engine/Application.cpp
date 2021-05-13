@@ -11,8 +11,6 @@
 
 //*******************************************************************
 // forward declarations for freetype text
-bool init_text();
-void render_text( std::string text, GLint x, GLint y, GLfloat scale, vec4 color, GLfloat dpi_scale=1.0f );
 
 void iterateTransform(GameObject* obj) {
 	Transform* transform = obj->getComponent<Transform>();
@@ -57,12 +55,10 @@ void Application::run()
 
 void Application::init()
 {
-	if (!(_window = cg_create_window(_title.c_str(), _window_size.x, _window_size.y))) {
+	if (!(_window = Screen::createWindow(_title, _windowSize))) {
 		glfwTerminate();
 		exit(1);
 	}
-
-	Screen::window = _window;
 
 	if (!cg_init_extensions(_window)) {
 		glfwTerminate();
@@ -84,16 +80,11 @@ void Application::init()
 		});
 
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
-
-	init_text();
 }
 
 void Application::loadScene(Scene* scene)
 {
 	_current_scene = scene;
-
-	// Initiate Managers By Scene
-	shader.loadFrom(scene->vert_shader_path, scene->frag_shader_path);
 
 	_current_scene->init();
 
@@ -133,7 +124,7 @@ void Application::update()
 	if (auto componentList = _componentManager.getComponentList<Camera>()) {
 		for (auto componentPair : *componentList) {
 			Camera* camera = componentPair.second.get();
-			camera->update(_window_size, shader);
+			camera->update();
 		}
 	}
 }
@@ -141,33 +132,28 @@ void Application::update()
 void Application::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shader.getProgram());
 
 	Camera* mainCamera = Camera::main;
 	if (!mainCamera) {
 		std::cout << "No Camera." << std::endl;
 		return;
 	}
-	glUniformMatrix4fv(shader.getUniformLocation("view_matrix"), 1, GL_TRUE, mainCamera->view_matrix);
-	glUniformMatrix4fv(shader.getUniformLocation("projection_matrix"), 1, GL_TRUE, mainCamera->projection_matrix);
+	mainCamera->render();
 
 	if (auto componentList = _componentManager.getComponentList<Light>()) {
 		for (auto componentPair : *componentList) {
 			Light* light = componentPair.second.get();
-			light->render(shader);
+			light->render();
 		}
 	}
 
 	if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
 		for (auto componentPair : *componentList) {
 			MeshRenderer* renderer = componentPair.second.get();
-			renderer->render(shader);
+			renderer->render();
 		}
 	}
 
-	float dpi_scale = cg_get_dpi_scale();
-	render_text( "Hello text!", 100, 100, 1.0f, vec4(0.5f, 0.8f, 0.2f, 1.0f), dpi_scale );
-	
 	glfwSwapBuffers(_window);
 }
 
@@ -196,5 +182,5 @@ void Application::motion(GLFWwindow* window, double x, double y)
 {
 	dvec2 pos;
 	glfwGetCursorPos(window, &pos.x, &pos.y);
-	Input::processMouseMoveEvent(pos, _window_size);
+	Input::processMouseMoveEvent(pos);
 }
