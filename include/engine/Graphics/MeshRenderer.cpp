@@ -30,6 +30,8 @@ void MeshRenderer::render(Shader& shader)
 	glUniformMatrix4fv(shader.getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
 
 	glUniform1i(shader.getUniformLocation("b_shaded"), isShaded);
+	glUniform1i(shader.getUniformLocation("b_colored"), isColored);
+	glUniform4fv(shader.getUniformLocation("color"), 1, color);
 
 	if (_material) {
 		glUniform4fv(shader.getUniformLocation("Ka"), 1, _material->ambient);

@@ -163,7 +163,7 @@ void Application::render()
 	}
 
 	float dpi_scale = cg_get_dpi_scale();
-	render_text( "Hello text!", 100, 100, 1.0f, vec4(0.5f, 0.8f, 0.2f, 1.0f), dpi_scale );
+	render_text( "Game Start!", 300, 230, 1.0f, vec4(0.5f, 0.8f, 0.2f, 1.0f), dpi_scale );
 	
 	glfwSwapBuffers(_window);
 }

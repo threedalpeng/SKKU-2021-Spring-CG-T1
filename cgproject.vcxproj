@@ -99,7 +99,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>lib\gl\glfw\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>lib\gl\glfw\;lib\irrKlang;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
+    <ClCompile Include="include\engine\Graphics\text.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -160,7 +161,6 @@
     <ClCompile Include="include\engine\Component\ComponentManager.cpp" />
     <ClCompile Include="include\engine\Graphics\Camera.cpp" />
     <ClCompile Include="include\engine\Script\Script.cpp" />
-    <ClCompile Include="include\engine\text.cpp" />
     <ClCompile Include="include\engine\Transform\Transform.cpp" />
     <ClCompile Include="include\engine\Graphics\Mesh.cpp" />
     <ClCompile Include="include\engine\Graphics\MeshRenderer.cpp" />
@@ -205,6 +205,7 @@
     <ClInclude Include="include\engine\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
+    <ClInclude Include="src\MeshBox\MeshMaker.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />

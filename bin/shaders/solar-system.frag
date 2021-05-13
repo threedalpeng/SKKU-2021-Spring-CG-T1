@@ -19,6 +19,9 @@ uniform vec4	light_position, Ia, Id, Is;	// light
 uniform vec4	Ka, Kd, Ks;					// material properties
 uniform bool	b_shaded;
 
+uniform vec4	color;
+uniform bool	b_colored;
+
 // texture sampler
 uniform sampler2D TEX0;
 uniform sampler2D TEX1;
@@ -48,9 +51,13 @@ void main()
 
 		fragColor = phong( l, n, h, iKd );
 	}
+	else if(b_colored) {
+		fragColor = color;
+	}
 	else {
 		fragColor = iKd;
 	}
+
 	if (b_alpha_tex) {
 		fragColor.a = iA.r;
 	}
