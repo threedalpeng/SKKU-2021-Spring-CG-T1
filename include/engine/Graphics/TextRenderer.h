@@ -11,7 +11,6 @@ public:
 	TextRenderer(std::shared_ptr<GameObject> obj);
 
 	bool isShaded = true;
-
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
 	void loadTexture(std::string texturePath, int textureType = 0);

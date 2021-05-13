@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
+    <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
     <ClInclude Include="include\engine\Graphics\TextRenderer.h" />

@@ -194,6 +194,9 @@
     <ClInclude Include="include\engine\Screen.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\cg\stb_truetype.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin">

@@ -31,7 +31,6 @@ protected:
 	void loadScene(Scene* scene);
 
 	// Managers
-	Input			 _input;
 	ComponentManager _componentManager;
 
 	// Application Lifecycle
