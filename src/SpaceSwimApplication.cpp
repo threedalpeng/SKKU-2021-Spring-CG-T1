@@ -1,5 +1,13 @@
 #include "engine/Core.h"
 #include "StartMenuScene/StartMenuScene.h"
+#include "irrKlang\irrKlang.h"
+#pragma comment(lib, "irrKlang.lib")
+
+//*******************************************************************
+// irrKlang objects
+irrklang::ISoundEngine* engine;
+irrklang::ISoundSource* mp3_src = nullptr;
+static const char*	mp3_path = "../bin/sounds/space.mp3";
 
 class SpaceSwimApplication : public Application {
 public:
@@ -18,6 +26,20 @@ private:
 
 		Scene* scene = new StartMenuScene();
 		loadScene(scene);
+
+		engine = irrklang::createIrrKlangDevice();
+		if (!engine) return;
+
+		//add sound source from the sound file
+		mp3_src = engine->addSoundSourceFromFile( mp3_path );
+		
+		//set default volume
+		mp3_src->setDefaultVolume(0.5f);
+
+		//play the sound file
+		engine->play2D( mp3_src, true );
+		printf( "> playing %s\n", "mp3" );
+
 	}
 
 	void update() {
@@ -29,6 +51,11 @@ private:
 
 	void fixedUpdate() {
 		Application::fixedUpdate();
+	}
+
+	void terminate() {
+		engine->drop();
+		Application::terminate();
 	}
 };
 

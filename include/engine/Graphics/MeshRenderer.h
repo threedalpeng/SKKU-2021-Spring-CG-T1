@@ -12,6 +12,10 @@ public:
 	MeshRenderer(std::shared_ptr<GameObject> obj);
 
 	bool isShaded = true;
+	bool isColored = false; 	// when it is true, fragment shader paint it by the color
+	bool hasTexture = false; 	// when it is true, fragment shader paint it by the texture
+	vec4 color = vec4(0.5f, 0.5f, 0.5f, 1.0f);		// for fragment shader, color value
+	Shader* shader;		// it will be used to determine the Shader for this Renderer
 
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
