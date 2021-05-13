@@ -15,13 +15,32 @@ public:
 	StartMenuScene() : Scene() {};
 
 	void init() {
-		Mesh* cylinderMesh = createCylinderMesh();
-		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
-		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		/* Font */
+		Font* textFont = new Font();
+		textFont->loadFrom("fonts/consola.ttf");
 
+		/* Mesh */
+		Mesh* cylinderMesh = createCylinderMesh();
+
+		/* Texture */
+		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
+
+		/* Shader */
+		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		Shader* textShader = new Shader("shaders/text.vert", "shaders/text.frag");
+
+		/* GameObject */
 		GameObject* background = GameObject::create("Background Space");
 		GameObject* mainCamera = GameObject::create("Main Camera");
 
+		GameObject* gameStartText = GameObject::create("Game Start Text");
+
+		/* Link Objects */
+		addObject(background);
+		addObject(mainCamera);
+		addObject(gameStartText);
+
+		// background
 		MeshRenderer* meshRenderer = background->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(cylinderMesh);
 		meshRenderer->loadTexture(backgroundTexture);
@@ -32,14 +51,21 @@ public:
 		BackgroundScript* backgroundScript = new BackgroundScript();
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 
+		// main camera
 		Camera* camera = mainCamera->addComponent<Camera>();
 		CameraScript* cameraScript = new CameraScript();
 		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 		camera->addShader(basicShader);
 		camera->setThisMainCamera();
 
-		addObject(background);
-		addObject(mainCamera);
+		// game start text
+		TextRenderer* textRenderer = gameStartText->addComponent<TextRenderer>();
+		textRenderer->loadFont(textFont);
+		textRenderer->loadShader(textShader);
+		transform = gameStartText->getComponent<Transform>();
+		transform->position = vec3(100.f, 200.f, 0.f);
+		//transform->scale = vec3(10.f, 10.f, 0.f);
+		textRenderer->setText("Hello, World!", vec4(0.2f, 0.8f, 0.2f, 1.0f));
 	}
 
 	Mesh* createCylinderMesh() {
@@ -80,36 +106,6 @@ public:
 		return mesh;
 	}
 
-	Mesh* createPlaneMesh() {
-		Mesh* mesh = new Mesh();
-
-		mesh->vertex_buffer = 0;
-		mesh->index_buffer = 0;
-
-		// Create vertex list
-		mesh->vertex_list.push_back({ vec3(1, 1, 0), vec3(0, 0, 1), vec2(1, 1) });
-		mesh->vertex_list.push_back({ vec3(-1, 1, 0), vec3(0, 0, 1), vec2(-1, 1) });
-		mesh->vertex_list.push_back({ vec3(1, -1, 0), vec3(0, 0, 1), vec2(1, -1) });
-		mesh->vertex_list.push_back({ vec3(-1, -1, 0), vec3(0, 0, 1), vec2(-1, -1) });
-
-		// Create index list
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(1);
-
-		glGenBuffers(1, &(mesh->vertex_buffer));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
-		glGenBuffers(1, &(mesh->index_buffer));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
-
-		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
-		return mesh;
-	}
 	Mesh* createBoxMesh() {
 		Mesh* mesh = new Mesh();
 

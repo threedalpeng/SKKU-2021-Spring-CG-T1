@@ -102,6 +102,9 @@
     <ClCompile Include="include\engine\Graphics\Texture.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="include\engine\Graphics\Font.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\engine\Application.h">
@@ -203,6 +206,9 @@
     <ClInclude Include="include\engine\Graphics\Texture.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="include\engine\Graphics\Font.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin">
@@ -220,5 +226,8 @@
     <Text Include="bin\mesh\dragon.license.txt">
       <Filter>리소스 파일\Mesh</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="bin\fonts\consola.ttf" />
   </ItemGroup>
 </Project>

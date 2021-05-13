@@ -4,6 +4,13 @@ int Screen::_width = 0;
 int Screen::_height = 0;
 GLFWwindow* Screen::_window = nullptr;
 
+GLFWwindow* Screen::createWindow(std::string title, ivec2 windowSize) {
+	_width = windowSize.x;
+	_height = windowSize.y;
+	_window = cg_create_window(title.c_str(), windowSize.x, windowSize.y);
+	return _window;
+}
+
 int Screen::width() {
 	return _width;
 }
