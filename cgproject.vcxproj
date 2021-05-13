@@ -160,6 +160,7 @@
     <ClCompile Include="include\engine\Component\ComponentManager.cpp" />
     <ClCompile Include="include\engine\Graphics\Camera.cpp" />
     <ClCompile Include="include\engine\Script\Script.cpp" />
+    <ClCompile Include="include\engine\text.cpp" />
     <ClCompile Include="include\engine\Transform\Transform.cpp" />
     <ClCompile Include="include\engine\Graphics\Mesh.cpp" />
     <ClCompile Include="include\engine\Graphics\MeshRenderer.cpp" />
