@@ -152,7 +152,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
+    <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
     <ClCompile Include="include\engine\Graphics\text.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
@@ -176,12 +178,17 @@
     <ClCompile Include="include\engine\ServiceLocator.cpp" />
     <ClCompile Include="include\engine\Time.cpp" />
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
+    <ClCompile Include="include\engine\Screen.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
+    <ClCompile Include="include\engine\Graphics\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
+    <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
+    <ClInclude Include="include\engine\Graphics\Font.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
+    <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />
@@ -205,10 +212,12 @@
     <ClInclude Include="include\engine\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
+    <ClInclude Include="include\engine\Screen.h" />
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
+    <ClInclude Include="include\engine\Graphics\Texture.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin" />
@@ -220,6 +229,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="bin\mesh\dragon.license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="bin\fonts\consola.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

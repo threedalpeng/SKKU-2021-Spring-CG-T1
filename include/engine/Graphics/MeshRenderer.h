@@ -4,6 +4,7 @@
 #include "engine/Graphics/Mesh.h"
 #include "engine/Graphics/Material.h"
 #include "engine/Graphics/Shader.h"
+#include "engine/Graphics/Texture.h"
 
 class MeshRenderer : public Component
 {
@@ -18,10 +19,12 @@ public:
 
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
-	void loadTexture(std::string texturePath, int textureType = 0);
-	void render(Shader& shader);
+	void loadTexture(Texture* texture);
+	void loadShader(Shader* shader);
+	void render();
 private:
 	Mesh* _mesh = nullptr;
 	Material* _material = nullptr;
-	GLuint textures[3] = { 0, };
+	std::vector<Texture*> _textures = std::vector<Texture*>();
+	Shader* _shader = nullptr;
 };

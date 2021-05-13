@@ -1,4 +1,5 @@
 #include "Input.h"
+#include "engine/Screen.h"
 
 const int Input::KEY_COUNT = GLFW_KEY_LAST + 1;
 std::vector<bool> Input::currentKeys(KEY_COUNT);
@@ -112,13 +113,12 @@ void Input::processMouseClickEvent(int button, int action, int mods) {
 	}
 }
 
-#include <iostream>
-void Input::processMouseMoveEvent(dvec2 pos, ivec2 windowSize) {
+void Input::processMouseMoveEvent(dvec2 pos) {
 	mouseMoved = true;
 	dvec2 cursorChange = pos - cursorPos;
 	currentCursorAxis = dvec2(
-		(cursorChange.x / (static_cast<double>(windowSize.x) - 1.0)) * 2.0,
-		-(cursorChange.y / (static_cast<double>(windowSize.y) - 1.0)) * 2.0
+		(cursorChange.x / (static_cast<double>(Screen::width()) - 1.0)) * 2.0,
+		-(cursorChange.y / (static_cast<double>(Screen::height()) - 1.0)) * 2.0
 	);
 	cursorPos = pos;
 }

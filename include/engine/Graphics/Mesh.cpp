@@ -6,6 +6,11 @@ Mesh::Mesh() {
 	index_list = std::vector<uint>();
 }
 
+Mesh::Mesh(std::string vertexBinaryPath, std::string indexBinaryPath)
+{
+	loadFrom(vertexBinaryPath, indexBinaryPath);
+}
+
 Mesh::~Mesh()
 {
 	if (vertex_buffer) glDeleteBuffers(1, &vertex_buffer);
@@ -13,18 +18,18 @@ Mesh::~Mesh()
 	if (vertex_array) glDeleteVertexArrays(1, &vertex_array);
 }
 
-void Mesh::loadMesh(std::string vertex_binary_path, std::string index_binary_path)
+void Mesh::loadFrom(std::string vertexBinaryPath, std::string indexBinaryPath)
 {
 	/* source code from "cg/cgut.h"*/
 	// load vertex buffer
-	mem_t v = cg_read_binary(vertex_binary_path.c_str());
-	if (v.size % sizeof(vertex)) { printf("%s is not a valid vertex binary file\n", vertex_binary_path.c_str()); return; }
+	mem_t v = cg_read_binary(vertexBinaryPath.c_str());
+	if (v.size % sizeof(vertex)) { printf("%s is not a valid vertex binary file\n", vertexBinaryPath.c_str()); return; }
 	vertex_list.resize(v.size / sizeof(vertex));
 	memcpy((void*)&vertex_list[0], v.ptr, v.size);
 
 	// load index buffer
-	mem_t i = cg_read_binary(index_binary_path.c_str());
-	if (i.size % sizeof(uint)) { printf("%s is not a valid index binary file\n", index_binary_path.c_str()); return; }
+	mem_t i = cg_read_binary(indexBinaryPath.c_str());
+	if (i.size % sizeof(uint)) { printf("%s is not a valid index binary file\n", indexBinaryPath.c_str()); return; }
 	index_list.resize(v.size / sizeof(uint));
 	memcpy((void*)&index_list[0], i.ptr, i.size);
 

@@ -2,6 +2,11 @@
 
 Shader::Shader() {}
 
+Shader::Shader(std::string vertexShaderPath, std::string indexShaderPath)
+{
+	loadFrom(vertexShaderPath, indexShaderPath);
+}
+
 Shader::~Shader() {
 	clear();
 }
@@ -16,6 +21,9 @@ void Shader::clear()
 
 bool Shader::loadFrom(std::string vertex_shader_path, std::string index_shader_path)
 {
+	if (program)
+		clear();
+
 	// TODO: Implement with my own code
 	program = cg_create_program(vertex_shader_path.c_str(), index_shader_path.c_str());
 	return (program ? true : false);

@@ -9,7 +9,7 @@
 
 class Application {
 public:
-	Application(std::string title, ivec2 window_size);
+	Application(std::string title);
 
 	// run application
 	virtual void run();
@@ -19,13 +19,10 @@ protected:
 
 	// window objects
 	GLFWwindow* _window = nullptr;
-	ivec2		_window_size;
+	ivec2 _windowSize = cg_default_window_size();
 
 	uint _frame_count = 0;
 	float _frame_rate = 100;
-
-	// Shader
-	Shader shader;
 
 	// Scene
 	Scene* _current_scene = nullptr;

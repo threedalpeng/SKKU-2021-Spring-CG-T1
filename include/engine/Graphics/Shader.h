@@ -6,9 +6,10 @@ class Shader
 {
 public:
 	Shader();
+	Shader(std::string vertexShaderPath, std::string indexShaderPath);
 	~Shader();
 	void clear();
-	bool loadFrom(std::string vertex_shader_path, std::string index_shader_path);
+	bool loadFrom(std::string vertexShaderPath, std::string indexShaderPath);
 	GLuint getProgram();
 	GLint getUniformLocation(std::string uniform_name);
 

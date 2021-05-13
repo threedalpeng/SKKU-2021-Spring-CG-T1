@@ -5,9 +5,10 @@ class Mesh
 {
 public:
 	Mesh();
+	Mesh(std::string vertexBinaryPath, std::string indexBinaryPath);
 	~Mesh();
 
-	void loadMesh(std::string vertex_binary_path, std::string index_binary_path);
+	void loadFrom(std::string vertexBinaryPath, std::string indexBinaryPath);
 	GLuint getVertexArray();
 
 	std::vector<vertex>	vertex_list;
