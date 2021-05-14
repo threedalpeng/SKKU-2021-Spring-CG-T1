@@ -7,13 +7,13 @@
 #include "engine/Core.h"
 
 // My Application
-#include "Scripts/ObstacleScript.h"
+#include "Script/ObstacleScript.h"
 
 #include "../Tool/MeshMaker.h"
 
 class Stage_1 : public Scene {
 public:
-	StartMenuScene() : Scene() {};
+	Stage_1() : Scene() {};
 
 	void init() {
 		/* Font */
@@ -21,7 +21,7 @@ public:
 		textFont->loadFrom("fonts/consola.ttf");
 
 		/* Mesh */
-		Mesh* cylinderMesh = createCylinderMesh();
+		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 
 		/* Texture */

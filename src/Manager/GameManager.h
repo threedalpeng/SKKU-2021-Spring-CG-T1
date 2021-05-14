@@ -1,4 +1,5 @@
 #pragma once
+#include "engine/Core.h"
 
 /*
 GameManager is global class
@@ -15,24 +16,27 @@ public:
     static bool setStage(int state);
     static int getStage();
 
-    static bool setScore();
+    static bool setScore(int score);
     static int getScore();
 
     static bool setChanged(bool isChanged);
     static bool getChanged();
 
     static bool update();
-    static bool changeScene(void* app);
 
 private:
-    static int _stage = 0;
-    static int _score = 0;
-    static bool _isChanged = false;
+    static int _stage;
+    static int _score;
+    static bool _isChanged;
 };
+
+int GameManager::_stage = 0;
+int GameManager::_score = 0;
+bool GameManager::_isChanged = false;
 
 bool GameManager::setStage(int state)
 {
-    _stage = stage;
+    _stage = state;
     return true;
 } 
 
@@ -41,7 +45,7 @@ int GameManager::getStage()
     return _stage;
 }
 
-bool GameManager::setSCore(int score)
+bool GameManager::setScore(int score)
 {
     _score = score;
     return true;
@@ -58,34 +62,11 @@ bool GameManager::setChanged(bool isChanged)
     return true;
 } 
 
-int GameManager::getChanged()
+bool GameManager::getChanged()
 {
     return _isChanged;
 }
-
 bool GameManager::update()
 {
-
-}
-
-bool GameManager::changeScene(void* app)
-{
-    Application* _app = (Application*)app;
-    Scene* scene;
-    switch(_stage)
-    {
-        case 0:
-            scene = new StartMenuScene();
-            break;
-        case 1:
-            break;
-        case 2:
-            break;
-        case 3:
-            break;
-        default:
-            break;
-    }
-    _app->loadScene(scene);
-    setChanged(false);
+    return true;
 }
