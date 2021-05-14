@@ -50,6 +50,7 @@ public:
 		TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
+		Material* material;
 
 		// background
 		meshRenderer = background->addComponent<MeshRenderer>();
@@ -74,6 +75,8 @@ public:
 		meshRenderer->loadMesh(sphereMesh);
 		meshRenderer->loadTexture(meteorTexture);
 		meshRenderer->loadShader(basicShader);
+		material = new Material();
+		meshRenderer->loadMaterial(material);
 
 		meshRenderer->isShaded = true;
 		light = meteor->addComponent<Light>();
@@ -81,7 +84,7 @@ public:
 		light->setType(Light::Type::Point);
 
 		transform = meteor->getComponent<Transform>();
-		transform->position = vec3(0.0f, 0, 0);
+		transform->position = vec3(0.0f, 3.0f, -10.0f);
 		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 	}
