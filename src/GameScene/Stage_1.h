@@ -33,16 +33,18 @@ public:
 		Shader* textShader = new Shader("shaders/text.vert", "shaders/text.frag");
 
 		/* GameObject */
+		GameObject* mainCamera = GameObject::create("Main Camera");
 		GameObject* background = GameObject::create("Background Space");
+		GameObject* lightPoint = GameObject::create("light point");
+		
 		GameObject* meteor = GameObject::create("meteor");
 
-		GameObject* mainCamera = GameObject::create("Main Camera");
-
 		/* Link Objects */
-		addObject(background);
-		addObject(meteor);
-
 		addObject(mainCamera);
+		addObject(background);
+		addObject(lightPoint);
+		
+		addObject(meteor);
 
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
@@ -50,18 +52,8 @@ public:
 		TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
-		Material* material;
-
-		// background
-		meshRenderer = background->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(cylinderMesh);
-		meshRenderer->loadTexture(backgroundTexture);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->isShaded = false;
-		transform = background->getComponent<Transform>();
-		transform->scale = vec3(50, 100, 50);
-		BackgroundScript* backgroundScript = new BackgroundScript();
-		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
+		Material* material = new Material();
+		ObstacleScript* obstacleScript;
 
 		// main camera
 		camera = mainCamera->addComponent<Camera>();
@@ -70,22 +62,47 @@ public:
 		camera->addShader(basicShader);
 		camera->setThisMainCamera();
 
+		// background
+		meshRenderer = background->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(cylinderMesh);
+		meshRenderer->loadTexture(backgroundTexture);
+		meshRenderer->loadShader(basicShader);
+		meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = true;
+		transform = background->getComponent<Transform>();
+		transform->scale = vec3(50, 100, 50);
+		BackgroundScript* backgroundScript = new BackgroundScript();
+		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
+
+		// light point
+		meshRenderer = lightPoint->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(sphereMesh);
+		meshRenderer->loadShader(basicShader);
+		meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = true;
+
+		transform = lightPoint->getComponent<Transform>();
+		transform->position = vec3(0.0f, 0.0f, 0.0f);
+
+		light = lightPoint->addComponent<Light>();
+		light->setType(Light::Type::Point);
+		light->loadShader(basicShader);
+
+		obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
+		lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
+
 		// meteor
 		meshRenderer = meteor->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(sphereMesh);
 		meshRenderer->loadTexture(meteorTexture);
 		meshRenderer->loadShader(basicShader);
-		material = new Material();
 		meshRenderer->loadMaterial(material);
-
 		meshRenderer->isShaded = true;
-		light = meteor->addComponent<Light>();
-		light->loadShader(basicShader);
-		light->setType(Light::Type::Point);
 
 		transform = meteor->getComponent<Transform>();
 		transform->position = vec3(0.0f, 3.0f, -10.0f);
-		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+		obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 	}
 };
