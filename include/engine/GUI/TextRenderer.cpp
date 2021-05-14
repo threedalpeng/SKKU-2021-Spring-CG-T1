@@ -54,7 +54,7 @@ vec2 TextRenderer::getTextSize() {
 		mxh = std::max(mxh, float(ch.bearing.y) * scaleY);
 		mxl = std::max(mxl, float(ch.size.y - ch.bearing.y) * scaleY);
 	}
-	std::cout << width << ", " << mxh + mxl << std::endl;
+
 	return vec2(width, mxh + mxl);
 }
 
