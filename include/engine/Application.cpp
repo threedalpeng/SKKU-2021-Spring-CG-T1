@@ -186,9 +186,16 @@ void Application::terminate()
 }
 
 void Application::reshape(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-	Screen::processWindowResizeEvent(width, height);
+{	
+	int w = width;
+	int h = height;
+	if(width / 16 > height / 9)	w = height / 9 * 16;
+	else						h = width / 16 * 9;
+	int window_x = (int)((width - w)/2);
+	int window_y = (int)((height - h)/2);
+
+	glViewport(window_x, window_y, w, h);
+	Screen::processWindowResizeEvent(w, h);
 }
 
 void Application::keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)

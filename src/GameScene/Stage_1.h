@@ -68,7 +68,7 @@ public:
 		meshRenderer->loadTexture(backgroundTexture);
 		meshRenderer->loadShader(basicShader);
 		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = true;
+		meshRenderer->isShaded = false;
 		transform = background->getComponent<Transform>();
 		transform->scale = vec3(50, 100, 50);
 		BackgroundScript* backgroundScript = new BackgroundScript();
@@ -83,7 +83,7 @@ public:
 		meshRenderer->isColored = true;
 
 		transform = lightPoint->getComponent<Transform>();
-		transform->position = vec3(0.0f, 0.0f, 0.0f);
+		transform->position = vec3(0.0f, 0.0f, 200.0f);
 
 		light = lightPoint->addComponent<Light>();
 		light->setType(Light::Type::Point);
@@ -101,7 +101,8 @@ public:
 		meshRenderer->isShaded = true;
 
 		transform = meteor->getComponent<Transform>();
-		transform->position = vec3(0.0f, 3.0f, -10.0f);
+		transform->position = vec3(0.0f, 0.0f, 0.0f);
+		transform->scale = vec3(0.6f, 0.6f, 0.6f);
 		obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 	}
