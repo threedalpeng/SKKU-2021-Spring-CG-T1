@@ -156,7 +156,9 @@
   <ItemGroup>
     <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
-    <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
+    <ClCompile Include="include\engine\GUI\MeshRenderer.cpp" />
+    <ClCompile Include="include\engine\GUI\TextRenderer.cpp" />
+    <ClCompile Include="include\engine\GUI\Source.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -191,7 +193,8 @@
     <ClInclude Include="include\engine\Core.h" />
     <ClInclude Include="include\engine\Graphics\Font.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
-    <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
+    <ClInclude Include="include\engine\GUI\MeshRenderer.h" />
+    <ClInclude Include="include\engine\GUI\TextRenderer.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />

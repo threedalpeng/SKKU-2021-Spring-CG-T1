@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
-    <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
+    <ClCompile Include="include\engine\GUI\TextRenderer.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -31,6 +31,8 @@
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="include\engine\GUI\Source.cpp" />
+    <ClCompile Include="include\engine\GUI\MeshRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -38,7 +40,7 @@
     <ClInclude Include="include\engine\Core.h" />
     <ClInclude Include="include\engine\Graphics\Font.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
-    <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
+    <ClInclude Include="include\engine\GUI\TextRenderer.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />
@@ -72,6 +74,7 @@
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="include\engine\Scene\SceneManager.h" />
+    <ClInclude Include="include\engine\GUI\MeshRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

@@ -19,8 +19,9 @@
 #include "Graphics/Mesh.h"
 #include "Graphics/MeshRenderer.h"
 #include "Graphics/Shader.h"
-#include "Graphics/TextRenderer.h"
 #include "Graphics/Texture.h"
+
+#include "GUI/TextRenderer.h"
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
