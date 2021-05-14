@@ -30,7 +30,6 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -72,7 +71,6 @@
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartButtonScript.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
-    <ClInclude Include="Collider.h" />
     <ClInclude Include="include\engine\Scene\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
