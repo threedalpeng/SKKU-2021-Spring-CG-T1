@@ -72,14 +72,15 @@ public:
 		// meteor
 		meshRenderer = meteor->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(sphereMesh);
+		meshRenderer->loadTexture(meteorTexture);
 		meshRenderer->loadShader(basicShader);
-		meshRenderer->isShaded = true;
-		light = meteor->addComponent<Light>();
-		light->loadShader(basicShader);
-		light->setType(Light::Type::Point);
+		meshRenderer->isShaded = false;
+		// light = meteor->addComponent<Light>();
+		// light->loadShader(basicShader);
+		// light->setType(Light::Type::Point);
 		transform = meteor->getComponent<Transform>();
-		transform->position = vec3(10.0f, 0, 0);
-		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-0.5f, 0, 0));
+		transform->position = vec3(0.0f, 0, 0);
+		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-0.0f, 0, 0));
 		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 	}
 };

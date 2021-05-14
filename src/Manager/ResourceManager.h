@@ -35,3 +35,8 @@ private:
 	static std::unordered_map<std::string, Material> _materialList;
 	static std::unordered_map<std::string, Texture> _textureList;
 };
+
+std::unordered_map<std::string, Mesh> ResourceManager::_meshList = std::unordered_map<std::string, Mesh>();
+std::unordered_map<std::string, Shader> ResourceManager::_shaderList = std::unordered_map<std::string, Shader>();
+std::unordered_map<std::string, Material> ResourceManager::_materialList = std::unordered_map<std::string, Material>();
+std::unordered_map<std::string, Texture> ResourceManager::_textureList = std::unordered_map<std::string, Texture>();
