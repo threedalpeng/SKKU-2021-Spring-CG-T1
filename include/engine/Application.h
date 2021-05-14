@@ -33,6 +33,7 @@ protected:
 	virtual void fixedUpdate();
 	virtual void update();
 	virtual void render();
+	virtual void onGUIRender();
 	virtual void terminate();
 
 	// Event Callback Functions

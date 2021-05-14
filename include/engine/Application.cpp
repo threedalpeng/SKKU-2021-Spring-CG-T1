@@ -175,6 +175,10 @@ void Application::render()
 	glfwSwapBuffers(_window);
 }
 
+void Application::onGUIRender()
+{
+}
+
 void Application::terminate()
 {
 	cg_destroy_window(_window);

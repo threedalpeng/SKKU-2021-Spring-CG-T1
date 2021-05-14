@@ -154,10 +154,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\engine\GUI\Canvas.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
     <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
+    <ClCompile Include="include\engine\GUI\Transform2D.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -187,6 +189,7 @@
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\GUI\Canvas.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="include\engine\Graphics\Font.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
     <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
+    <ClInclude Include="include\engine\GUI\Transform2D.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />

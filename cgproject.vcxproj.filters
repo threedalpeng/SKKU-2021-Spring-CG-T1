@@ -32,6 +32,8 @@
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="include\engine\GUI\Canvas.cpp" />
+    <ClCompile Include="include\engine\GUI\Transform2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -74,6 +76,8 @@
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="include\engine\Scene\SceneManager.h" />
+    <ClInclude Include="include\engine\GUI\Canvas.h" />
+    <ClInclude Include="include\engine\GUI\Transform2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
