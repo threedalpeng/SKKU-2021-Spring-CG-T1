@@ -25,7 +25,7 @@ private:
 		glActiveTexture(GL_TEXTURE0);								// notify GL the current texture slot is 0
 
 		Scene* scene = new StartMenuScene();
-		loadScene(scene);
+		SceneManager::loadScene(scene);
 
 		engine = irrklang::createIrrKlangDevice();
 		if (!engine) return;

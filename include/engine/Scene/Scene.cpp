@@ -5,3 +5,7 @@
 void Scene::init()
 {
 }
+
+void Scene::clear()
+{
+}

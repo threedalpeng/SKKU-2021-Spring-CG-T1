@@ -1,6 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <typeindex>
+#include <any>
 
 class ServiceLocator
 {
@@ -13,7 +14,7 @@ public:
 	template<typename T>
 	static void provide(T* service);
 private:
-	static std::unordered_map<std::type_index, void*> services;
+	static std::unordered_map<std::type_index, std::any> services;
 };
 
 template<typename T>
@@ -23,7 +24,7 @@ T* ServiceLocator::getService()
 	if (it == services.cend()) {
 		return nullptr;
 	}
-	return reinterpret_cast<T*>(it->second);
+	return std::any_cast<T*>(it->second);
 }
 
 template<typename T>

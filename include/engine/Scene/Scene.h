@@ -6,7 +6,11 @@
 class Scene {
 public:
 	Scene() {}
+	virtual ~Scene() {
+		clear();
+	}
 	virtual void init();
+	virtual void clear();
 
 	void addObject(GameObject* obj) {
 		_rootObjects.insert(obj);

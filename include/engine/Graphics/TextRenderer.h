@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+
 #include "engine/Component/Component.h"
 #include "engine/Graphics/Font.h"
 #include "engine/Graphics/Mesh.h"
@@ -14,9 +15,11 @@ public:
 	bool isShaded = true;
 
 	void setText(std::string text, vec4 color);
+	std::string text();
+	vec4 color();
 
-	float getTextWidth();
-	//float getTextHeight();
+	vec2 getTextSize();
+	void fitToRectangle(vec2 topRight, vec2 bottomLeft, bool fixRatio = true);
 
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
@@ -32,9 +35,4 @@ private:
 
 	vec4 _color = vec4(0.2f, 0.8f, 0.2f, 1.0f);
 	std::string _text = "";
-
-	/*
-	ivec2 position = ivec2();
-	float scale = scale;
-	*/
 };

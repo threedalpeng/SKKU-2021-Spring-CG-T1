@@ -22,7 +22,7 @@
     <ClCompile Include="include\gl\glad\glad.c" />
     <ClCompile Include="include\engine\Application.cpp" />
     <ClCompile Include="include\engine\Object\Object.cpp" />
-    <ClCompile Include="include\engine\Scene.cpp" />
+    <ClCompile Include="include\engine\Scene\Scene.cpp" />
     <ClCompile Include="include\engine\ServiceLocator.cpp" />
     <ClCompile Include="include\engine\Time.cpp" />
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
@@ -30,6 +30,8 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -58,7 +60,7 @@
     <ClInclude Include="include\engine\Input.h" />
     <ClInclude Include="include\engine\Application.h" />
     <ClInclude Include="include\engine\Object\Object.h" />
-    <ClInclude Include="include\engine\Scene.h" />
+    <ClInclude Include="include\engine\Scene\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
     <ClInclude Include="include\engine\Screen.h" />
@@ -70,6 +72,8 @@
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartButtonScript.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="include\engine\Scene\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

@@ -89,6 +89,7 @@ public:
 		transform = gameStartButton->getComponent<Transform>();
 		transform->scale = vec3(3.0f, 1.0f, 0.1f);
 		GameStartButtonScript* gameStartButtonScript = new GameStartButtonScript();
+		gameStartButtonScript->text = gameStartText;
 		gameStartButton->addComponent<ScriptLoader>()->addScript(gameStartButtonScript);
 	}
 

@@ -10,9 +10,6 @@
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Transform/Transform.h"
 
-//*******************************************************************
-// forward declarations for freetype text
-
 void iterateTransform(GameObject* obj) {
 	Transform* transform = obj->getComponent<Transform>();
 	transform->update();
@@ -29,10 +26,14 @@ Application::Application(std::string title)
 void Application::run()
 {
 	init();
-	Time::init();
 	Time::setFixedUpdateRate(_frame_rate);
 
 	for (_frame_count = 0; !glfwWindowShouldClose(_window); _frame_count++) {
+		if (SceneManager::sceneLoaded) {
+			SceneManager::startScene();
+			onSceneLoaded();
+			Time::init();
+		}
 		Time::updateDelta();
 
 		glfwPollEvents();
@@ -83,13 +84,9 @@ void Application::init()
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
 }
 
-void Application::loadScene(Scene* scene)
+void Application::onSceneLoaded()
 {
-	_current_scene = scene;
-
-	_current_scene->init();
-
-	for (auto rootObj : _current_scene->getRootObjects()) {
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
 		iterateTransform(rootObj);
 	}
 
@@ -101,6 +98,19 @@ void Application::loadScene(Scene* scene)
 			}
 		}
 	}
+
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
+		iterateTransform(rootObj);
+	}
+
+	if (auto componentList = _componentManager.getComponentList<Camera>()) {
+		for (auto componentPair : *componentList) {
+			Camera* camera = componentPair.second.get();
+			camera->update();
+		}
+	}
+
+	SceneManager::sceneLoaded = false;
 }
 
 void Application::fixedUpdate()
@@ -118,7 +128,7 @@ void Application::update()
 		}
 	}
 
-	for (auto rootObj : _current_scene->getRootObjects()) {
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
 		iterateTransform(rootObj);
 	}
 

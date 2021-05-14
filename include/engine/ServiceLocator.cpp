@@ -4,4 +4,4 @@ ServiceLocator::ServiceLocator()
 {
 }
 
-std::unordered_map<std::type_index, void*> ServiceLocator::services = std::unordered_map<std::type_index, void*>();
+std::unordered_map<std::type_index, std::any> ServiceLocator::services = std::unordered_map<std::type_index, std::any>();

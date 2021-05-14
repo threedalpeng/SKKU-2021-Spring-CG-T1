@@ -6,7 +6,6 @@
 
 #include "Input.h"
 #include "Math.h"
-#include "Scene.h"
 #include "Screen.h"
 #include "Time.h"
 
@@ -22,6 +21,9 @@
 #include "Graphics/Shader.h"
 #include "Graphics/TextRenderer.h"
 #include "Graphics/Texture.h"
+
+#include "Scene/Scene.h"
+#include "Scene/SceneManager.h"
 
 #include "Script/Script.h"
 #include "Script/ScriptLoader.h"

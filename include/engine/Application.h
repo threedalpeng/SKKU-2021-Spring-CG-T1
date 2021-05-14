@@ -3,7 +3,7 @@
 #include "cg/cgut.h"
 #include "cg/cgmath.h"
 #include "engine/Input.h"
-#include "engine/Scene.h"
+#include "engine/Scene/SceneManager.h"
 #include "engine/Component/ComponentManager.h"
 #include "engine/Graphics/Shader.h"
 
@@ -13,7 +13,6 @@ public:
 
 	// run application
 	virtual void run();
-	void loadScene(Scene* scene);
 
 protected:
 	std::string _title;
@@ -25,15 +24,12 @@ protected:
 	uint _frame_count = 0;
 	float _frame_rate = 100;
 
-	// Scene
-	Scene* _current_scene = nullptr;
-	
-
 	// Managers
 	ComponentManager _componentManager;
 
 	// Application Lifecycle
 	virtual void init();
+	virtual void onSceneLoaded();
 	virtual void fixedUpdate();
 	virtual void update();
 	virtual void render();

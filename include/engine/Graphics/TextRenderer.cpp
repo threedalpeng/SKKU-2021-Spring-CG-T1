@@ -3,6 +3,8 @@
 #include "engine/Transform/Transform.h"
 #include "engine/Object/GameObject.h"
 
+#include <iostream>
+
 Mesh* createPlaneMesh() {
 	Mesh* mesh = new Mesh();
 
@@ -33,13 +35,62 @@ void TextRenderer::setText(std::string text, vec4 color)
 	_color = color;
 }
 
-float TextRenderer::getTextWidth() {
-	float width = 0.f;
+std::string TextRenderer::text()
+{
+	return _text;
+}
+vec4 TextRenderer::color() {
+	return _color;
+}
+
+vec2 TextRenderer::getTextSize() {
+	Transform* transform = getComponent<Transform>();
+	float scaleX = transform->scale.x;
+	float scaleY = transform->scale.y;
+	float width = 0.0, mxh = 0.0, mxl = 0.0;
 	for (auto c : _text) {
 		stbtt_char_t ch = _font->getCharacterInfo(c);
-		width += ch.advance;
+		width += ch.advance * scaleX;
+		mxh = std::max(mxh, float(ch.bearing.y) * scaleY);
+		mxl = std::max(mxl, float(ch.size.y - ch.bearing.y) * scaleY);
 	}
-	return width;
+	std::cout << width << ", " << mxh + mxl << std::endl;
+	return vec2(width, mxh + mxl);
+}
+
+void TextRenderer::fitToRectangle(vec2 topRight, vec2 bottomLeft, bool fixRatio)
+{
+	Transform* transform = getComponent<Transform>();
+	vec3 position = transform->position;
+	vec2 textSize = getTextSize();
+	float width = topRight.x - bottomLeft.x;
+	float height = bottomLeft.y - topRight.y;
+	float textRatio = textSize.x / textSize.y;
+	float scaleX = width / textSize.x;
+	float scaleY = height / textSize.y;
+	if (fixRatio) {
+		if (textRatio > width / height) {
+			textSize.x *= scaleX;
+			textSize.y *= scaleX;
+			transform->scale *= scaleX;
+		}
+		else {
+			textSize.x *= scaleY;
+			textSize.y *= scaleY;
+			transform->scale *= scaleY;
+		}
+	}
+	else {
+		textSize.x *= scaleX;
+		textSize.y *= scaleY;
+		transform->scale.x *= scaleX;
+		transform->scale.y *= scaleY;
+	}
+
+	vec2 rectCenter = (topRight + bottomLeft) * 0.5f;
+	vec2 textCenter = vec2(position.x + textSize.x * 0.5f, position.y - textSize.y * 0.5f);
+	vec2 mv = rectCenter - textCenter;
+	transform->translate(mv.x, mv.y, 0.f);
 }
 
 void TextRenderer::loadMesh(Mesh* mesh)

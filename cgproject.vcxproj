@@ -95,6 +95,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -114,6 +115,7 @@
       <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
     <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
@@ -173,16 +176,18 @@
     <ClCompile Include="include\gl\glad\glad.c" />
     <ClCompile Include="include\engine\Application.cpp" />
     <ClCompile Include="include\engine\Object\Object.cpp" />
-    <ClCompile Include="include\engine\Scene.cpp" />
+    <ClCompile Include="include\engine\Scene\Scene.cpp" />
     <ClCompile Include="include\engine\ServiceLocator.cpp" />
     <ClCompile Include="include\engine\Time.cpp" />
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
     <ClCompile Include="include\engine\Screen.cpp" />
+    <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
@@ -209,10 +214,11 @@
     <ClInclude Include="include\engine\Input.h" />
     <ClInclude Include="include\engine\Application.h" />
     <ClInclude Include="include\engine\Object\Object.h" />
-    <ClInclude Include="include\engine\Scene.h" />
+    <ClInclude Include="include\engine\Scene\Scene.h" />
     <ClInclude Include="include\engine\Time.h" />
     <ClInclude Include="include\engine\Graphics\Material.h" />
     <ClInclude Include="include\engine\Screen.h" />
+    <ClInclude Include="include\engine\Scene\SceneManager.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
