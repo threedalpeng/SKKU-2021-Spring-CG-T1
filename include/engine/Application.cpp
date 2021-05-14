@@ -82,6 +82,7 @@ void Application::init()
 		});
 
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
+	SceneManager::init();
 }
 
 void Application::onSceneLoaded()

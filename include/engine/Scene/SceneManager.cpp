@@ -15,6 +15,7 @@ void SceneManager::loadScene(Scene* scene) {
 }
 void SceneManager::startScene() {
 	if (_currentScene) {
+		_componentManager->clear();
 		delete _currentScene;
 		_currentScene = nullptr;
 	}
