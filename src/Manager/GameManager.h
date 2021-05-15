@@ -2,6 +2,13 @@
 #include "engine/Core.h"
 #include "bullet/src/btBulletCollisionCommon.h"
 #include "bullet/src/btBulletDynamicsCommon.h"
+
+//*******************************************************************
+// bullet3
+#include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
+
+
 /*
 GameManager is global class
 
@@ -26,6 +33,8 @@ public:
     static bool update();
 
     static btDiscreteDynamicsWorld* dynamicsWorld;
+
+    static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
 
 private:
     static int _stage;
