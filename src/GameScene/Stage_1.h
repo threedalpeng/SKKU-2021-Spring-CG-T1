@@ -168,7 +168,7 @@ public:
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
+			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
 			collisionShapes.push_back(colShape);
 
 			/// Create Dynamic Objects
@@ -194,7 +194,7 @@ public:
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
-			body->setLinearVelocity(btVector3(0, 0, 0));
+			body->setLinearVelocity(btVector3(0.0f, 0, 0));
 		}
 
 		// meteor //
@@ -213,7 +213,7 @@ public:
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
+			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
 			collisionShapes.push_back(colShape);
 
 			/// Create Dynamic Objects
@@ -239,7 +239,7 @@ public:
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
-			body->setLinearVelocity(btVector3(-10.f, 0, 0));
+			body->setLinearVelocity(btVector3(-3.f, 0, 0));
 		}
 
 		// GUI
