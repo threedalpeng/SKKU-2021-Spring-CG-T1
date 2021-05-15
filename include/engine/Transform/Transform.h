@@ -31,7 +31,11 @@ public:
 	vec3 localToWorldPoint(vec3 v);
 	vec3 worldToLocalPoint(vec3 v);
 	// void lookAt(Transform* target, vec3 up = vec3(0, 1, 0));
-	void wolrPositionBullet();
+	void calWolrPositionBT();
+	void setWorlPositionBT(btVector3 new_position);
+	btVector3 getVelocityBT();
+	void setVelocityBT(btVector3 velocity);
+	void addVelocityBT(btVector3 addVelocity);
 
 private:
 	void calculateModelMatrix();
