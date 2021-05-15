@@ -193,6 +193,7 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
@@ -233,6 +234,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
     <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\irrKlang\ik_ESoundEngineOptions.h" />
