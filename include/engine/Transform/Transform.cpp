@@ -24,6 +24,7 @@ void Transform::rotateAround(vec3 worldPoint, vec3 axis, float angle)
 }
 
 void Transform::update() {
+	if(body) wolrPositionBullet();
 	GameObject* parent = getCurrentObject()->getParent();
 	if (parent) {
 		Transform* parentTransform = parent->getComponent<Transform>();
@@ -67,4 +68,12 @@ vec3 Transform::localToWorldPoint(vec3 v)
 vec3 Transform::worldToLocalPoint(vec3 v)
 {
 	return mat3(_modelMatrix).transpose() * v;
+}
+
+void Transform::wolrPositionBullet()
+{
+	btTransform trans;
+	body->getMotionState()->getWorldTransform(trans);
+	btVector3 tmp = trans.getOrigin();
+	position = vec3(tmp.getX(), tmp.getY(), tmp.getZ());
 }

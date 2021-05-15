@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Core.h"
-
+#include "bullet/src/btBulletCollisionCommon.h"
+#include "bullet/src/btBulletDynamicsCommon.h"
 /*
 GameManager is global class
 
@@ -24,6 +25,8 @@ public:
 
     static bool update();
 
+    static btDiscreteDynamicsWorld* dynamicsWorld;
+
 private:
     static int _stage;
     static int _score;
@@ -33,6 +36,7 @@ private:
 int GameManager::_stage = 0;
 int GameManager::_score = 0;
 bool GameManager::_isChanged = false;
+btDiscreteDynamicsWorld* GameManager::dynamicsWorld = nullptr;
 
 bool GameManager::setStage(int state)
 {

@@ -11,6 +11,10 @@
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Transform/Transform.h"
 
+#include "bullet/src/btBulletCollisionCommon.h"
+#include "bullet/src/btBulletDynamicsCommon.h"
+
+
 void setImGuiStyle(float highDPIscaleFactor)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
