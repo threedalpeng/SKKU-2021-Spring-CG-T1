@@ -2,7 +2,7 @@
 #include "engine/Component/Component.h"
 #include "engine/Transform/Transform.h"
 #include "engine/Graphics/Shader.h"
-
+#include <iostream>
 class Light : public Component
 {
 public:
@@ -38,6 +38,7 @@ public:
 		glUseProgram(_shader->getProgram());
 
 		vec4 position = vec4(getComponent<Transform>()->worldPosition, lightSource);
+		// std::cout << position.x << " " << position.y << " " << position.z << " " <<  position.w << std::endl;
 		glUniform4fv(_shader->getUniformLocation("light_position"), 1, position);
 		glUniform4fv(_shader->getUniformLocation("Ia"), 1, ambient);
 		glUniform4fv(_shader->getUniformLocation("Id"), 1, diffuse);
