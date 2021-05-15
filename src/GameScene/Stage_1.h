@@ -12,11 +12,56 @@
 #include "Script/Stage1GUIScript.h"
 
 #include "../Tool/MeshMaker.h"
+#include "../Custom/CustomRigidBody.h"
 
 //*******************************************************************
 // bullet3
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
+
+#include "BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h"
+#include "BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h"
+#include "BulletDynamics/Featherstone/btMultiBodyPoint2Point.h"
+#include "BulletDynamics/Featherstone/btMultiBodyLinkCollider.h"
+
+
+enum MyFilterModes
+{
+	FILTER_GROUPAMASKB_AND_GROUPBMASKA2 = 0,
+	FILTER_GROUPAMASKB_OR_GROUPBMASKA2
+};
+
+struct MyOverlapFilterCallback2 : public btOverlapFilterCallback
+{
+	int m_filterMode;
+
+	MyOverlapFilterCallback2()
+		: m_filterMode(FILTER_GROUPAMASKB_AND_GROUPBMASKA2)
+	{
+	}
+
+	virtual ~MyOverlapFilterCallback2()
+	{
+	}
+	// return true when pairs need collision
+	virtual bool needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
+	{
+		if (m_filterMode == FILTER_GROUPAMASKB_AND_GROUPBMASKA2)
+		{
+			bool collides = (proxy0->m_collisionFilterGroup & proxy1->m_collisionFilterMask) != 0;
+			collides = collides && (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
+			return collides;
+		}
+
+		if (m_filterMode == FILTER_GROUPAMASKB_OR_GROUPBMASKA2)
+		{
+			bool collides = (proxy0->m_collisionFilterGroup & proxy1->m_collisionFilterMask) != 0;
+			collides = collides || (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
+			return collides;
+		}
+		return false;
+	}
+};
 
 class Stage_1 : public Scene {
 public:
@@ -52,15 +97,26 @@ public:
 		//**********************************************
 		// bullet init
 		// initialize //
-		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
-		btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
-		///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
-		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-		GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
+		// btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+		// btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		// btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
+		// btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+		// GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
+
+		///collision configuration contains default setup for memory, collision setup
+		btDefaultCollisionConfiguration* m_collisionConfiguration = new btDefaultCollisionConfiguration();
+		//m_collisionConfiguration->setConvexConvexMultipointIterations();
+		MyOverlapFilterCallback2* m_filterCallback = new MyOverlapFilterCallback2();
+		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
+		btCollisionDispatcher* m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
+		btOverlappingPairCache* m_pairCache = new btHashedOverlappingPairCache();
+		m_pairCache->setOverlapFilterCallback(m_filterCallback);
+		btBroadphaseInterface* m_broadphase = new btDbvtBroadphase(m_pairCache);  //btSimpleBroadphase();
+		btMultiBodyConstraintSolver* m_solver = new btMultiBodyConstraintSolver;
+
+		GameManager::dynamicsWorld = new btMultiBodyDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
+		
 		// dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
@@ -128,10 +184,11 @@ public:
 			//using motionstate is optional, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
-			btRigidBody* body = new btRigidBody(rbInfo);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
 
 			//add the body to the dynamics world
 			GameManager::dynamicsWorld->addRigidBody(body);
+			body->gameObject = background;
 		}
 
 		// light point
@@ -189,12 +246,13 @@ public:
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-			btRigidBody* body = new btRigidBody(rbInfo);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::PLAYER);
 
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
 			body->setLinearVelocity(btVector3(0.0f, 0, 0));
+			body->gameObject = player;
 		}
 
 		// meteor //
@@ -234,13 +292,14 @@ public:
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-			btRigidBody* body = new btRigidBody(rbInfo);
-
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
+			
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
-			body->setLinearVelocity(btVector3(-3.f, 0, 0));
-		}
+			body->setLinearVelocity(btVector3(-3.f, 0, 0));		
+			body->gameObject = meteor;	
+		}		
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());

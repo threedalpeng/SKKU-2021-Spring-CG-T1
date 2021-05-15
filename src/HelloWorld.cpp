@@ -120,6 +120,7 @@ int main(int argc, char** argv)
 		for (int j = dynamicsWorld->getNumCollisionObjects() - 1; j >= 0; j--)
 		{
 			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[j];
+			
 			btRigidBody* body = btRigidBody::upcast(obj);
 			btTransform trans;
 			if (body && body->getMotionState())

@@ -56,7 +56,21 @@ private:
 	void update() {
 		if (GameManager::getChanged()) changeScene();
 
-		if (GameManager::dynamicsWorld)	GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
+		if(GameManager::dynamicsWorld)
+		{
+			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
+			int numManifolds = GameManager::dynamicsWorld->getDispatcher()->getNumManifolds();
+			for (int i = 0; i < numManifolds; i++)
+			{
+				btPersistentManifold* contactManifold =  GameManager::dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+				btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+				btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+				CustomRigidBody* obAA = (CustomRigidBody*)btRigidBody::upcast(obA);
+				CustomRigidBody* obBB = (CustomRigidBody*)btRigidBody::upcast(obB);
+				// std::cout << obAA->objectType << " " << obBB->objectType << std::endl;
+
+			}
+		}	
 
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {
