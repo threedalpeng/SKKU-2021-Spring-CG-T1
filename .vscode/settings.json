@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "istream": "cpp",
+        "memory": "cpp",
+        "type_traits": "cpp",
+        "xlocmon": "cpp",
+        "xlocnum": "cpp",
+        "xloctime": "cpp"
+    }
+}

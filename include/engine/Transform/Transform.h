@@ -22,6 +22,7 @@ public:
 
 	void update();
 	mat4 getModelMatrix();
+	void setModelMatrix(mat4* m);
 
 	vec3 localToWorldPoint(vec3 v);
 	vec3 worldToLocalPoint(vec3 v);

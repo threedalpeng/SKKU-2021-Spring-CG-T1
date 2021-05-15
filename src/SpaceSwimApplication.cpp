@@ -7,12 +7,15 @@
 #include "Manager/ResourceManager.h"
 #include "GameScene/Stage_1.h"
 
+
 //*******************************************************************
 // irrKlang objects
 irrklang::ISoundEngine* engine;
 irrklang::ISoundSource* mp3_src = nullptr;
 static const char* mp3_path = "../bin/sounds/space.mp3";
-
+//****************************************************************
+// temp val
+btRigidBody* body_meteor;
 class SpaceSwimApplication : public Application {
 public:
 	SpaceSwimApplication(const char* title) : Application(title) {};
@@ -47,13 +50,16 @@ private:
 		//play the sound file
 		engine->play2D(mp3_src, true);
 		printf("> playing %s\n", "mp3");
-	}
 
+		
+
+	}
+	
 	void update() {
 		if (GameManager::getChanged()) changeScene();
 
 		Application::update();
-		if (Input::getKeyDown(GLFW_KEY_ESCAPE) || Input::getKeyDown(GLFW_KEY_Q)) {
+		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);
 		}
 	}

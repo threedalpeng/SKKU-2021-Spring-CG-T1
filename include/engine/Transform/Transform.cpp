@@ -55,6 +55,10 @@ mat4 Transform::getModelMatrix() {
 	return _modelMatrix;
 }
 
+void Transform::setModelMatrix(mat4* m) {
+	for(int i = 0; i < 16; i++) _modelMatrix[i] = m->a[i];
+}
+
 vec3 Transform::localToWorldPoint(vec3 v)
 {
 	return mat3(_modelMatrix) * v;
