@@ -3,6 +3,7 @@
 #include "../../Manager/GameManager.h"
 #include "../../Manager/ResourceManager.h"
 #include <iostream>
+#define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
 
 class Stage1GUIScript : public Script
 {
@@ -11,6 +12,10 @@ public:
 
 private:
 	bool clickInBox = false;
+
+	// Sample data
+	float hp = 200;
+	float maxHp = 200;
 
 	enum class Mode {
 		DIALOG,
@@ -33,6 +38,21 @@ public:
 	}
 
 	void update() override {
+		static bool damaged = true;
+		if (damaged) {
+			hp -= 10.f * Time::delta();
+		}
+		else {
+			hp += 10.f * Time::delta();
+		}
+		if (hp < 0.0f) {
+			hp = 0.0f;
+			damaged = false;
+		}
+		if (hp > maxHp) {
+			hp = maxHp;
+			damaged = true;
+		}
 	}
 
 	void onGUIRender() override {
@@ -47,6 +67,8 @@ public:
 			break;
 		}
 	}
+
+private:
 
 	void showDialog() {
 		ImGuiWindowFlags windowFlags = 0;
@@ -106,13 +128,24 @@ public:
 			//| ImGuiWindowFlags_NoBackground
 			;
 
+		ImVec2 hpWindowSize = ImVec2(300.f, 30.f);
+		ImVec2 hpTextSize = ImVec2(200.f, 30.f);
 		ImVec2 hpSize = ImVec2(200.f, 30.f);
 
-		ImGui::SetNextWindowPos(ImVec2(Screen::width() - 100.f, 0.f), ImGuiCond_Always);
-		ImGui::SetNextWindowSize(hpSize, ImGuiCond_Always);
+		ImGui::SetNextWindowPos(ImVec2(Screen::width() - hpWindowSize.x, 0.f), ImGuiCond_Always);
+		ImGui::SetNextWindowSize(hpWindowSize, ImGuiCond_Always);
 
 		ImGui::Begin("HP", NULL, windowFlags);
 		{
+			ImGui::BeginGroup();
+			{
+				ImGui::Text("HP: ");
+				ImGui::SameLine(40.f);
+
+				char buf[32];
+				sprintf(buf, "%d/%d", int(hp), int(maxHp));
+				ImGui::ProgressBar(hp / maxHp, ImVec2(-1.f, -1.f), buf);
+			}
 		}
 		ImGui::End();
 	}
