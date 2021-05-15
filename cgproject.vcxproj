@@ -156,6 +156,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\engine\Audio\Audio.cpp" />
+    <ClCompile Include="include\engine\Audio\AudioPlayer.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
@@ -193,6 +195,8 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\Audio\Audio.h" />
+    <ClInclude Include="include\engine\Audio\AudioPlayer.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
@@ -233,6 +237,27 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
+    <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />
+    <ClInclude Include="include\irrKlang\ik_EStreamModes.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioRecorder.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioStream.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioStreamLoader.h" />
+    <ClInclude Include="include\irrKlang\ik_IFileFactory.h" />
+    <ClInclude Include="include\irrKlang\ik_IFileReader.h" />
+    <ClInclude Include="include\irrKlang\ik_IRefCounted.h" />
+    <ClInclude Include="include\irrKlang\ik_irrKlangTypes.h" />
+    <ClInclude Include="include\irrKlang\ik_ISound.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundDeviceList.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundEffectControl.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundEngine.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundMixedOutputReceiver.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundSource.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundStopEventReceiver.h" />
+    <ClInclude Include="include\irrKlang\ik_IVirtualRefCounted.h" />
+    <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
+    <ClInclude Include="include\irrKlang\ik_vec3d.h" />
+    <ClInclude Include="include\irrKlang\irrKlang.h" />
     <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\irrKlang\ik_ESoundEngineOptions.h" />

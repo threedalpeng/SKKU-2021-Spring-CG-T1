@@ -51,8 +51,6 @@ private:
 		engine->play2D(mp3_src, true);
 		printf("> playing %s\n", "mp3");
 
-		
-
 	}
 	
 	void update() {

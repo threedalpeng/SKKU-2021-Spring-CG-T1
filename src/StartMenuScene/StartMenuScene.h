@@ -19,12 +19,6 @@ public:
 	StartMenuScene() : Scene() {};
 
 	void init() {
-		/* Font */
-		/*
-		Font* textFont = new Font();
-		textFont->loadFrom("fonts/consola.ttf");
-		*/
-
 		/* Mesh */
 		Mesh* cylinderMesh = createCylinderMesh();
 		Mesh* boxMesh = MeshMaker::makeBoxMesh();
@@ -52,9 +46,7 @@ public:
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
 		Camera* camera;
-		//TextRenderer* textRenderer;
 		Transform* transform;
-		//UIRenderer* uiRenderer;
 
 		// background
 		meshRenderer = background->addComponent<MeshRenderer>();
@@ -76,25 +68,6 @@ public:
 
 		GameStartGUIScript* guiScript = new GameStartGUIScript();
 		gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
-
-		/*
-		// game start text
-		textRenderer = gameStartText->addComponent<TextRenderer>();
-		textRenderer->loadFont(textFont);
-		textRenderer->loadShader(textShader);
-		transform = gameStartText->getComponent<Transform>();
-		textRenderer->setText("Hello, World!", vec4(0.2f, 0.8f, 0.2f, 1.0f));
-
-		uiRenderer = gameStartButton->addComponent<UIRenderer>();
-		uiRenderer->loadMesh(planeMesh);
-		uiRenderer->loadShader(textShader);
-		uiRenderer->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
-		transform = gameStartButton->getComponent<Transform>();
-		transform->scale = vec3(20.f, 10.f, 1.f);
-		GameStartButtonScript* gameStartButtonScript = new GameStartButtonScript();
-		gameStartButtonScript->text = gameStartText;
-		gameStartButton->addComponent<ScriptLoader>()->addScript(gameStartButtonScript);
-		*/
 	}
 
 	Mesh* createCylinderMesh() {
