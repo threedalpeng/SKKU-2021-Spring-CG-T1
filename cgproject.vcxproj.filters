@@ -132,4 +132,9 @@
   <ItemGroup>
     <Text Include="bin\mesh\dragon.license.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Library Include="lib\irrKlang\irrKlang.lib" />
+    <Library Include="lib\gl\glfw\glfw3.x64.lib" />
+    <Library Include="lib\gl\glfw\glfw3.x86.lib" />
+  </ItemGroup>
 </Project>
