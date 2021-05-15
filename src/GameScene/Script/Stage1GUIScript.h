@@ -15,7 +15,7 @@ public:
 		GAME,
 		PAUSE
 	};
-	Mode currentMode = Mode::GAME;
+	Mode currentMode = Mode::DIALOG;
 
 private:
 	// Sample data
@@ -24,9 +24,7 @@ private:
 
 	size_t dialogIndex = 0;
 	std::vector<std::pair<std::string, std::string>> dialogs = {
-		{"Player1", "Hi"},
-		{"Player2", "Hello"},
-		{"Player1", "Good Bye"},
+		{"How To", "P - Pause Menu\nESC - Quit to Desktop"},
 	};
 
 public:
