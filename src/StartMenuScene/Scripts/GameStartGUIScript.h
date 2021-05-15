@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Core.h"
 #include "../../Manager/GameManager.h"
+#include "../../Manager/ResourceManager.h"
 #include <iostream>
 
 class GameStartGUIScript : public Script
@@ -69,6 +70,7 @@ public:
 		windowFlags =
 			ImGuiWindowFlags_NoTitleBar
 			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
 			| ImGuiWindowFlags_NoResize
 			| ImGuiWindowFlags_NoBackground;
 
@@ -89,13 +91,29 @@ public:
 
 			ImVec2 windowSize = ImGui::GetWindowSize();
 
-			ImGui::BeginChild("Title Text", ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6)));
-			ImGui::Text("Space Game");
+			ImVec2 childSize = ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6) - ImGui::GetFrameHeightWithSpacing());
+			ImGui::BeginChild("Title Text", childSize);
+
+			std::string titleText = "Space Swim";
+
+			ImGui::PushFont(ResourceManager::getFont("consola 60"));
+			float titleTextWidth = ImGui::GetFontSize() * titleText.size() / 2;
+			ImGui::Dummy(ImVec2(0.f, childSize.y / 2 - ImGui::GetFontSize() / 2));
+			ImGui::Spacing();
+			ImGui::SameLine(
+				ImGui::GetWindowSize().x / 2 - titleTextWidth / 2
+			);
+			ImGui::Text(titleText.c_str());
+			ImGui::PopFont();
+
 			ImGui::EndChild();
 
-			ImGui::Separator(); std::string text = "Game Start";
+			ImGui::Spacing();
 
-			if (drawButton(text + " ## 1")) {
+			ImGui::PushFont(ResourceManager::getFont("consola 20"));
+			std::string text = "Game Start";
+
+			if (drawButton(text + "## 1")) {
 				std::cout << "Game Start!" << std::endl;
 				GameManager::setStage(1);
 				GameManager::setChanged(true);
@@ -106,7 +124,7 @@ public:
 
 			ImGui::Spacing();
 
-			if (drawButton(text + " ## 2")) {
+			if (drawButton(text + "## 2")) {
 				std::cout << "Game Start!" << std::endl;
 				GameManager::setStage(1);
 				GameManager::setChanged(true);
@@ -114,11 +132,12 @@ public:
 
 			ImGui::Spacing();
 
-			if (drawButton(text + " ## 3")) {
+			if (drawButton(text + "## 3")) {
 				std::cout << "Game Start!" << std::endl;
 				GameManager::setStage(1);
 				GameManager::setChanged(true);
 			}
+			ImGui::PopFont();
 
 			ImGui::EndGroup();
 		}

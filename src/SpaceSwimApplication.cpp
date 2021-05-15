@@ -4,6 +4,7 @@
 
 #include "StartMenuScene/StartMenuScene.h"
 #include "Manager/GameManager.h"
+#include "Manager/ResourceManager.h"
 #include "GameScene/Stage_1.h"
 
 //*******************************************************************
@@ -18,6 +19,10 @@ public:
 private:
 	void init() {
 		Application::init();
+
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		ResourceManager::addFont("consola 20", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 20.f));
+		ResourceManager::addFont("consola 60", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 60.f));
 
 		glClearColor(39 / 255.0f, 40 / 255.0f, 34 / 255.0f, 1.0f);	// set clear color
 		glEnable(GL_BLEND);

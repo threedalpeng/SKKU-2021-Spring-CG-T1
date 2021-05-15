@@ -1,5 +1,11 @@
 #include "ResourceManager.h"
 
+std::unordered_map<std::string, Mesh> ResourceManager::_meshList = std::unordered_map<std::string, Mesh>();
+std::unordered_map<std::string, Shader> ResourceManager::_shaderList = std::unordered_map<std::string, Shader>();
+std::unordered_map<std::string, Material> ResourceManager::_materialList = std::unordered_map<std::string, Material>();
+std::unordered_map<std::string, Texture> ResourceManager::_textureList = std::unordered_map<std::string, Texture>();
+std::unordered_map<std::string, ImFont*> ResourceManager::_fontList = std::unordered_map<std::string, ImFont*>();
+
 Mesh* ResourceManager::getMesh(const std::string& meshName) {
 	auto result = _meshList.find(meshName);
 	return &(result->second);
@@ -18,6 +24,11 @@ Material* ResourceManager::getMaterial(const std::string& materialName) {
 Texture* ResourceManager::getTexture(const std::string& textureName) {
 	auto result = _textureList.find(textureName);
 	return &(result->second);
+}
+
+ImFont* ResourceManager::getFont(const std::string& fontName) {
+	auto result = _fontList.find(fontName);
+	return (result->second);
 }
 
 Mesh* ResourceManager::createMesh(const std::string& meshName, const std::string& vertexBinaryPath, const std::string& indexBinaryPath) {
@@ -58,4 +69,8 @@ Texture* ResourceManager::createTexture(const std::string& textureName, const st
 	else {
 		return nullptr;
 	}
+}
+
+void ResourceManager::addFont(const std::string& fontName, ImFont* font) {
+	_fontList.insert(std::make_pair(fontName, font));
 }
