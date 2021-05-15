@@ -24,7 +24,6 @@
 #include "BulletDynamics/Featherstone/btMultiBodyPoint2Point.h"
 #include "BulletDynamics/Featherstone/btMultiBodyLinkCollider.h"
 
-
 enum MyFilterModes
 {
 	FILTER_GROUPAMASKB_AND_GROUPBMASKA2 = 0,
@@ -84,7 +83,6 @@ public:
 
 		/* Shader */
 		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
-		Shader* textShader = new Shader("shaders/text.vert", "shaders/text.frag");
 
 		/* GameObject */
 		GameObject* mainCamera = GameObject::create("Main Camera");
@@ -103,7 +101,6 @@ public:
 		// btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
 		// GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-
 		///collision configuration contains default setup for memory, collision setup
 		btDefaultCollisionConfiguration* m_collisionConfiguration = new btDefaultCollisionConfiguration();
 		//m_collisionConfiguration->setConvexConvexMultipointIterations();
@@ -116,7 +113,7 @@ public:
 		btMultiBodyConstraintSolver* m_solver = new btMultiBodyConstraintSolver;
 
 		GameManager::dynamicsWorld = new btMultiBodyDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
-		
+
 		// dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
@@ -293,13 +290,13 @@ public:
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
-			
+
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
-			body->setLinearVelocity(btVector3(-3.f, 0, 0));		
-			body->gameObject = meteor;	
-		}		
+			body->setLinearVelocity(btVector3(-3.f, 0, 0));
+			body->gameObject = meteor;
+		}
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());

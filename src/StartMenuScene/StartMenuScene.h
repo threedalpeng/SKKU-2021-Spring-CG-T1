@@ -19,12 +19,6 @@ public:
 	StartMenuScene() : Scene() {};
 
 	void init() {
-		/* Font */
-		/*
-		Font* textFont = new Font();
-		textFont->loadFrom("fonts/consola.ttf");
-		*/
-
 		/* Mesh */
 		Mesh* cylinderMesh = createCylinderMesh();
 		Mesh* boxMesh = MeshMaker::makeBoxMesh();
