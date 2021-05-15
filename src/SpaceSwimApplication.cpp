@@ -7,7 +7,6 @@
 #include "Manager/ResourceManager.h"
 #include "GameScene/Stage_1.h"
 
-
 //*******************************************************************
 // irrKlang objects
 irrklang::ISoundEngine* engine;
@@ -26,6 +25,7 @@ private:
 
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ResourceManager::addFont("consola 20", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 20.f));
+		ResourceManager::addFont("consola 40", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 40.f));
 		ResourceManager::addFont("consola 60", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 60.f));
 
 		glClearColor(39 / 255.0f, 40 / 255.0f, 34 / 255.0f, 1.0f);	// set clear color
@@ -51,13 +51,12 @@ private:
 		//play the sound file
 		engine->play2D(mp3_src, true);
 		printf("> playing %s\n", "mp3");
-
 	}
-	
+
 	void update() {
 		if (GameManager::getChanged()) changeScene();
 
-		if(GameManager::dynamicsWorld)	GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
+		if (GameManager::dynamicsWorld)	GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
 
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {

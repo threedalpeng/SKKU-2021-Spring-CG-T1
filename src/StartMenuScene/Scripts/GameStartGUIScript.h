@@ -11,7 +11,6 @@ public:
 
 private:
 	Transform* transform = nullptr;
-	bool clickInBox = false;
 
 public:
 
@@ -20,49 +19,6 @@ public:
 	}
 
 	void update() override {
-		/*
-		dvec2 mousePoint = Input::getCursorPoint();
-
-		vec3 topright = Camera::main->worldToScreenPoint(transform->localToWorldPoint(vec3(1.f, 1.f, 0.f)));
-		vec3 bottomleft = Camera::main->worldToScreenPoint(transform->localToWorldPoint(vec3(0.f, 0.f, 0.0f)));
-		text->getComponent<TextRenderer>()->fitToRectangle(
-			vec2(topright.x, topright.y),
-			vec2(bottomleft.x, bottomleft.y));
-
-		if (Input::getMouseButtonDown(GLFW_MOUSE_BUTTON_LEFT)) {
-			if (bottomleft.x <= mousePoint.x && mousePoint.x <= topright.x && topright.y <= mousePoint.y && mousePoint.y <= bottomleft.y)
-			{
-				clickInBox = true;
-			}
-			else {
-				clickInBox = false;
-			}
-		}
-		if (Input::getMouseButtonUp(GLFW_MOUSE_BUTTON_LEFT)) {
-			if (bottomleft.x <= mousePoint.x && mousePoint.x <= topright.x && topright.y <= mousePoint.y && mousePoint.y <= bottomleft.y && clickInBox)
-			{
-				GameManager::setStage(1);
-				GameManager::setChanged(true);
-				clickInBox = false;
-			}
-		}
-		*/
-		/*
-		if (Input::getMouseButton(GLFW_MOUSE_BUTTON_LEFT))
-		{
-			if (bottomleft.x <= mousePoint.x && mousePoint.x <= topright.x && topright.y <= mousePoint.y && mousePoint.y <= bottomleft.y && clickInBox)
-			{
-				getComponent<UIRenderer>()->color = vec4(0.4f, 0.4f, 0.8f, 1.0f);
-			}
-			else {
-				getComponent<UIRenderer>()->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
-			}
-		}
-		else
-		{
-			getComponent<UIRenderer>()->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
-		}
-		*/
 	}
 
 	void onGUIRender() override {
@@ -75,8 +31,6 @@ public:
 			| ImGuiWindowFlags_NoBackground;
 
 		ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-		// here we set the calculated width and also make the height to be
-		// be the height of the main window also with some margin
 		ImGui::SetNextWindowSize(
 			ImVec2(static_cast<float>(Screen::width()), static_cast<float>(Screen::height())),
 			ImGuiCond_Always
