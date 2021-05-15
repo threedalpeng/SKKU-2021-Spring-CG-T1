@@ -18,7 +18,7 @@ private:
 		PAUSE
 	};
 
-	Mode currentMode = Mode::DIALOG;
+	Mode currentMode = Mode::GAME;
 
 	size_t dialogIndex = 0;
 	std::vector<std::pair<std::string, std::string>> dialogs = {
@@ -103,7 +103,17 @@ public:
 			| ImGuiWindowFlags_NoScrollWithMouse
 			| ImGuiWindowFlags_NoResize
 			| ImGuiWindowFlags_NoCollapse
-			| ImGuiWindowFlags_NoBackground;
-		//ImGui::Begin("HP")
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		ImVec2 hpSize = ImVec2(200.f, 30.f);
+
+		ImGui::SetNextWindowPos(ImVec2(Screen::width() - 100.f, 0.f), ImGuiCond_Always);
+		ImGui::SetNextWindowSize(hpSize, ImGuiCond_Always);
+
+		ImGui::Begin("HP", NULL, windowFlags);
+		{
+		}
+		ImGui::End();
 	}
 };

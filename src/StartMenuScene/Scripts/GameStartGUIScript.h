@@ -85,60 +85,59 @@ public:
 		ImGui::SetNextWindowBgAlpha(0.7f);
 
 		ImGui::Begin("Game Start", NULL, windowFlags);
-
 		{
 			ImGui::BeginGroup();
+			{
+				ImVec2 windowSize = ImGui::GetWindowSize();
 
-			ImVec2 windowSize = ImGui::GetWindowSize();
+				ImVec2 childSize = ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6) - ImGui::GetFrameHeightWithSpacing());
+				ImGui::BeginChild("Title Text", childSize);
+				{
+					std::string titleText = "Space Swim";
 
-			ImVec2 childSize = ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6) - ImGui::GetFrameHeightWithSpacing());
-			ImGui::BeginChild("Title Text", childSize);
+					ImGui::PushFont(ResourceManager::getFont("consola 60"));
+					float titleTextWidth = ImGui::GetFontSize() * titleText.size() / 2;
+					ImGui::Dummy(ImVec2(0.f, childSize.y / 2 - ImGui::GetFontSize() / 2));
+					ImGui::Spacing();
+					ImGui::SameLine(
+						ImGui::GetWindowSize().x / 2 - titleTextWidth / 2
+					);
+					ImGui::Text(titleText.c_str());
+					ImGui::PopFont();
+				}
+				ImGui::EndChild();
 
-			std::string titleText = "Space Swim";
+				ImGui::Spacing();
 
-			ImGui::PushFont(ResourceManager::getFont("consola 60"));
-			float titleTextWidth = ImGui::GetFontSize() * titleText.size() / 2;
-			ImGui::Dummy(ImVec2(0.f, childSize.y / 2 - ImGui::GetFontSize() / 2));
-			ImGui::Spacing();
-			ImGui::SameLine(
-				ImGui::GetWindowSize().x / 2 - titleTextWidth / 2
-			);
-			ImGui::Text(titleText.c_str());
-			ImGui::PopFont();
+				ImGui::PushFont(ResourceManager::getFont("consola 20"));
+				std::string text = "Game Start";
 
-			ImGui::EndChild();
+				if (drawButton(text + "## 1")) {
+					std::cout << "Game Start!" << std::endl;
+					GameManager::setStage(1);
+					GameManager::setChanged(true);
+				}
+				if (ImGui::IsItemHovered()) {
+					ImGui::SetTooltip("Game will be started...");
+				}
 
-			ImGui::Spacing();
+				ImGui::Spacing();
 
-			ImGui::PushFont(ResourceManager::getFont("consola 20"));
-			std::string text = "Game Start";
+				if (drawButton(text + "## 2")) {
+					std::cout << "Game Start!" << std::endl;
+					GameManager::setStage(1);
+					GameManager::setChanged(true);
+				}
 
-			if (drawButton(text + "## 1")) {
-				std::cout << "Game Start!" << std::endl;
-				GameManager::setStage(1);
-				GameManager::setChanged(true);
+				ImGui::Spacing();
+
+				if (drawButton(text + "## 3")) {
+					std::cout << "Game Start!" << std::endl;
+					GameManager::setStage(1);
+					GameManager::setChanged(true);
+				}
+				ImGui::PopFont();
 			}
-			if (ImGui::IsItemHovered()) {
-				ImGui::SetTooltip("Game will be started...");
-			}
-
-			ImGui::Spacing();
-
-			if (drawButton(text + "## 2")) {
-				std::cout << "Game Start!" << std::endl;
-				GameManager::setStage(1);
-				GameManager::setChanged(true);
-			}
-
-			ImGui::Spacing();
-
-			if (drawButton(text + "## 3")) {
-				std::cout << "Game Start!" << std::endl;
-				GameManager::setStage(1);
-				GameManager::setChanged(true);
-			}
-			ImGui::PopFont();
-
 			ImGui::EndGroup();
 		}
 		ImGui::End();

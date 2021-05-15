@@ -48,7 +48,7 @@ public:
 
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
-		
+
 		//**********************************************
 		// bullet init
 		// initialize //
@@ -167,7 +167,6 @@ public:
 			PlayerScript* playerScript = new PlayerScript();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
-
 			//create a dynamic rigidbody
 			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
 			collisionShapes.push_back(colShape);
@@ -213,7 +212,6 @@ public:
 			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
-
 			//create a dynamic rigidbody
 			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
 			collisionShapes.push_back(colShape);
@@ -237,15 +235,14 @@ public:
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
 			btRigidBody* body = new btRigidBody(rbInfo);
-			
+
 			GameManager::dynamicsWorld->addRigidBody(body);
 
 			transform->body = body;
-			body->setLinearVelocity(btVector3(-10.f, 0, 0));			
-		}		
+			body->setLinearVelocity(btVector3(-10.f, 0, 0));
+		}
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
-		
 	}
 };
