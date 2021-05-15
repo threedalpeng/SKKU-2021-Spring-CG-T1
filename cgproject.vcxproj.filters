@@ -112,6 +112,8 @@
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartGUIScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="src\Tool\MeshMaker.h" />
+    <ClInclude Include="src\CreditScene\CreditScene.h" />
+    <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
