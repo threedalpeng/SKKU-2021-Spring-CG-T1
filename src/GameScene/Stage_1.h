@@ -17,8 +17,10 @@ public:
 
 	void init() {
 		/* Font */
+		/*
 		Font* textFont = new Font();
 		textFont->loadFrom("fonts/consola.ttf");
+		*/
 
 		/* Mesh */
 		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
@@ -47,7 +49,7 @@ public:
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
 		Camera* camera;
-		TextRenderer* textRenderer;
+		//TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
 		Material* material;

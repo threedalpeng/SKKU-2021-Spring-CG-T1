@@ -1,7 +1,13 @@
 #pragma once
 #include <vector>
+
 #include "cg/cgut.h"
 #include "cg/cgmath.h"
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 #include "engine/Input.h"
 #include "engine/Scene/SceneManager.h"
 #include "engine/Component/ComponentManager.h"

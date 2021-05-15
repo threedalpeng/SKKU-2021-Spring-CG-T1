@@ -9,7 +9,8 @@
 // My Application
 #include "Scripts/CameraScript.h"
 #include "Scripts/BackgroundScript.h"
-#include "Scripts/GameStartButtonScript.h"
+#include "Scripts/GameStartGUIScript.h"
+#include "imgui/imgui.h"
 
 #include "../Tool/MeshMaker.h"
 
@@ -19,12 +20,15 @@ public:
 
 	void init() {
 		/* Font */
+		/*
 		Font* textFont = new Font();
 		textFont->loadFrom("fonts/consola.ttf");
+		*/
 
 		/* Mesh */
 		Mesh* cylinderMesh = createCylinderMesh();
 		Mesh* boxMesh = MeshMaker::makeBoxMesh();
+		Mesh* planeMesh = create2DRectMesh();
 
 		/* Texture */
 		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
@@ -38,20 +42,19 @@ public:
 
 		GameObject* mainCamera = GameObject::create("Main Camera");
 
-		GameObject* gameStartText = GameObject::create("Game Start Text");
-		GameObject* gameStartButton = GameObject::create("GameStart Button");
+		GameObject* gameStartGUI = GameObject::create("Game Start GUI");
 
 		/* Link Objects */
 		addObject(background);
 		addObject(mainCamera);
-		addObject(gameStartText);
-		addObject(gameStartButton);
+		addObject(gameStartGUI);
 
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
 		Camera* camera;
-		TextRenderer* textRenderer;
+		//TextRenderer* textRenderer;
 		Transform* transform;
+		//UIRenderer* uiRenderer;
 
 		// background
 		meshRenderer = background->addComponent<MeshRenderer>();
@@ -71,26 +74,27 @@ public:
 		camera->addShader(basicShader);
 		camera->setThisMainCamera();
 
+		GameStartGUIScript* guiScript = new GameStartGUIScript();
+		gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
+
+		/*
 		// game start text
 		textRenderer = gameStartText->addComponent<TextRenderer>();
 		textRenderer->loadFont(textFont);
 		textRenderer->loadShader(textShader);
 		transform = gameStartText->getComponent<Transform>();
-		transform->position = vec3(100.f, 200.f, 0.f);
-		//transform->scale = vec3(10.f, 10.f, 0.f);
 		textRenderer->setText("Hello, World!", vec4(0.2f, 0.8f, 0.2f, 1.0f));
 
-		meshRenderer = gameStartButton->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(boxMesh);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->isShaded = false;
-		meshRenderer->isColored = true;
-		meshRenderer->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
+		uiRenderer = gameStartButton->addComponent<UIRenderer>();
+		uiRenderer->loadMesh(planeMesh);
+		uiRenderer->loadShader(textShader);
+		uiRenderer->color = vec4(0.2f, 0.2f, 0.8f, 1.0f);
 		transform = gameStartButton->getComponent<Transform>();
-		transform->scale = vec3(3.0f, 1.0f, 0.1f);
+		transform->scale = vec3(20.f, 10.f, 1.f);
 		GameStartButtonScript* gameStartButtonScript = new GameStartButtonScript();
 		gameStartButtonScript->text = gameStartText;
 		gameStartButton->addComponent<ScriptLoader>()->addScript(gameStartButtonScript);
+		*/
 	}
 
 	Mesh* createCylinderMesh() {
@@ -119,6 +123,33 @@ public:
 			mesh->index_list.push_back(s + 3);
 			mesh->index_list.push_back(s + 2);
 		}
+
+		glGenBuffers(1, &(mesh->vertex_buffer));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
+		glGenBuffers(1, &(mesh->index_buffer));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+
+		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
+		return mesh;
+	}
+
+	Mesh* create2DRectMesh() {
+		Mesh* mesh = new Mesh();
+
+		mesh->vertex_list = {
+			{ vec3(0,1,0), vec3(0,0,0), vec2(0.0f,0.0f) },
+			{ vec3(0,0,0), vec3(0,0,0), vec2(0.0f,1.0f) },
+			{ vec3(1,0,0), vec3(0,0,0), vec2(1.0f,1.0f) },
+			{ vec3(0,1,0), vec3(0,0,0), vec2(0.0f,0.0f) },
+			{ vec3(1,0,0), vec3(0,0,0), vec2(1.0f,1.0f) },
+			{ vec3(1,1,0), vec3(0,0,0), vec2(1.0f,0.0f) }
+		};
+
+		mesh->index_list = {
+			1, 2, 3, 1, 3, 4
+		};
 
 		glGenBuffers(1, &(mesh->vertex_buffer));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);

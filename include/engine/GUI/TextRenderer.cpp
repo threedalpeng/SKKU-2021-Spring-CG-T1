@@ -134,7 +134,7 @@ void TextRenderer::render()
 	if (_mesh && _mesh->getVertexArray())
 		glBindVertexArray(_mesh->getVertexArray());
 
-	glUniform4f(_shader->getUniformLocation("text_color"), _color.r, _color.g, _color.b, _color.a);
+	glUniform4f(_shader->getUniformLocation("color"), _color.r, _color.g, _color.b, _color.a);
 	glActiveTexture(GL_TEXTURE0);
 
 	mat4 textOffsetMatrix = mat4(
@@ -160,10 +160,9 @@ void TextRenderer::render()
 
 		textMatrix = textOffsetMatrix * textTranslateMatrix * textSizeMatrix * textMatrix;
 
-		glUniformMatrix4fv(_shader->getUniformLocation("text_matrix"), 1, GL_TRUE, textMatrix);
+		glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, textMatrix);
 		glBindTexture(GL_TEXTURE_2D, ch.textureID);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-		// glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
 
 		x += ch.advance * scaleX;
 	}

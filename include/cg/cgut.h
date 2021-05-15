@@ -6,7 +6,6 @@
 // You may use and modify this software for non-commercial and commercial software,
 // but re-distribution of this software is strictly prohibited.
 //*******************************************************************
-
 #ifndef __CGUT_H__
 #define __CGUT_H__
 

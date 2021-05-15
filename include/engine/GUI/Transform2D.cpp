@@ -1,4 +1,4 @@
-#include "Transform.h"
+/ / #include "Transform.h"
 #include <iostream>
 
 Transform::Transform(std::shared_ptr<GameObject> obj) : Component(obj) {}

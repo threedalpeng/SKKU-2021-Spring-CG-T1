@@ -1,30 +1,25 @@
-#include "MeshRenderer.h"
+#include "UIRenderer.h"
 #include "engine/Transform/Transform.h"
 #include "engine/Object/GameObject.h"
 
-MeshRenderer::MeshRenderer(std::shared_ptr<GameObject> obj) : Component(obj) {}
+UIRenderer::UIRenderer(std::shared_ptr<GameObject> obj) : Component(obj) {}
 
-void MeshRenderer::loadMesh(Mesh* mesh)
+void UIRenderer::loadMesh(Mesh* mesh)
 {
 	_mesh = mesh;
 }
 
-void MeshRenderer::loadMaterial(Material* material)
-{
-	_material = material;
-}
-
-void MeshRenderer::loadTexture(Texture* texture)
+void UIRenderer::loadTexture(Texture* texture)
 {
 	_textures.push_back(texture);
 }
 
-void MeshRenderer::loadShader(Shader* shader)
+void UIRenderer::loadShader(Shader* shader)
 {
 	_shader = shader;
 }
 
-void MeshRenderer::render()
+void UIRenderer::render()
 {
 	glUseProgram(_shader->getProgram());
 
@@ -35,16 +30,7 @@ void MeshRenderer::render()
 	mat4 model_matrix = transform->getModelMatrix();
 	glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
 
-	glUniform1i(_shader->getUniformLocation("b_shaded"), isShaded);
-	glUniform1i(_shader->getUniformLocation("b_colored"), isColored);
 	glUniform4fv(_shader->getUniformLocation("color"), 1, color);
-
-	if (_material) {
-		glUniform4fv(_shader->getUniformLocation("Ka"), 1, _material->ambient);
-		glUniform4fv(_shader->getUniformLocation("Kd"), 1, _material->diffuse);
-		glUniform4fv(_shader->getUniformLocation("Ks"), 1, _material->specular);
-		glUniform1f(_shader->getUniformLocation("shininess"), _material->shininess);
-	}
 
 	// setup texture
 	// yet Sample, planned to be like this...

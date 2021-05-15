@@ -11,3 +11,7 @@ void Script::update()
 void Script::fixedUpdate()
 {
 }
+
+void Script::onGUIRender()
+{
+}

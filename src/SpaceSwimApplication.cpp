@@ -45,9 +45,8 @@ private:
 	}
 
 	void update() {
-		
-		if(GameManager::getChanged()) changeScene();
-		
+		if (GameManager::getChanged()) changeScene();
+
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE) || Input::getKeyDown(GLFW_KEY_Q)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);
@@ -65,21 +64,21 @@ private:
 
 	void changeScene()
 	{
-		Scene* scene= nullptr;
-		switch(GameManager::getStage())
+		Scene* scene = nullptr;
+		switch (GameManager::getStage())
 		{
-			case 0:
-				scene = new StartMenuScene();
-				break;
-			case 1:
-				scene = new Stage_1();
-				break;
-			case 2:
-				break;
-			case 3:
-				break;
-			default:
-				break;
+		case 0:
+			scene = new StartMenuScene();
+			break;
+		case 1:
+			scene = new Stage_1();
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		default:
+			break;
 		}
 		SceneManager::loadScene(scene);
 		GameManager::setChanged(false);

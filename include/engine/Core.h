@@ -21,7 +21,8 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Texture.h"
 
-#include "GUI/TextRenderer.h"
+//#include "GUI/TextRenderer.h"
+//#include "GUI/UIRenderer.h"
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"
