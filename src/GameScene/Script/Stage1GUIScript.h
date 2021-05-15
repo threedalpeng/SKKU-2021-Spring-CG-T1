@@ -3,22 +3,24 @@
 #include "../../Manager/GameManager.h"
 #include "../../Manager/ResourceManager.h"
 #include <iostream>
+#define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
 
 class Stage1GUIScript : public Script
 {
 public:
 	Stage1GUIScript() : Script() {}
 
-private:
-	bool clickInBox = false;
-
 	enum class Mode {
 		DIALOG,
 		GAME,
 		PAUSE
 	};
+	Mode currentMode = Mode::GAME;
 
-	Mode currentMode = Mode::DIALOG;
+private:
+	// Sample data
+	float hp = 200;
+	float maxHp = 200;
 
 	size_t dialogIndex = 0;
 	std::vector<std::pair<std::string, std::string>> dialogs = {
@@ -33,6 +35,28 @@ public:
 	}
 
 	void update() override {
+		static bool damaged = true;
+		if (currentMode == Mode::GAME) {
+			if (damaged) {
+				hp -= 10.f * Time::delta();
+			}
+			else {
+				hp += 10.f * Time::delta();
+			}
+			if (hp < 0.0f) {
+				hp = 0.0f;
+				damaged = false;
+			}
+			if (hp > maxHp) {
+				hp = maxHp;
+				damaged = true;
+			}
+
+			if (Input::getKeyDown(GLFW_KEY_P)) {
+				std::cout << "Pause.." << std::endl;
+				currentMode = Mode::PAUSE;
+			}
+		}
 	}
 
 	void onGUIRender() override {
@@ -41,11 +65,15 @@ public:
 			showDialog();
 			break;
 		case Mode::GAME:
+			showGameState();
 			break;
 		case Mode::PAUSE:
+			showPauseMenu();
 			break;
 		}
 	}
+
+private:
 
 	void showDialog() {
 		ImGuiWindowFlags windowFlags = 0;
@@ -95,5 +123,105 @@ public:
 	}
 
 	void showGameState() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			| ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		ImVec2 hpWindowSize = ImVec2(300.f, 30.f);
+		ImVec2 hpTextSize = ImVec2(200.f, 30.f);
+		ImVec2 hpSize = ImVec2(200.f, 30.f);
+
+		ImGui::SetNextWindowPos(ImVec2(Screen::width() - hpWindowSize.x, 0.f), ImGuiCond_Always);
+		ImGui::SetNextWindowSize(hpWindowSize, ImGuiCond_Always);
+
+		ImGui::Begin("HP", NULL, windowFlags);
+		{
+			ImGui::BeginGroup();
+			{
+				ImGui::Text("HP: ");
+				ImGui::SameLine(40.f);
+
+				char buf[32];
+				sprintf(buf, "%d/%d", int(hp), int(maxHp));
+				ImGui::ProgressBar(hp / maxHp, ImVec2(-1.f, -1.f), buf);
+			}
+		}
+		ImGui::End();
+	}
+
+	void showPauseMenu() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			| ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		float minPauseMenuWindowWidth = 480.f;
+		float minPauseMenuWindowHeight = 360.f;
+		float scaledHeight = Screen::height() * 0.75f;
+		float scaledWidth = float(Screen::height());
+		ImVec2 pauseMenuWindowSize = ImVec2(
+			std::max(minPauseMenuWindowWidth, scaledWidth),
+			std::max(minPauseMenuWindowHeight, scaledHeight));
+
+		ImGui::SetNextWindowPos(ImVec2(
+			float(Screen::width()) / 2.f - pauseMenuWindowSize.x / 2.f,
+			float(Screen::height()) / 2.f - pauseMenuWindowSize.y / 2.f),
+			ImGuiCond_Always);
+		ImGui::SetNextWindowSize(pauseMenuWindowSize, ImGuiCond_Always);
+
+		ImGui::Begin("HP", NULL, windowFlags);
+		{
+			ImGui::BeginGroup();
+			{
+				std::string menuText = "Menu";
+				ImGui::PushFont(ResourceManager::getFont("consola 40"));
+				float titleTextWidth = ImGui::GetFontSize() * menuText.size() / 2.f;
+				ImGui::Dummy(ImVec2(0.f, scaledHeight * 0.1f));
+				ImGui::Spacing();
+				ImGui::SameLine(pauseMenuWindowSize.x / 2.f - titleTextWidth / 2.f);
+				ImGui::Text("Menu");
+				ImGui::SameLine(0.f);
+				ImGui::Dummy(ImVec2(0.f, scaledHeight * 0.2f));
+				ImGui::PopFont();
+				ImGui::Spacing();
+
+				ImVec2 buttonSize = ImVec2(scaledWidth * 0.8f, scaledHeight * 0.2f);
+
+				ImGui::SameLine(
+					pauseMenuWindowSize.x / 2.f - buttonSize.x / 2
+				);
+				if (ImGui::Button("Resume", buttonSize)) {
+					currentMode = Mode::GAME;
+				}
+				ImGui::Spacing();
+
+				ImGui::SameLine(
+					pauseMenuWindowSize.x / 2.f - buttonSize.x / 2
+				);
+				if (ImGui::Button("To Main Title", buttonSize)) {
+					// do something
+				}
+				ImGui::Spacing();
+
+				ImGui::SameLine(
+					pauseMenuWindowSize.x / 2.f - buttonSize.x / 2
+				);
+				if (ImGui::Button("Quit To Desktop", buttonSize)) {
+					// do something;
+				};
+			}
+		}
+		ImGui::End();
 	}
 };

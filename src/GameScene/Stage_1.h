@@ -93,7 +93,7 @@ public:
 
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
-		
+
 		//**********************************************
 		// bullet init
 		// initialize //
@@ -224,7 +224,6 @@ public:
 			PlayerScript* playerScript = new PlayerScript();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
-
 			//create a dynamic rigidbody
 			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
 			collisionShapes.push_back(colShape);
@@ -271,7 +270,6 @@ public:
 			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
-
 			//create a dynamic rigidbody
 			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
 			collisionShapes.push_back(colShape);
@@ -305,6 +303,5 @@ public:
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
-		
 	}
 };

@@ -114,6 +114,7 @@
     <ClInclude Include="src\Tool\MeshMaker.h" />
     <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
+    <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
