@@ -41,6 +41,7 @@ public:
 			showDialog();
 			break;
 		case Mode::GAME:
+			showGameState();
 			break;
 		case Mode::PAUSE:
 			break;
@@ -95,5 +96,14 @@ public:
 	}
 
 	void showGameState() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			| ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			| ImGuiWindowFlags_NoBackground;
+		//ImGui::Begin("HP")
 	}
 };
