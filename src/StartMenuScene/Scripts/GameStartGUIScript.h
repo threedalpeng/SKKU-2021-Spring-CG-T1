@@ -11,11 +11,14 @@ public:
 
 private:
 	Transform* transform = nullptr;
+	SoundPlayer* soundPlayer = nullptr;
 
 public:
 
 	void init() override {
 		transform = getComponent<Transform>();
+		soundPlayer = getComponent<SoundPlayer>();
+		soundPlayer->play();
 	}
 
 	void update() override {
@@ -68,6 +71,7 @@ public:
 
 				if (drawButton(text + "## 1")) {
 					std::cout << "Game Start!" << std::endl;
+					soundPlayer->stop();
 					GameManager::setStage(1);
 					GameManager::setChanged(true);
 				}
@@ -77,18 +81,14 @@ public:
 
 				ImGui::Spacing();
 
-				if (drawButton(text + "## 2")) {
-					std::cout << "Game Start!" << std::endl;
-					GameManager::setStage(1);
-					GameManager::setChanged(true);
+				if (drawButton("Play Sound(Test)")) {
+					soundPlayer->play();
 				}
 
 				ImGui::Spacing();
 
-				if (drawButton(text + "## 3")) {
-					std::cout << "Game Start!" << std::endl;
-					GameManager::setStage(1);
-					GameManager::setChanged(true);
+				if (drawButton("Pause Sound(Test)")) {
+					soundPlayer->pause();
 				}
 				ImGui::PopFont();
 			}

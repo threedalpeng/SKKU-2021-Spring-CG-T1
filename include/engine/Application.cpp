@@ -6,14 +6,12 @@
 #include "engine/Graphics/Camera.h"
 #include "engine/Graphics/Light.h"
 #include "engine/Graphics/MeshRenderer.h"
-//#include "engine/GUI/TextRenderer.h"
-//#include "engine/GUI/UIRenderer.h"
 #include "engine/Script/ScriptLoader.h"
+#include "engine/Sound/SoundPlayer.h"
 #include "engine/Transform/Transform.h"
 
 #include "bullet/src/btBulletCollisionCommon.h"
 #include "bullet/src/btBulletDynamicsCommon.h"
-
 
 void setImGuiStyle(float highDPIscaleFactor)
 {
@@ -133,6 +131,7 @@ void Application::run()
 
 void Application::init()
 {
+	/* OpenGL, GLFW, GLAD */
 	if (!(_window = Screen::createWindow(_title, _windowSize))) {
 		glfwTerminate();
 		exit(1);
@@ -158,6 +157,7 @@ void Application::init()
 		static_cast<Application*>(glfwGetWindowUserPointer(window))->motion(window, x, y);
 		});
 
+	/* ImGui */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 
@@ -166,10 +166,8 @@ void Application::init()
 	ImGui_ImplGlfw_InitForOpenGL(_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	// colors are set in RGBA, but as float
-	ImVec4 background = ImVec4(35 / 255.0f, 35 / 255.0f, 35 / 255.0f, 1.00f);
-
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
+
 	SceneManager::init();
 }
 
@@ -251,22 +249,6 @@ void Application::render()
 			renderer->render();
 		}
 	}
-
-	/*
-	if (auto componentList = _componentManager.getComponentList<UIRenderer>()) {
-		for (auto componentPair : *componentList) {
-			UIRenderer* renderer = componentPair.second.get();
-			renderer->render();
-		}
-	}
-
-	if (auto componentList = _componentManager.getComponentList<TextRenderer>()) {
-		for (auto componentPair : *componentList) {
-			TextRenderer* renderer = componentPair.second.get();
-			renderer->render();
-		}
-	}
-	*/
 }
 
 void Application::onGUIRender()

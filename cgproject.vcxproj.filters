@@ -36,6 +36,7 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\engine\Sound\SoundPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -115,6 +116,28 @@
     <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
+    <ClInclude Include="include\engine\Sound\SoundPlayer.h" />
+    <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
+    <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />
+    <ClInclude Include="include\irrKlang\ik_EStreamModes.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioRecorder.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioStream.h" />
+    <ClInclude Include="include\irrKlang\ik_IAudioStreamLoader.h" />
+    <ClInclude Include="include\irrKlang\ik_IFileFactory.h" />
+    <ClInclude Include="include\irrKlang\ik_IFileReader.h" />
+    <ClInclude Include="include\irrKlang\ik_IRefCounted.h" />
+    <ClInclude Include="include\irrKlang\ik_irrKlangTypes.h" />
+    <ClInclude Include="include\irrKlang\ik_ISound.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundDeviceList.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundEffectControl.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundEngine.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundMixedOutputReceiver.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundSource.h" />
+    <ClInclude Include="include\irrKlang\ik_ISoundStopEventReceiver.h" />
+    <ClInclude Include="include\irrKlang\ik_IVirtualRefCounted.h" />
+    <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
+    <ClInclude Include="include\irrKlang\ik_vec3d.h" />
+    <ClInclude Include="include\irrKlang\irrKlang.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
