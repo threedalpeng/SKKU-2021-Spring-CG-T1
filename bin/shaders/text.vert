@@ -3,10 +3,10 @@ layout (location=2) in vec2 texcoord;
 
 out vec2 tc;
 
-uniform mat4 text_matrix;
+uniform mat4 model_matrix;
 
 void main()
 {
-    gl_Position = text_matrix * vec4(position,1.0);
+    gl_Position = model_matrix * vec4(position,1.0);
     tc = texcoord;
 }  

@@ -156,9 +156,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\engine\Graphics\Font.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
-    <ClCompile Include="include\engine\Graphics\TextRenderer.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -183,17 +181,22 @@
     <ClCompile Include="include\engine\Graphics\Material.cpp" />
     <ClCompile Include="include\engine\Screen.cpp" />
     <ClCompile Include="include\engine\Scene\SceneManager.cpp" />
+    <ClCompile Include="include\imgui\imgui.cpp" />
+    <ClCompile Include="include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="include\engine\Graphics\Texture.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
-    <ClCompile Include="include\engine\Graphics\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
     <ClInclude Include="include\engine\Core.h" />
-    <ClInclude Include="include\engine\Graphics\Font.h" />
     <ClInclude Include="include\engine\Graphics\Light.h" />
-    <ClInclude Include="include\engine\Graphics\TextRenderer.h" />
     <ClInclude Include="include\engine\Math.h" />
     <ClInclude Include="include\engine\Script\ScriptLoader.h" />
     <ClInclude Include="include\engine\Component\ComponentGroupInterface.h" />
@@ -219,14 +222,51 @@
     <ClInclude Include="include\engine\Graphics\Material.h" />
     <ClInclude Include="include\engine\Screen.h" />
     <ClInclude Include="include\engine\Scene\SceneManager.h" />
-    <ClInclude Include="src\Manager\ResourceManager.h" />
+    <ClInclude Include="include\gl\glad\glad.h" />
+    <ClInclude Include="include\gl\glfw\glfw3.h" />
+    <ClInclude Include="include\gl\glfw\glfw3native.h" />
+    <ClInclude Include="include\imgui\imconfig.h" />
+    <ClInclude Include="include\imgui\imgui.h" />
+    <ClInclude Include="include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\imgui_internal.h" />
+    <ClInclude Include="include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="include\imgui\imstb_textedit.h" />
+    <ClInclude Include="include\imgui\imstb_truetype.h" />
+    <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
+    <ClInclude Include="src\irrKlang\ik_ESoundEngineOptions.h" />
+    <ClInclude Include="src\irrKlang\ik_ESoundOutputDrivers.h" />
+    <ClInclude Include="src\irrKlang\ik_EStreamModes.h" />
+    <ClInclude Include="src\irrKlang\ik_IAudioRecorder.h" />
+    <ClInclude Include="src\irrKlang\ik_IAudioStream.h" />
+    <ClInclude Include="src\irrKlang\ik_IAudioStreamLoader.h" />
+    <ClInclude Include="src\irrKlang\ik_IFileFactory.h" />
+    <ClInclude Include="src\irrKlang\ik_IFileReader.h" />
+    <ClInclude Include="src\irrKlang\ik_IRefCounted.h" />
+    <ClInclude Include="src\irrKlang\ik_irrKlangTypes.h" />
+    <ClInclude Include="src\irrKlang\ik_ISound.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundDeviceList.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundEffectControl.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundEngine.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundMixedOutputReceiver.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundSource.h" />
+    <ClInclude Include="src\irrKlang\ik_ISoundStopEventReceiver.h" />
+    <ClInclude Include="src\irrKlang\ik_IVirtualRefCounted.h" />
+    <ClInclude Include="src\irrKlang\ik_SAudioStreamFormat.h" />
+    <ClInclude Include="src\irrKlang\ik_vec3d.h" />
+    <ClInclude Include="src\irrKlang\irrKlang.h" />
+    <ClInclude Include="src\Manager\GameManager.h" />
+    <ClInclude Include="src\Manager\GUImanager.h" />
+    <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
+    <ClInclude Include="include\engine\Graphics\Texture.h" />
+    <ClInclude Include="src\Player\Character.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
-    <ClInclude Include="src\StartMenuScene\Scripts\GameStartButtonScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\GameStartGUIScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
-    <ClInclude Include="include\engine\Graphics\Texture.h" />
+    <ClInclude Include="src\Tool\MeshMaker.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin" />

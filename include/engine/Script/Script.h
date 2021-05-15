@@ -10,6 +10,7 @@ public:
 	virtual void init();
 	virtual void update();
 	virtual void fixedUpdate();
+	virtual void onGUIRender();
 protected:
 	template <typename T>
 	T* getComponent() {
