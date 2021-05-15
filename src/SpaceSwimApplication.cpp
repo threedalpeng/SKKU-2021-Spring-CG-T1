@@ -12,9 +12,10 @@
 irrklang::ISoundEngine* engine;
 irrklang::ISoundSource* mp3_src = nullptr;
 static const char* mp3_path = "../bin/sounds/space.mp3";
-//****************************************************************
-// temp val
-btRigidBody* body_meteor;
+
+//******************************************************************
+// bullet
+
 class SpaceSwimApplication : public Application {
 public:
 	SpaceSwimApplication(const char* title) : Application(title) {};
@@ -52,6 +53,8 @@ private:
 	
 	void update() {
 		if (GameManager::getChanged()) changeScene();
+
+		if(GameManager::dynamicsWorld)	GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
 
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {

@@ -48,7 +48,24 @@ public:
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
 		
+		//**********************************************
+		// bullet init
+		// initialize //
+		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
+		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
+		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
+		///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
+		btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
+		///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
+		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
+		GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
+		// dynamicsWorld->setGravity(btVector3(0, -10, 0));
+		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
+
+		btAlignedObjectArray<btCollisionShape*> collisionShapes;
+
+		//*********************************************
 		/* Link Objects */
 		addObject(mainCamera);
 		addObject(background);
@@ -84,68 +101,6 @@ public:
 		transform->scale = vec3(50, 100, 50);
 		BackgroundScript* backgroundScript = new BackgroundScript();
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
-
-		// light point
-		meshRenderer = lightPoint->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(sphereMesh);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = false;
-		meshRenderer->isColored = true;
-
-		transform = lightPoint->getComponent<Transform>();
-		transform->position = vec3(0.0f, 0.0f, 200.0f);
-
-		light = lightPoint->addComponent<Light>();
-		light->setType(Light::Type::Point);
-		light->loadShader(basicShader);
-
-		obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
-		lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-		// player
-		meshRenderer = player->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(sphereMesh);
-		meshRenderer->loadTexture(meteorTexture);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = true;
-
-		transform = player->getComponent<Transform>();
-		transform->position = vec3(-3.0f, 0.0f, 0.0f);
-		transform->scale = vec3(0.6f, 0.6f, 0.6f);
-		PlayerScript* playerScript = new PlayerScript();
-		player->addComponent<ScriptLoader>()->addScript(playerScript);
-
-		// meteor
-		meshRenderer = meteor->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(sphereMesh);
-		meshRenderer->loadTexture(meteorTexture);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = true;
-
-		transform = meteor->getComponent<Transform>();
-		transform->position = vec3(0.0f, 0.0f, 0.0f);
-		transform->scale = vec3(0.6f, 0.6f, 0.6f);
-		obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
-		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-		// initialize //
-		btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-		btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
-		btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
-		///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
-		btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-		btDiscreteDynamicsWorld* dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-
-		// dynamicsWorld->setGravity(btVector3(0, -10, 0));
-		dynamicsWorld->setGravity(btVector3(0, 0, 0));
-
-		btAlignedObjectArray<btCollisionShape*> collisionShapes;
-
 		// background //
 		{
 		btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
@@ -171,71 +126,117 @@ public:
 		btRigidBody* body = new btRigidBody(rbInfo);
 
 		//add the body to the dynamics world
-		dynamicsWorld->addRigidBody(body);
-	}
+		GameManager::dynamicsWorld->addRigidBody(body);
+		}
 
-	// player //
-	{
-		//create a dynamic rigidbody
+		// light point
+		meshRenderer = lightPoint->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(sphereMesh);
+		meshRenderer->loadShader(basicShader);
+		meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = true;
 
-		//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-		btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
-		collisionShapes.push_back(colShape);
+		transform = lightPoint->getComponent<Transform>();
+		transform->position = vec3(0.0f, 0.0f, 200.0f);
 
-		/// Create Dynamic Objects
-		btTransform startTransform;
-		startTransform.setIdentity();
+		light = lightPoint->addComponent<Light>();
+		light->setType(Light::Type::Point);
+		light->loadShader(basicShader);
 
-		btScalar mass(1.f);
+		obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
+		lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
+		// player //
+		{
+			meshRenderer = player->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(basicShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = true;
 
-		btVector3 localInertia(0, 0, 0);
-		if (isDynamic)
-			colShape->calculateLocalInertia(mass, localInertia);
-
-		startTransform.setOrigin(btVector3(-3.0f, 0.0f, 0.0f));
-
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		btRigidBody* body = new btRigidBody(rbInfo);
-
-		dynamicsWorld->addRigidBody(body);
-	}
-
-	// meteor
-	{
-		//create a dynamic rigidbody
-
-		//btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-		btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
-		collisionShapes.push_back(colShape);
-
-		/// Create Dynamic Objects
-		btTransform startTransform;
-		startTransform.setIdentity();
-
-		btScalar mass(1.f);
-
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
-
-		btVector3 localInertia(0, 0, 0);
-		if (isDynamic)
-			colShape->calculateLocalInertia(mass, localInertia);
-
-		startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
-
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		btRigidBody* body = new btRigidBody(rbInfo);
-		dynamicsWorld->addRigidBody(body);
-		
-	}
+			transform = player->getComponent<Transform>();
+			transform->position = vec3(-3.0f, 0.0f, 0.0f);
+			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			PlayerScript* playerScript = new PlayerScript();
+			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 
+			//create a dynamic rigidbody
+			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
+			collisionShapes.push_back(colShape);
+
+			/// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
+
+			btScalar mass(1.f);
+
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (mass != 0.f);
+
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(mass, localInertia);
+
+			startTransform.setOrigin(btVector3(-3.0f, 0.0f, 0.0f));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			btRigidBody* body = new btRigidBody(rbInfo);
+
+			GameManager::dynamicsWorld->addRigidBody(body);
+
+			transform->body = body;
+			body->setLinearVelocity(btVector3(0, 0, 0));
+		}
+
+		// meteor //
+		{
+			meshRenderer = meteor->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(basicShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = true;
+
+			transform = meteor->getComponent<Transform>();
+			transform->position = vec3(0.0f, 0.0f, 0.0f);
+			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
+
+
+			//create a dynamic rigidbody
+			btCollisionShape* colShape = new btSphereShape(btScalar(1.6f));
+			collisionShapes.push_back(colShape);
+
+			/// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
+
+			btScalar mass(1.f);
+
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (mass != 0.f);
+
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(mass, localInertia);
+
+			startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			btRigidBody* body = new btRigidBody(rbInfo);
+			
+			GameManager::dynamicsWorld->addRigidBody(body);
+
+			transform->body = body;
+			body->setLinearVelocity(btVector3(-10.f, 0, 0));			
+		}		
 	}
 };
