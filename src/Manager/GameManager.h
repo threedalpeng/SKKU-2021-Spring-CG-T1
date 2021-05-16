@@ -1,13 +1,7 @@
 #pragma once
 #include "engine/Core.h"
-#include "bullet/src/btBulletCollisionCommon.h"
-#include "bullet/src/btBulletDynamicsCommon.h"
-
-//*******************************************************************
-// bullet3
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
-
+#include "bullet/btBulletCollisionCommon.h"
+#include "bullet/btBulletDynamicsCommon.h"
 
 /*
 GameManager is global class
@@ -34,7 +28,7 @@ public:
 
 	static btDiscreteDynamicsWorld* dynamicsWorld;
 
-    static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
+	static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
 
 private:
 	static int _stage;

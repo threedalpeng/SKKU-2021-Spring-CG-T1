@@ -1,8 +1,8 @@
 #pragma once
 #include "engine/Component/Component.h"
 #include "engine/Math.h"
-#include "bullet/src/btBulletCollisionCommon.h"
-#include "bullet/src/btBulletDynamicsCommon.h"
+#include "bullet/btBulletCollisionCommon.h"
+#include "bullet/btBulletDynamicsCommon.h"
 
 class Transform : public Component
 {
@@ -17,7 +17,6 @@ public:
 	vec3 worldScale = vec3(1.f, 1.f, 1.f);
 	vec3 _normal = vec3();
 	btRigidBody* body = nullptr;
-
 
 	void translate(const vec3& v);
 	void translate(float x, float y, float z);

@@ -2,34 +2,33 @@
 
 //*******************************************************************
 // bullet3
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
+#include "bullet/btBulletCollisionCommon.h"
+#include "bullet/btBulletDynamicsCommon.h"
 
 enum objectTypes
 {
-    BACKGROUND = 0,
-    PLAYER,
-    METEOR,
-    ITEM,
+	BACKGROUND = 0,
+	PLAYER,
+	METEOR,
+	ITEM,
 };
 
 class CustomRigidBody : public btRigidBody
 {
-// protected:
+	// protected:
 public:
-    objectTypes objectType;
-    GameObject* gameObject;
+	objectTypes objectType;
+	GameObject* gameObject;
 
-    CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo) : btRigidBody(rbInfo) {}
-    CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo, objectTypes objectType) : btRigidBody(rbInfo), objectType(objectType){}
-    ~CustomRigidBody();
+	CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo) : btRigidBody(rbInfo) {}
+	CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo, objectTypes objectType) : btRigidBody(rbInfo), objectType(objectType) {}
+	~CustomRigidBody();
 
-    void setObjectType();
-    void getObjectType();
+	void setObjectType();
+	void getObjectType();
 
-    void setGameObject();
-    void getGameObject();
-
+	void setGameObject();
+	void getGameObject();
 };
 
 CustomRigidBody::~CustomRigidBody()

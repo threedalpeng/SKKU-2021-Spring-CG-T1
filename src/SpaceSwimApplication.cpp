@@ -7,6 +7,8 @@
 
 //******************************************************************
 // bullet
+#include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
 
 class SpaceSwimApplication : public Application {
 public:

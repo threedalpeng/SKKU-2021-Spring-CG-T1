@@ -10,8 +10,8 @@
 #include "engine/Sound/SoundPlayer.h"
 #include "engine/Transform/Transform.h"
 
-#include "bullet/src/btBulletCollisionCommon.h"
-#include "bullet/src/btBulletDynamicsCommon.h"
+#include "bullet/btBulletCollisionCommon.h"
+#include "bullet/btBulletDynamicsCommon.h"
 
 void setImGuiStyle(float highDPIscaleFactor)
 {

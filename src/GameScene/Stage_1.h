@@ -16,13 +16,13 @@
 
 //*******************************************************************
 // bullet3
-#include "btBulletCollisionCommon.h"
-#include "btBulletDynamicsCommon.h"
+#include "bullet/btBulletCollisionCommon.h"
+#include "bullet/btBulletDynamicsCommon.h"
 
-#include "BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h"
-#include "BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h"
-#include "BulletDynamics/Featherstone/btMultiBodyPoint2Point.h"
-#include "BulletDynamics/Featherstone/btMultiBodyLinkCollider.h"
+#include "bullet/BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h"
+#include "bullet/BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h"
+#include "bullet/BulletDynamics/Featherstone/btMultiBodyPoint2Point.h"
+#include "bullet/BulletDynamics/Featherstone/btMultiBodyLinkCollider.h"
 
 enum MyFilterModes
 {
@@ -92,6 +92,8 @@ public:
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
 
+		GameObject* gui = GameObject::create("GUI");
+
 		//**********************************************
 		// bullet init
 		// initialize //
@@ -119,8 +121,6 @@ public:
 
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
 
-		GameObject* gui = GameObject::create("GUI");
-
 		//*********************************************
 		/* Link Objects */
 		addObject(mainCamera);
@@ -135,7 +135,6 @@ public:
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
 		Camera* camera;
-		//TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
 		Material* material = new Material();
