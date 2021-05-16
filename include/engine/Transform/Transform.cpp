@@ -81,6 +81,7 @@ void Transform::setWorlPositionBT(btVector3 new_position)
 {	
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	trans.setOrigin(new_position);
+	body->setWorldTransform(trans);
 }
 
 btVector3 Transform::getVelocityBT()

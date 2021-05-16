@@ -28,7 +28,7 @@ public:
         else if(Input::getKey(GLFW_KEY_LEFT))  addVelocity.setX(-8.0f * Time::delta());
         else if(Input::getKey(GLFW_KEY_RIGHT))  addVelocity.setX(+8.0f * Time::delta());
         
-        if(Input::getKeyDown(GLFW_KEY_HOME)) 
+        if(Input::getKeyDown(GLFW_KEY_R)) 
         {
             // _velocity = vec3(0);
             // transform->position = vec3(-3.0f, 0.0f, 0.0f);
@@ -37,5 +37,9 @@ public:
         }
 
         transform->addVelocityBT(addVelocity);
+	}
+
+    void collide() {
+		
 	}
 };

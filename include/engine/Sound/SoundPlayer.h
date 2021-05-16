@@ -12,9 +12,10 @@ class SoundPlayer : public Component {
 public:
 	enum class Type {
 		Background,
-		Point
+		Point,
+		Event2D
 	};
-
+	
 	SoundPlayer(std::shared_ptr<GameObject> obj);
 	~SoundPlayer();
 

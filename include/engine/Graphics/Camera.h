@@ -25,6 +25,7 @@ public:
 	}
 
 	void render() {
+		
 		for (auto shader : _shaders) {
 			glUseProgram(shader->getProgram());
 			glUniformMatrix4fv(shader->getUniformLocation("view_matrix"), 1, GL_TRUE, view_matrix);

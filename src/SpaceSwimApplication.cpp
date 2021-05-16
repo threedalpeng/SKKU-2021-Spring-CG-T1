@@ -5,6 +5,7 @@
 #include "Manager/ResourceManager.h"
 #include "GameScene/Stage_1.h"
 
+#include "GameScene/Script/ObstacleScript.h"
 //******************************************************************
 // bullet
 
@@ -47,6 +48,11 @@ private:
 				CustomRigidBody* obAA = (CustomRigidBody*)btRigidBody::upcast(obA);
 				CustomRigidBody* obBB = (CustomRigidBody*)btRigidBody::upcast(obB);
 				// std::cout << obAA->objectType << " " << obBB->objectType << std::endl;
+				if(obBB->objectType == objectTypes::PLAYER || obBB->objectType == objectTypes::METEOR)
+				{
+					ObstacleScript* tmp = (ObstacleScript*)(obAA->gameObject->getComponent<ScriptLoader>()->getScripts().at(0));
+					tmp->collide();
+				}
 			}
 		}
 

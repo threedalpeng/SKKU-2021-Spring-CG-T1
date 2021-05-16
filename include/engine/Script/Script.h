@@ -1,6 +1,7 @@
 #pragma once
 #include "engine/Component/Component.h"
 #include "engine/Object/GameObject.h"
+
 class ScriptLoader;
 
 class Script

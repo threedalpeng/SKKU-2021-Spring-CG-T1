@@ -140,6 +140,7 @@ public:
 		Light* light;
 		Material* material = new Material();
 		ObstacleScript* obstacleScript;
+		SoundPlayer* soundPlayer;
 
 		// main camera
 		camera = mainCamera->addComponent<Camera>();
@@ -296,7 +297,16 @@ public:
 			transform->body = body;
 			body->setLinearVelocity(btVector3(-3.f, 0, 0));
 			body->gameObject = meteor;
+
+			// soundPlayer = meteor->addComponent<SoundPlayer>();
+			
+			// obstacleScript->soundPlayer = meteor->addComponent<SoundPlayer>();
+			// obstacleScript->soundPlayer->loadSoundFrom("sounds/explode.mp3");
+			// obstacleScript->soundPlayer->setType(SoundPlayer::Type::Event2D);
+			// std::cout << soundPlayer->getComponent<SoundPlayer>() << std::endl;
 		}
+
+		// std::cout << soundPlayer->getComponent<SoundPlayer>() << std::endl;
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
