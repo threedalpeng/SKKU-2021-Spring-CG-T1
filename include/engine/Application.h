@@ -28,7 +28,7 @@ protected:
 	ivec2 _windowSize = cg_default_window_size();
 
 	uint _frame_count = 0;
-	float _frame_rate = 100;
+	float _frame_rate = 60;
 
 	// Managers
 	ComponentManager _componentManager;

@@ -104,7 +104,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib\gl\glfw\;lib\irrKlang;lib\bullet;%(AdditionalLibraryDirectories);include\bullet\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bullet2FileLoader_Debug.lib;Bullet3Collision_Debug.lib;Bullet3Common_Debug.lib;Bullet3Dynamics_Debug.lib;Bullet3Geometry_Debug.lib;Bullet3OpenCL_clew_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;BulletExampleBrowserLib_Debug.lib;BulletFileLoader_Debug.lib;BulletInverseDynamicsUtils_Debug.lib;BulletInverseDynamics_Debug.lib;BulletRobotics_Debug.lib;BulletSoftBody_Debug.lib;BulletWorldImporter_Debug.lib;BulletXmlWorldImporter_Debug.lib;BussIK_Debug.lib;clsocket_Debug.lib;ConvexDecomposition_Debug.lib;GIMPACTUtils_Debug.lib;gtest_Debug.lib;gwen_Debug.lib;HACD_Debug.lib;LinearMath_Debug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\engine\Physics\Collider.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
@@ -192,10 +193,13 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
+    <ClCompile Include="include\engine\Physics\RigidBody.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
+    <ClCompile Include="include\engine\Physics\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\Physics\Collider.h" />
     <ClInclude Include="include\engine\Sound\SoundPlayer.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />
@@ -218,6 +222,7 @@
     <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
     <ClInclude Include="include\irrKlang\ik_vec3d.h" />
     <ClInclude Include="include\irrKlang\irrKlang.h" />
+    <ClInclude Include="include\engine\Physics\RigidBody.h" />
     <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />
@@ -274,6 +279,7 @@
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartGUIScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="src\Tool\MeshMaker.h" />
+    <ClInclude Include="include\engine\Physics\World.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\mesh\dragon.index.bin" />

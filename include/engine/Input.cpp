@@ -97,6 +97,7 @@ bool Input::getMouseButtonUp(int buttonCode) {
 }
 
 void Input::processKeyEvent(int key, int scancode, int action, int mods) {
+	if (key >= KEY_COUNT) return;
 	if (action == GLFW_PRESS) {
 		currentKeys[key] = true;
 	}

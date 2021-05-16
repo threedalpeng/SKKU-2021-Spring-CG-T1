@@ -1,8 +1,8 @@
 #pragma once
 #include "engine/Component/Component.h"
 #include "engine/Math.h"
-#include "bullet/btBulletCollisionCommon.h"
-#include "bullet/btBulletDynamicsCommon.h"
+#include "btBulletCollisionCommon.h"
+#include "btBulletDynamicsCommon.h"
 
 class Transform : public Component
 {
@@ -20,8 +20,8 @@ public:
 
 	void translate(const vec3& v);
 	void translate(float x, float y, float z);
-	void rotate(vec3 axis, float angle);
-	void rotateAround(vec3 worldPoint, vec3 axis, float angle);
+	void rotate(const vec3& axis, float angle);
+	void rotateAround(const vec3& worldPoint, const vec3& axis, float angle);
 
 	void update();
 	mat4 getModelMatrix();
@@ -29,7 +29,22 @@ public:
 
 	vec3 localToWorldPoint(vec3 v);
 	vec3 worldToLocalPoint(vec3 v);
+
+	Quaternion worldToLocalRotation(Quaternion q) {
+		GameObject* parent = getCurrentObject()->getParent();
+		if (parent) {
+			Quaternion parentRotation = parent->getComponent<Transform>()->worldRotation;
+			return rotation * parentRotation.inverse();
+		}
+		else {
+			return rotation;
+		}
+	}
 	// void lookAt(Transform* target, vec3 up = vec3(0, 1, 0));
+
+	btTransform toBtTransform();
+	void setByBtTransform(const btTransform& btTrans);
+
 	void calWolrPositionBT();
 	void setWorlPositionBT(btVector3 new_position);
 	btVector3 getVelocityBT();
@@ -38,6 +53,6 @@ public:
 
 private:
 	void calculateModelMatrix();
-	void calculateModelMatrix(mat4 parentMatrix);
+	void calculateModelMatrix(const mat4& parentMatrix);
 	mat4 _modelMatrix = mat4();
 };

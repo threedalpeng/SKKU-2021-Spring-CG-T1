@@ -37,6 +37,9 @@
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\engine\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="include\engine\Physics\Collider.cpp" />
+    <ClCompile Include="include\engine\Physics\RigidBody.cpp" />
+    <ClCompile Include="include\engine\Physics\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -117,6 +120,9 @@
     <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
     <ClInclude Include="include\irrKlang\ik_vec3d.h" />
     <ClInclude Include="include\irrKlang\irrKlang.h" />
+    <ClInclude Include="include\engine\Physics\Collider.h" />
+    <ClInclude Include="include\engine\Physics\RigidBody.h" />
+    <ClInclude Include="include\engine\Physics\World.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

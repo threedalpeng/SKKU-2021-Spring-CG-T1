@@ -13,6 +13,10 @@ float Time::delta() {
 	return _delta;
 }
 
+float Time::fixedDelta() {
+	return _fixedTime;
+}
+
 float Time::currentTime() {
 	return static_cast<float>(glfwGetTime());
 }

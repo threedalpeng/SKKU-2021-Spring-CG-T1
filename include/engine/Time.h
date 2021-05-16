@@ -6,6 +6,7 @@ class Time
 public:
 	static void init();
 	static float delta();
+	static float fixedDelta();
 	static float currentTime();
 	static bool needsFixedUpdate();
 	static void updateDelta();

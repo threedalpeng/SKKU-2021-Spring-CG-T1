@@ -75,6 +75,9 @@ public:
 	inline Quaternion normalize() const {
 		return Quaternion(x, y, z, w) / length();
 	}
+	inline Quaternion inverse() const {
+		return Quaternion(-x, -y, -z, w).normalize();
+	}
 
 	std::pair<vec3, float> toAxisAngle() {
 		vec3 axis;
