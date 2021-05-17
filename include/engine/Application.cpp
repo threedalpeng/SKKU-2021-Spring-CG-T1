@@ -17,7 +17,6 @@ void setImGuiStyle(float highDPIscaleFactor)
 {
 	ImGuiStyle& style = ImGui::GetStyle();
 
-	// https://github.com/ocornut/imgui/issues/707#issuecomment-415097227
 	style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
 	style.Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.06f, 0.06f, 0.94f);
@@ -80,6 +79,36 @@ void setImGuiStyle(float highDPIscaleFactor)
 	//style.ScaleAllSizes(highDPIscaleFactor);
 }
 
+void loadingGui() {
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
+
+	ImGuiWindowFlags windowFlags = 0;
+	windowFlags = windowFlags
+		| ImGuiWindowFlags_NoTitleBar
+		| ImGuiWindowFlags_NoScrollbar
+		| ImGuiWindowFlags_NoScrollWithMouse
+		| ImGuiWindowFlags_NoResize
+		| ImGuiWindowFlags_NoCollapse
+		//| ImGuiWindowFlags_NoBackground
+		;
+
+	ImVec2 windowSize = ImVec2(float(Screen::width()), float(Screen::height()));
+	ImGui::SetNextWindowPos(ImVec2(0.f, 0.f), ImGuiCond_Always);
+	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
+	ImGui::SetNextWindowBgAlpha(1.f);
+	ImGui::Begin("Hi", NULL, windowFlags);
+	{
+		ImGui::Text("Hi");
+	}
+	ImGui::End();
+	ImGui::SetNextWindowBgAlpha(0.6f);
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
 void iterateTransform(GameObject* obj) {
 	Transform* transform = obj->getComponent<Transform>();
 	transform->update();
@@ -100,6 +129,7 @@ void Application::run()
 
 	for (_frame_count = 0; !glfwWindowShouldClose(_window); _frame_count++) {
 		if (SceneManager::sceneLoaded) {
+			loadingGui();
 			SceneManager::startScene();
 			onSceneLoaded();
 			Time::init();

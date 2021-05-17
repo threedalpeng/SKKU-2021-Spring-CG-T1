@@ -5,6 +5,40 @@
 #include <iostream>
 #define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
 
+bool LoadTextureFromFile(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+{
+	// Load from file
+	int image_width = 0;
+	int image_height = 0;
+	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+	if (image_data == NULL)
+		return false;
+
+	// Create a OpenGL texture identifier
+	GLuint image_texture;
+	glGenTextures(1, &image_texture);
+	glBindTexture(GL_TEXTURE_2D, image_texture);
+
+	// Setup filtering parameters for display
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // This is required on WebGL for non power-of-two textures
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Same
+
+	// Upload pixels into texture
+#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+#endif
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+	stbi_image_free(image_data);
+
+	*out_texture = image_texture;
+	*out_width = image_width;
+	*out_height = image_height;
+
+	return true;
+}
+
 class Stage1GUIScript : public Script
 {
 public:
@@ -28,16 +62,31 @@ private:
 		{"How To", "P - Pause Menu\nESC - Quit to Desktop"},
 	};
 
-	std::string helpText =
-		"Move - Arrows or WASD\n"
-		"ESC - Quit to Desktop\n"
-		"P - Pause Menu\n"
-		"F1 - Help\n"
-		"Click or Press Enter to Leave.\n";
+	std::vector<std::string> helpTexts = {
+		"Arrows ", " - Move",
+		"ESC ", " - Quit to Desktop\n",
+		"P ", " - Pause Menu\n",
+		"F1 ", " - Help\n",
+		"Click or Press Enter ", " to Leave.\n"
+	};
+	std::vector<std::string> imagePaths = {
+		"images/arrow.jpg",
+		"images/ESC.jpg",
+		"images/P.jpg",
+		"images/F1.jpg",
+	};
+	std::vector<GLuint> images = {};
 
 public:
 
 	void init() override {
+		for (int i = 0; i < imagePaths.size(); i++) {
+			int imageWidth = 0;
+			int imageHeight = 0;
+			GLuint texture = 0;
+			LoadTextureFromFile(imagePaths[i].c_str(), &texture, &imageWidth, &imageHeight);
+			images.push_back(texture);
+		}
 	}
 
 	void update() override {
@@ -175,15 +224,23 @@ private:
 		{
 			ImVec2 windowSize = ImGui::GetWindowSize();
 
+			ImGui::PushFont(ResourceManager::getFont("consola 20"));
 			ImGui::BeginChild("Help", windowSize);
 			{
-				ImGui::Dummy(ImVec2(0.f, 10.f));
-				ImGui::Text(helpText.c_str());
+				for (size_t i = 0; i < images.size(); i++) {
+					ImGui::Dummy(ImVec2(0.f, 10.f));
+					ImGui::Text(helpTexts[2 * i].c_str());
+					ImGui::SameLine();
+					ImGui::Image((void*)(intptr_t)images[i], ImVec2(30.f, 30.f));
+					ImGui::SameLine();
+					ImGui::Text(helpTexts[2 * i + 1].c_str());
+				}
 			}
 			ImGui::EndChild();
 			if (ImGui::IsItemClicked()) {
 				currentMode = Mode::GAME;
 			}
+			ImGui::PopFont();
 		}
 		ImGui::End();
 	}
