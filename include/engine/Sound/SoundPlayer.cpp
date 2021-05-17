@@ -30,18 +30,17 @@ void SoundPlayer::play() {
 		_sound = _engine->play2D(_soundSource, true, false, true);
 		break;
 	case Type::Point:
-		{
-			Transform* transform = getComponent<Transform>();
-			irrklang::vec3df soundPosition = reinterpret_cast<irrklang::vec3df&>(transform->worldPosition);
-			_sound = _engine->play3D(_soundSource, soundPosition, true, false, true);
-			break;	
-		}
+	{
+		Transform* transform = getComponent<Transform>();
+		irrklang::vec3df soundPosition = reinterpret_cast<irrklang::vec3df&>(transform->worldPosition);
+		_sound = _engine->play3D(_soundSource, soundPosition, true, false, true);
+		break;
+	}
 	case Type::Event2D:
-		{
-			_sound = _engine->play2D(_soundSource, false, false, true);
-			break;	
-		}
-		
+	{
+		_sound = _engine->play2D(_soundSource, false, false, true);
+		break;
+	}
 	}
 }
 

@@ -92,6 +92,8 @@ public:
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
 
+		GameObject* gui = GameObject::create("GUI");
+
 		//**********************************************
 		// bullet init
 		// initialize //
@@ -118,8 +120,6 @@ public:
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
-
-		GameObject* gui = GameObject::create("GUI");
 
 		//*********************************************
 		/* Link Objects */
@@ -266,6 +266,7 @@ public:
 			transform->position = vec3(0.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+			obstacleScript->hasSound = true;
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
 			//create a dynamic rigidbody
@@ -298,15 +299,10 @@ public:
 			body->setLinearVelocity(btVector3(-3.f, 0, 0));
 			body->gameObject = meteor;
 
-			// soundPlayer = meteor->addComponent<SoundPlayer>();
-			
-			// obstacleScript->soundPlayer = meteor->addComponent<SoundPlayer>();
-			// obstacleScript->soundPlayer->loadSoundFrom("sounds/explode.mp3");
-			// obstacleScript->soundPlayer->setType(SoundPlayer::Type::Event2D);
-			// std::cout << soundPlayer->getComponent<SoundPlayer>() << std::endl;
+			soundPlayer = meteor->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/explode.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
-
-		// std::cout << soundPlayer->getComponent<SoundPlayer>() << std::endl;
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());

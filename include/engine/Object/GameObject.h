@@ -16,6 +16,7 @@ public:
 
 	static GameObject* create(std::string name);
 	static GameObject* find(std::string name);
+	static void clear();
 
 	template <typename T>
 	T* getComponent();

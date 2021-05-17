@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "engine/Sound/SoundPlayer.h"
 
 void SceneManager::init() {
 	_componentManager = ServiceLocator::getService<ComponentManager>();
@@ -16,6 +17,7 @@ void SceneManager::loadScene(Scene* scene) {
 void SceneManager::startScene() {
 	if (_currentScene) {
 		_componentManager->clear();
+		GameObject::clear();
 		delete _currentScene;
 		_currentScene = nullptr;
 	}

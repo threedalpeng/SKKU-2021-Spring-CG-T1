@@ -48,9 +48,14 @@ private:
 				CustomRigidBody* obAA = (CustomRigidBody*)btRigidBody::upcast(obA);
 				CustomRigidBody* obBB = (CustomRigidBody*)btRigidBody::upcast(obB);
 				// std::cout << obAA->objectType << " " << obBB->objectType << std::endl;
-				if(obBB->objectType == objectTypes::PLAYER || obBB->objectType == objectTypes::METEOR)
+				if (obBB->objectType == objectTypes::PLAYER && obAA->objectType == objectTypes::METEOR)
 				{
 					ObstacleScript* tmp = (ObstacleScript*)(obAA->gameObject->getComponent<ScriptLoader>()->getScripts().at(0));
+					tmp->collide();
+				}
+				else if (obAA->objectType == objectTypes::PLAYER && obBB->objectType == objectTypes::METEOR)
+				{
+					ObstacleScript* tmp = (ObstacleScript*)(obBB->gameObject->getComponent<ScriptLoader>()->getScripts().at(0));
 					tmp->collide();
 				}
 			}

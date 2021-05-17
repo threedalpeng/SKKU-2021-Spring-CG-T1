@@ -12,6 +12,7 @@ public:
 
 	enum class Mode {
 		DIALOG,
+		HELP,
 		GAME,
 		PAUSE
 	};
@@ -26,6 +27,13 @@ private:
 	std::vector<std::pair<std::string, std::string>> dialogs = {
 		{"How To", "P - Pause Menu\nESC - Quit to Desktop"},
 	};
+
+	std::string helpText =
+		"Move - Arrows or WASD\n"
+		"ESC - Quit to Desktop\n"
+		"P - Pause Menu\n"
+		"F1 - Help\n"
+		"Click or Press Enter to Leave.\n";
 
 public:
 
@@ -54,6 +62,21 @@ public:
 				std::cout << "Pause.." << std::endl;
 				currentMode = Mode::PAUSE;
 			}
+			if (Input::getKeyDown(GLFW_KEY_F1)) {
+				std::cout << "Help" << std::endl;
+				currentMode = Mode::HELP;
+			}
+		}
+
+		if (Input::getKeyDown(GLFW_KEY_ENTER)) {
+			switch (currentMode) {
+			case Mode::DIALOG:
+				dialogIndex++;
+				break;
+			case Mode::HELP:
+				currentMode = Mode::GAME;
+				break;
+			}
 		}
 	}
 
@@ -61,6 +84,9 @@ public:
 		switch (currentMode) {
 		case Mode::DIALOG:
 			showDialog();
+			break;
+		case Mode::HELP:
+			showHelp();
 			break;
 		case Mode::GAME:
 			showGameState();
@@ -116,8 +142,50 @@ private:
 			ImGui::End();
 		}
 		else {
-			currentMode = Mode::GAME;
+			currentMode = Mode::HELP;
 		}
+	}
+
+	void showHelp() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			// | ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		float minPauseMenuWindowWidth = 480.f;
+		float minPauseMenuWindowHeight = 360.f;
+		float scaledHeight = Screen::height() * 0.75f;
+		float scaledWidth = float(Screen::height());
+		ImVec2 pauseMenuWindowSize = ImVec2(
+			std::max(minPauseMenuWindowWidth, scaledWidth),
+			std::max(minPauseMenuWindowHeight, scaledHeight));
+
+		ImGui::SetNextWindowPos(ImVec2(
+			float(Screen::width()) / 2.f - pauseMenuWindowSize.x / 2.f,
+			float(Screen::height()) / 2.f - pauseMenuWindowSize.y / 2.f),
+			ImGuiCond_Always);
+		ImGui::SetNextWindowSize(pauseMenuWindowSize, ImGuiCond_Always);
+
+		ImGui::Begin("Help", NULL, windowFlags);
+		{
+			ImVec2 windowSize = ImGui::GetWindowSize();
+
+			ImGui::BeginChild("Help", windowSize);
+			{
+				ImGui::Dummy(ImVec2(0.f, 10.f));
+				ImGui::Text(helpText.c_str());
+			}
+			ImGui::EndChild();
+			if (ImGui::IsItemClicked()) {
+				currentMode = Mode::GAME;
+			}
+		}
+		ImGui::End();
 	}
 
 	void showGameState() {
@@ -178,7 +246,7 @@ private:
 			ImGuiCond_Always);
 		ImGui::SetNextWindowSize(pauseMenuWindowSize, ImGuiCond_Always);
 
-		ImGui::Begin("HP", NULL, windowFlags);
+		ImGui::Begin("Menu", NULL, windowFlags);
 		{
 			ImGui::BeginGroup();
 			{
@@ -219,6 +287,7 @@ private:
 					// do something;
 				};
 			}
+			ImGui::EndGroup();
 		}
 		ImGui::End();
 	}

@@ -73,3 +73,8 @@ GameObject* GameObject::find(std::string name) {
 	}
 	return it->second.get();
 }
+
+void GameObject::clear()
+{
+	_gameObjectList.clear();
+}

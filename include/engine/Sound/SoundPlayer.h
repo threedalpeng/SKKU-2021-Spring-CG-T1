@@ -15,7 +15,7 @@ public:
 		Point,
 		Event2D
 	};
-	
+
 	SoundPlayer(std::shared_ptr<GameObject> obj);
 	~SoundPlayer();
 

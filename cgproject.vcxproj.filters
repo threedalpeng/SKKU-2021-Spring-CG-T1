@@ -131,10 +131,19 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="bin\mesh\dragon.license.txt" />
+    <Text Include="bin\sounds\strange-alarm-license.txt" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="lib\irrKlang\irrKlang.lib" />
     <Library Include="lib\gl\glfw\glfw3.x64.lib" />
     <Library Include="lib\gl\glfw\glfw3.x86.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="bin\sounds\explode.mp3" />
+    <Media Include="bin\sounds\hello.mp3" />
+    <Media Include="bin\sounds\hello.wav" />
+    <Media Include="bin\sounds\space.mp3" />
+    <Media Include="bin\sounds\strange-alarm.mp3" />
+    <Media Include="bin\sounds\strange-alarm.wav" />
   </ItemGroup>
 </Project>

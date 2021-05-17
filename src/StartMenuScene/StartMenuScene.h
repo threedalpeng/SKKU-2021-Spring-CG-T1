@@ -58,6 +58,9 @@ public:
 		transform->scale = vec3(50, 100, 50);
 		BackgroundScript* backgroundScript = new BackgroundScript();
 		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
+		soundPlayer = background->addComponent<SoundPlayer>();
+		soundPlayer->loadSoundFrom("sounds/hello.mp3");
+		soundPlayer->setType(SoundPlayer::Type::Background);
 
 		// main camera
 		camera = mainCamera->addComponent<Camera>();

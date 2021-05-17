@@ -13,6 +13,7 @@ public:
 
 	void init() override {
 		transform = getComponent<Transform>();
+		//getComponent<SoundPlayer>()->play();
 	}
 
 	void update() override {
