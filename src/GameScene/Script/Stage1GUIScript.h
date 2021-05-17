@@ -74,6 +74,7 @@ private:
 		"images/ESC.jpg",
 		"images/P.jpg",
 		"images/F1.jpg",
+		"images/Enter.jpg",
 	};
 	std::vector<GLuint> images = {};
 
