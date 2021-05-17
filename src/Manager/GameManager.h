@@ -40,12 +40,16 @@ private:
 	static int _stage;
 	static int _score;
 	static bool _isChanged;
+	static int _maxParticle;
+	static int _nowParticle;
 };
 
 int GameManager::_stage = 0;
 int GameManager::_score = 0;
 bool GameManager::_isChanged = false;
 btDiscreteDynamicsWorld* GameManager::dynamicsWorld = nullptr;
+int GameManager::_maxParticle = 400;
+int GameManager::_nowParticle = 0;
 
 bool GameManager::setStage(int state)
 {
