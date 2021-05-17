@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include "engine/Physics/World.h"
 
 void SceneManager::init() {
 	_componentManager = ServiceLocator::getService<ComponentManager>();
@@ -15,12 +16,18 @@ void SceneManager::loadScene(Scene* scene) {
 }
 void SceneManager::startScene() {
 	if (_currentScene) {
-		_componentManager->clear();
-		delete _currentScene;
-		_currentScene = nullptr;
+		clearScene();
 	}
 	_currentScene = _sceneToBeLoaded;
 	_currentScene->init();
+}
+
+void SceneManager::clearScene() {
+	_componentManager->clear();
+	GameObject::clear();
+	World::clear();
+	delete _currentScene;
+	_currentScene = nullptr;
 }
 
 Scene* SceneManager::_currentScene = nullptr;

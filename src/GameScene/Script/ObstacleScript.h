@@ -5,12 +5,11 @@ class ObstacleScript : public Script
 {
 public:
 	ObstacleScript() : Script() {}
-    ObstacleScript(vec3 velocity) : Script() { _velocity = velocity;}
-    vec3 _velocity = vec3(0, 0, 0);
+	ObstacleScript(vec3 velocity) : Script() { _velocity = velocity; }
+	vec3 _velocity = vec3(0, 0, 0);
 
 private:
 	Transform* transform = nullptr;
-    
 
 public:
 
@@ -19,7 +18,7 @@ public:
 	}
 
 	void update() override {
-        vec3 distance = _velocity * Time::delta();
-        transform->translate(distance);
+		vec3 distance = _velocity * Time::delta();
+		transform->translate(distance);
 	}
 };

@@ -15,7 +15,8 @@ public:
 	virtual ~GameObject();
 
 	static GameObject* create(std::string name);
-	static GameObject* find(std::string name);
+	static GameObject* find(const std::string& name);
+	static void clear();
 
 	template <typename T>
 	T* getComponent();
@@ -33,11 +34,15 @@ public:
 	std::string name();
 	void setName(std::string name);
 
+	std::string tag();
+	void setTag(const std::string& tag);
+
 private:
 	using ComponentList = std::unordered_multimap<std::type_index, std::shared_ptr<Component>>;
 	using GameObjectList = std::unordered_map<std::string, std::shared_ptr<GameObject>>;
 
 	std::string _name;
+	std::string _tag;
 	ComponentList _components;
 	std::weak_ptr<GameObject> _thisPtr;
 	std::weak_ptr<GameObject> _parent;

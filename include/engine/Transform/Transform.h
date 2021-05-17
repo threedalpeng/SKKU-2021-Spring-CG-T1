@@ -16,7 +16,6 @@ public:
 	Quaternion worldRotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 	vec3 worldScale = vec3(1.f, 1.f, 1.f);
 	vec3 _normal = vec3();
-	btRigidBody* body = nullptr;
 
 	void translate(const vec3& v);
 	void translate(float x, float y, float z);
@@ -30,26 +29,12 @@ public:
 	vec3 localToWorldPoint(vec3 v);
 	vec3 worldToLocalPoint(vec3 v);
 
-	Quaternion worldToLocalRotation(Quaternion q) {
-		GameObject* parent = getCurrentObject()->getParent();
-		if (parent) {
-			Quaternion parentRotation = parent->getComponent<Transform>()->worldRotation;
-			return rotation * parentRotation.inverse();
-		}
-		else {
-			return rotation;
-		}
-	}
+	Quaternion worldToLocalRotation(Quaternion q);
+
 	// void lookAt(Transform* target, vec3 up = vec3(0, 1, 0));
 
 	btTransform toBtTransform();
 	void setByBtTransform(const btTransform& btTrans);
-
-	void calWolrPositionBT();
-	void setWorlPositionBT(btVector3 new_position);
-	btVector3 getVelocityBT();
-	void setVelocityBT(btVector3 velocity);
-	void addVelocityBT(btVector3 addVelocity);
 
 private:
 	void calculateModelMatrix();

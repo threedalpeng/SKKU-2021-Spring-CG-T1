@@ -9,9 +9,6 @@
 #include "Screen.h"
 #include "Time.h"
 
-#include "Object/GameObject.h"
-#include "Object/Factory.h"
-
 #include "Graphics/Camera.h"
 #include "Graphics/Font.h"
 #include "Graphics/Light.h"
@@ -20,6 +17,13 @@
 #include "Graphics/MeshRenderer.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Texture.h"
+
+#include "Object/GameObject.h"
+#include "Object/Factory.h"
+
+#include "Physics/Collider.h"
+#include "Physics/RigidBody.h"
+#include "Physics/World.h"
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"

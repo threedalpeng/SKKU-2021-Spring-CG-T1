@@ -4,16 +4,17 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 
-class Collider : public Component
+class Collider
 {
 public:
-	Collider(std::shared_ptr<GameObject> obj) : Component(obj) {};
+	Collider() {};
 
 	btCollisionShape* collisionShape() {
 		return _collisionShape;
 	}
 	void setCollisionShape(btCollisionShape* collisionShape) {
 		_collisionShape = collisionShape;
+		_collisionShapes.push_back(collisionShape);
 	}
 
 	btScalar mass() { return _mass; }
@@ -28,6 +29,16 @@ public:
 
 	void calculateLocalInertia() {
 		_collisionShape->calculateLocalInertia(_mass, _localInertia);
+	}
+
+	static void clearShapes() {
+		for (int j = 0; j < _collisionShapes.size(); j++)
+		{
+			btCollisionShape* shape = _collisionShapes[j];
+			_collisionShapes[j] = 0;
+			delete shape;
+		}
+		_collisionShapes.clear();
 	}
 
 private:

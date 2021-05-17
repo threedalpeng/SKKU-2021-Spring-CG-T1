@@ -24,7 +24,6 @@ void Transform::rotateAround(const vec3& worldPoint, const vec3& axis, float ang
 }
 
 void Transform::update() {
-	if (body) calWolrPositionBT();
 	GameObject* parent = getCurrentObject()->getParent();
 	if (parent) {
 		Transform* parentTransform = parent->getComponent<Transform>();
@@ -72,19 +71,44 @@ vec3 Transform::worldToLocalPoint(vec3 v)
 	return vec3(r.x, r.y, r.z);
 }
 
+Quaternion Transform::worldToLocalRotation(Quaternion q) {
+	GameObject* parent = getCurrentObject()->getParent();
+	if (parent) {
+		Quaternion parentRotation = parent->getComponent<Transform>()->worldRotation;
+		return rotation * parentRotation.inverse();
+	}
+	else {
+		return rotation;
+	}
+}
+
 btTransform Transform::toBtTransform() {
+	std::cout << worldPosition.x << ", " << worldPosition.y << ", " << worldPosition.z << std::endl;
 	btQuaternion q(worldRotation.x, worldRotation.y, worldRotation.z, worldRotation.w);
 	btVector3 v(worldPosition.x, worldPosition.y, worldPosition.z);
 	return btTransform(q, v);
 }
 
 void Transform::setByBtTransform(const btTransform& btTrans) {
+	GameObject* parent = getCurrentObject()->getParent();
 	btVector3 v = btTrans.getOrigin();
 	btQuaternion q = btTrans.getRotation();
-	position = worldToLocalPoint(vec3(v.x(), v.y(), v.z()));
-	rotation = worldToLocalRotation(Quaternion(q.x(), q.y(), q.z(), q.w()));
+	std::cout << "SyncToTransfrom: ";
+	std::cout << v.x() << ", " << v.y() << ", " << v.z() << std::endl;
+	if (parent) {
+		mat4 parentMat = parent->getComponent<Transform>()->getModelMatrix();
+		Quaternion parentRotation = parent->getComponent<Transform>()->worldRotation;
+		vec4 r = parentMat.transpose() * vec4(v.x(), v.y(), v.z(), 1.f);
+		position = vec3(r.x, r.y, r.z);
+		rotation = Quaternion(q.x(), q.y(), q.z(), q.w()) * parentRotation.inverse();
+	}
+	else {
+		position = vec3(v.x(), v.y(), v.z());
+		rotation = Quaternion(q.x(), q.y(), q.z(), q.w());
+	}
 }
 
+/*
 void Transform::calWolrPositionBT()
 {
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
@@ -116,3 +140,4 @@ void Transform::addVelocityBT(btVector3 addVelocity)
 	btVector3 previouse_velocity = body->getLinearVelocity();
 	body->setLinearVelocity(previouse_velocity + addVelocity);
 }
+*/

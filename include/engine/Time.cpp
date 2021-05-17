@@ -7,6 +7,7 @@ float Time::_fixedTime = 0.f;
 
 void Time::init() {
 	_prevTime = currentTime();
+	_lag = 0.f;
 }
 
 float Time::delta() {
@@ -23,7 +24,9 @@ float Time::currentTime() {
 
 bool Time::needsFixedUpdate() {
 	bool ret = _lag >= _fixedTime;
-	_lag -= _fixedTime;
+	if (ret) {
+		_lag -= _fixedTime;
+	}
 	return ret;
 }
 

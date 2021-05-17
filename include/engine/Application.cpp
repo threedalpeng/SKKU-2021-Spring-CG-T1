@@ -6,6 +6,8 @@
 #include "engine/Graphics/Camera.h"
 #include "engine/Graphics/Light.h"
 #include "engine/Graphics/MeshRenderer.h"
+#include "engine/Physics/World.h"
+#include "engine/Physics/RigidBody.h"
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Sound/SoundPlayer.h"
 #include "engine/Transform/Transform.h"
@@ -114,10 +116,12 @@ void Application::run()
 			fixedUpdate();
 		}
 
+		/*
 		if (_frame_count % 20 == 0) {
 			printf("                           \r");
 			printf(" FPS: %f\r", 1 / Time::delta());
 		}
+		*/
 		update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -166,6 +170,9 @@ void Application::init()
 	ImGui_ImplGlfw_InitForOpenGL(_window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
+	/* Bullet */
+	World::init();
+
 	ServiceLocator::provide<ComponentManager>(&_componentManager);
 
 	SceneManager::init();
@@ -202,6 +209,40 @@ void Application::onSceneLoaded()
 
 void Application::fixedUpdate()
 {
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
+		iterateTransform(rootObj);
+	}
+
+	// sync with transform
+	if (auto componentList = _componentManager.getComponentList<RigidBody>()) {
+		for (auto componentPair : *componentList) {
+			RigidBody* rigidBody = componentPair.second.get();
+			rigidBody->syncFromTransform();
+		}
+	}
+
+	if (auto componentList = _componentManager.getComponentList<ScriptLoader>()) {
+		for (auto componentPair : *componentList) {
+			ScriptLoader* scriptLoader = componentPair.second.get();
+			for (auto script : scriptLoader->getScripts()) {
+				script->fixedUpdate();
+			}
+		}
+	}
+
+	World::fixedUpdate();
+
+	// sync with transform
+	if (auto componentList = _componentManager.getComponentList<RigidBody>()) {
+		for (auto componentPair : *componentList) {
+			RigidBody* rigidBody = componentPair.second.get();
+			rigidBody->fixedUpdate();
+		}
+	}
+
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
+		iterateTransform(rootObj);
+	}
 }
 
 void Application::update()
@@ -229,6 +270,10 @@ void Application::update()
 
 void Application::render()
 {
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
+		iterateTransform(rootObj);
+	}
+
 	Camera* mainCamera = Camera::main;
 	if (!mainCamera) {
 		std::cout << "No Camera." << std::endl;

@@ -17,6 +17,9 @@ public:
 
 	btRigidBody* rigidBody();
 
+	void syncToTransform();
+	void syncFromTransform();
+
 private:
 	btRigidBody* _rigidBody = nullptr;
 };

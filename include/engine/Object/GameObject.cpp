@@ -66,10 +66,22 @@ void GameObject::setName(std::string name) {
 	_name = finalName;
 }
 
-GameObject* GameObject::find(std::string name) {
+std::string GameObject::tag() {
+	return _tag;
+}
+
+void GameObject::setTag(const std::string& tag) {
+	_tag = tag;
+}
+
+GameObject* GameObject::find(const std::string& name) {
 	auto it = _gameObjectList.find(name);
 	if (it == _gameObjectList.cend()) { // not found
 		return nullptr;
 	}
 	return it->second.get();
+}
+
+void GameObject::clear() {
+	_gameObjectList.clear();
 }

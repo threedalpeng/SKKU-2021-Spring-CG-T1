@@ -40,6 +40,7 @@
     <ClCompile Include="include\engine\Physics\Collider.cpp" />
     <ClCompile Include="include\engine\Physics\RigidBody.cpp" />
     <ClCompile Include="include\engine\Physics\World.cpp" />
+    <ClCompile Include="include\engine\Physics\btCustomRigidBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -123,6 +124,7 @@
     <ClInclude Include="include\engine\Physics\Collider.h" />
     <ClInclude Include="include\engine\Physics\RigidBody.h" />
     <ClInclude Include="include\engine\Physics\World.h" />
+    <ClInclude Include="include\engine\Physics\btCustomRigidBody.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

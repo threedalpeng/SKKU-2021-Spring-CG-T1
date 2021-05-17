@@ -1,5 +1,5 @@
 #pragma once
-#include "gl/glfw/glfw3.h"
+#include "cg/cgut.h"
 
 class Time
 {

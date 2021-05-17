@@ -12,6 +12,7 @@ public:
 
 	static bool sceneLoaded;
 	static void loadScene(Scene* scene);
+	static void clearScene();
 	static void startScene();
 private:
 	static Scene* _currentScene;
