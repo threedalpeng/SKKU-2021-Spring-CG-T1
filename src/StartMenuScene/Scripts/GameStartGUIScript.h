@@ -13,10 +13,12 @@ private:
 	Transform* transform = nullptr;
 	SoundPlayer* soundPlayer = nullptr;
 
+	/*
 	int i = 0;
 	float time = 0.f;
 	bool increase = true;
 	std::vector<GameObject*> objList = std::vector<GameObject*>();
+	*/
 public:
 
 	void init() override {
@@ -26,6 +28,7 @@ public:
 	}
 
 	void update() override {
+		/*
 		if (increase) {
 			time += Time::delta();
 			if (time >= 1.f) {
@@ -53,6 +56,7 @@ public:
 				increase = true;
 			}
 		}
+		*/
 	}
 
 	void onGUIRender() override {
