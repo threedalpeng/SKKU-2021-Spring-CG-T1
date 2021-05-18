@@ -1,4 +1,7 @@
 #pragma once
+
+#include <random>
+
 #include "engine/Core.h"
 #include "bullet/src/btBulletCollisionCommon.h"
 #include "bullet/src/btBulletDynamicsCommon.h"
@@ -32,9 +35,17 @@ public:
 
 	static bool update();
 
+	static float genRandFloat();
+
 	static btDiscreteDynamicsWorld* dynamicsWorld;
 
     static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
+
+	static std::random_device rd;
+	static std::mt19937 gen;
+	static std::uniform_real_distribution<float> dist;
+
+
 
 private:
 	static int _stage;
@@ -50,6 +61,11 @@ bool GameManager::_isChanged = false;
 btDiscreteDynamicsWorld* GameManager::dynamicsWorld = nullptr;
 int GameManager::_maxParticle = 400;
 int GameManager::_nowParticle = 0;
+
+std::random_device GameManager::rd = std::random_device();
+std::mt19937 GameManager::gen = std::mt19937(GameManager::rd());
+std::uniform_real_distribution<float> GameManager::dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
+
 
 bool GameManager::setStage(int state)
 {
@@ -86,4 +102,9 @@ bool GameManager::getChanged()
 bool GameManager::update()
 {
 	return true;
+}
+
+float GameManager::genRandFloat()
+{
+	return dist(gen);
 }

@@ -7,8 +7,14 @@
 #include "engine/Core.h"
 #include "cg/cgmath.h"
 
-class MeshMaker
+class ParticleMaker
 {
 public:
 	static void  makeExplodeParticle();
 };
+
+void ParticleMaker::makeExplodeParticle()
+{
+	Mesh* sphereMesh;
+	Texture* backgroundTexture;
+}

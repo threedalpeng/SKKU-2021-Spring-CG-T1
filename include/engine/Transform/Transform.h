@@ -12,9 +12,12 @@ public:
 	vec3 position = vec3();
 	Quaternion rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 	vec3 scale = vec3(1.f, 1.f, 1.f);
+	float mass = 1.0f;
+
 	vec3 worldPosition = vec3();
 	Quaternion worldRotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 	vec3 worldScale = vec3(1.f, 1.f, 1.f);
+	
 	vec3 _normal = vec3();
 	btRigidBody* body = nullptr;
 

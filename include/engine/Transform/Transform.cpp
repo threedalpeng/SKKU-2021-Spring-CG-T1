@@ -72,32 +72,38 @@ vec3 Transform::worldToLocalPoint(vec3 v)
 
 void Transform::calWolrPositionBT()
 {
+	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	btVector3 tmp = trans.getOrigin();
 	position = vec3(tmp.getX(), tmp.getY(), tmp.getZ());
+	
 }
 
 void Transform::setWorlPositionBT(btVector3 new_position)
 {	
+	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	trans.setOrigin(new_position);
 	body->setWorldTransform(trans);
-}
+}	
 
 btVector3 Transform::getVelocityBT()
 {
+	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	return body->getLinearVelocity();
 }
 
 void Transform::setVelocityBT(btVector3 velocity)
 {
+	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	body->setLinearVelocity(velocity);
 }
 
 void Transform::addVelocityBT(btVector3 addVelocity)
 {
+	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	btVector3 previouse_velocity = body->getLinearVelocity();
 	body->setLinearVelocity(previouse_velocity + addVelocity);
