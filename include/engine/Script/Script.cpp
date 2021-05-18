@@ -15,3 +15,8 @@ void Script::fixedUpdate()
 void Script::onGUIRender()
 {
 }
+
+GameObject* Script::getObject()
+{
+	return gameObject;
+}

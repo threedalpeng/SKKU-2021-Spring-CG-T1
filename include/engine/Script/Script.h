@@ -12,6 +12,7 @@ public:
 	virtual void update();
 	virtual void fixedUpdate();
 	virtual void onGUIRender();
+	GameObject* getObject();
 protected:
 	template <typename T>
 	T* getComponent() {
@@ -21,5 +22,5 @@ private:
 	void setObject(GameObject* obj) {
 		gameObject = obj;
 	}
-	GameObject* gameObject;
+	GameObject* gameObject = nullptr;
 };

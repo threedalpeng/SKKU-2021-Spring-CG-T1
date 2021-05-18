@@ -144,10 +144,12 @@ void Application::run()
 			fixedUpdate();
 		}
 
+		/*
 		if (_frame_count % 20 == 0) {
 			printf("                           \r");
 			printf(" FPS: %f\r", 1 / Time::delta());
 		}
+		*/
 		update();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

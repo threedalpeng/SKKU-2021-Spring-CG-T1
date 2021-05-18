@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "engine/Transform/Transform.h"
+#include "engine/ServiceLocator.h"
 #include "engine/Component/ComponentManager.h"
 
 GameObject::GameObjectList GameObject::_gameObjectList = GameObjectList();
@@ -10,6 +11,7 @@ GameObject::GameObject(std::string name) : Object() {
 
 GameObject::~GameObject()
 {
+	_components.clear();
 }
 
 GameObject* GameObject::create(std::string name)
@@ -72,6 +74,16 @@ GameObject* GameObject::find(std::string name) {
 		return nullptr;
 	}
 	return it->second.get();
+}
+
+void GameObject::remove()
+{
+	if (!_parent.expired()) {
+		_parent.lock()->removeChildren(this);
+	}
+	_gameObjectList.erase(_name);
+	ComponentManager* componentManager = ServiceLocator::getService<ComponentManager>();
+	componentManager->remove(objectId());
 }
 
 void GameObject::clear()

@@ -21,6 +21,7 @@ public:
 	template <typename T>
 	std::shared_ptr<T> find(ObjectId id);
 
+	void remove(ObjectId id);
 	void clear();
 
 private:

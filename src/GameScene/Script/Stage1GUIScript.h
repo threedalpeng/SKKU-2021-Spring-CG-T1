@@ -81,7 +81,7 @@ private:
 public:
 
 	void init() override {
-		for (int i = 0; i < imagePaths.size(); i++) {
+		for (size_t i = 0; i < imagePaths.size(); i++) {
 			int imageWidth = 0;
 			int imageHeight = 0;
 			GLuint texture = 0;
