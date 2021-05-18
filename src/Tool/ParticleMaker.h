@@ -27,7 +27,8 @@ void ParticleMaker::makeExplodeParticle()
 	Mesh* sphereMesh = MeshMaker::makeSphere();
 	Texture* fireTexture = ResourceManager::getTexture("fire");
 	Material* material = new Material();
-	// Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+	Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+	// auto basicShader = std::make_shared<Shader*>("shaders/solar-system.vert", "shaders/solar-system.frag");
 	Transform* transform;
 	GameObject* particle;
 
