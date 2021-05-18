@@ -20,7 +20,7 @@ stage
 	1~9: n-state
 	10 : endding scene
 */
-
+Shader* basicShader;
 class GameManager
 {
 public:
@@ -36,6 +36,10 @@ public:
 	static bool update();
 
 	static float genRandFloat();
+
+	static bool particleFull();
+	static void increaseParticle();
+	static void decreaseParticle();
 
 	static btDiscreteDynamicsWorld* dynamicsWorld;
 
@@ -107,4 +111,18 @@ bool GameManager::update()
 float GameManager::genRandFloat()
 {
 	return dist(gen);
+}
+
+bool GameManager::particleFull()
+{
+	return _nowParticle < _maxParticle;
+}
+
+void  GameManager::increaseParticle()
+{
+	_nowParticle++;
+}
+void GameManager::decreaseParticle()
+{
+	_nowParticle--;
 }

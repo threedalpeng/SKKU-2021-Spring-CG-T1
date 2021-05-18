@@ -12,7 +12,9 @@
 #include "Script/Stage1GUIScript.h"
 
 #include "../Tool/MeshMaker.h"
+#include "../Tool/ParticleMaker.h"
 #include "../Custom/CustomRigidBody.h"
+
 
 //*******************************************************************
 // bullet3
@@ -78,11 +80,14 @@ public:
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 
 		/* Texture */
-		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
-		Texture* meteorTexture = new Texture("textures/venus.jpg");
+		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
+		Texture* meteorTexture = ResourceManager::getTexture("venus");
+		Texture* fireTexture = ResourceManager::getTexture("fire");
+		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 
 		/* Shader */
-		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		// Shader* basicShader = ResourceManager::getShader("basicShader");	 	// !!! bug
 
 		/* GameObject */
 		GameObject* mainCamera = GameObject::create("Main Camera");
@@ -91,6 +96,8 @@ public:
 
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
+
+		GameObject* particle = GameObject::create("particle");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -130,6 +137,8 @@ public:
 		addObject(player);
 		addObject(meteor);
 
+		addObject(particle);
+
 		addObject(gui);
 
 		/* Initialize Objects with Components */
@@ -143,26 +152,30 @@ public:
 		SoundPlayer* soundPlayer;
 
 		// main camera
-		camera = mainCamera->addComponent<Camera>();
-		CameraScript* cameraScript = new CameraScript();
-		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
-		camera->addShader(basicShader);
-		camera->setThisMainCamera();
-
-		// background
-		meshRenderer = background->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(cylinderMesh);
-		meshRenderer->loadTexture(backgroundTexture);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = false;
-		transform = background->getComponent<Transform>();
-		transform->scale = vec3(50, 100, 50);
-		BackgroundScript* backgroundScript = new BackgroundScript();
-		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
-
+		{
+			camera = mainCamera->addComponent<Camera>();
+			CameraScript* cameraScript = new CameraScript();
+			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
+			camera->addShader(basicShader);
+			camera->setThisMainCamera();
+		}
+		
 		// background //
 		{
+			meshRenderer = background->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(cylinderMesh);
+			meshRenderer->loadTexture(backgroundTexture);
+			meshRenderer->loadShader(basicShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = false;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+
+			transform = background->getComponent<Transform>();
+			transform->scale = vec3(50, 100, 50);
+			BackgroundScript* backgroundScript = new BackgroundScript();
+			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
+
 			btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
 
 			collisionShapes.push_back(groundShape);
@@ -190,22 +203,26 @@ public:
 		}
 
 		// light point
-		meshRenderer = lightPoint->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(sphereMesh);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = false;
-		meshRenderer->isColored = true;
+		{
+			meshRenderer = lightPoint->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadShader(basicShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = false;
+			meshRenderer->isColored = true;
+			meshRenderer->hasTexture = false;
 
-		transform = lightPoint->getComponent<Transform>();
-		transform->position = vec3(0.0f, 0.0f, 200.0f);
+			transform = lightPoint->getComponent<Transform>();
+			transform->position = vec3(0.0f, 0.0f, 200.0f);
 
-		light = lightPoint->addComponent<Light>();
-		light->setType(Light::Type::Point);
-		light->loadShader(basicShader);
+			light = lightPoint->addComponent<Light>();
+			light->setType(Light::Type::Point);
+			light->loadShader(basicShader);
 
-		obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
-		lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
+			obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
+			lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
+		}
+		
 
 		// player //
 		{
@@ -215,6 +232,8 @@ public:
 			meshRenderer->loadShader(basicShader);
 			meshRenderer->loadMaterial(material);
 			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
 
 			transform = player->getComponent<Transform>();
 			transform->position = vec3(-3.0f, 0.0f, 0.0f);
@@ -262,6 +281,8 @@ public:
 			meshRenderer->loadShader(basicShader);
 			meshRenderer->loadMaterial(material);
 			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
 
 			transform = meteor->getComponent<Transform>();
 			transform->position = vec3(0.0f, 0.0f, 0.0f);
@@ -304,6 +325,8 @@ public:
 			soundPlayer->loadSoundFrom("sounds/explode.mp3");
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
+
+		ParticleMaker::makeExplodeParticle();
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());

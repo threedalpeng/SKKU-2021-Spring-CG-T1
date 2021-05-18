@@ -76,27 +76,40 @@ public:
 		Camera* camera;
 		Transform* transform;
 		SoundPlayer* soundPlayer;
+		Material* material = new Material();
 
 		// background
-		meshRenderer = background->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(cylinderMesh);
-		meshRenderer->loadTexture(backgroundTexture);
-		meshRenderer->loadShader(basicShader);
-		meshRenderer->isShaded = false;
-		transform = background->getComponent<Transform>();
-		transform->scale = vec3(50, 100, 50);
-		BackgroundScript* backgroundScript = new BackgroundScript();
-		background->addComponent<ScriptLoader>()->addScript(backgroundScript);
-		soundPlayer = background->addComponent<SoundPlayer>();
-		soundPlayer->loadSoundFrom("sounds/hello.mp3");
-		soundPlayer->setType(SoundPlayer::Type::Background);
+		{
+			meshRenderer = background->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(cylinderMesh);
+			meshRenderer->loadTexture(backgroundTexture);
+			meshRenderer->loadShader(basicShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = false;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+
+			transform = background->getComponent<Transform>();
+			transform->scale = vec3(50, 100, 50);
+			BackgroundScript* backgroundScript = new BackgroundScript();
+			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
+
+			// soundPlayer = background->addComponent<SoundPlayer>();
+			// soundPlayer->loadSoundFrom("sounds/hello.mp3");
+			// soundPlayer->setType(SoundPlayer::Type::Background);
+		}
 
 		// main camera
-		camera = mainCamera->addComponent<Camera>();
-		CameraScript* cameraScript = new CameraScript();
-		mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
-		camera->addShader(basicShader);
-		camera->setThisMainCamera();
+		{
+			camera = mainCamera->addComponent<Camera>();
+			CameraScript* cameraScript = new CameraScript();
+			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
+			camera->addShader(basicShader);
+			meshRenderer->isShaded = false;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = false;
+
+			camera->setThisMainCamera();
 
 		// player
 		PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();

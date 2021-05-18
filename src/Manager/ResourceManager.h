@@ -28,6 +28,7 @@ public:
 	static ImFont* getFont(const std::string& fontName);
 
 	static Mesh* createMesh(const std::string& meshName, const std::string& vertexBinaryPath, const std::string& indexBinaryPath);
+	static Mesh* addMesh(const std::string& meshName, Mesh* mesh);
 	static Shader* createShader(const std::string& shaderName, const std::string& vertexShaderPath, const std::string& fragShaderPath);
 	static Material* createMaterial(const std::string& materialName);
 	static Texture* createTexture(const std::string& textureName, const std::string& texturePath);

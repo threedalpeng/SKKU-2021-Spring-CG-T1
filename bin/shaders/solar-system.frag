@@ -25,7 +25,9 @@ uniform bool	b_colored;
 // texture sampler
 uniform sampler2D TEX0;
 uniform sampler2D TEX1;
+uniform bool	b_texture;
 uniform bool b_alpha_tex;
+
 
 vec4 phong( vec3 l, vec3 n, vec3 h, vec4 Kd )
 {
@@ -39,7 +41,7 @@ void main()
 {
 	vec4 iKd = texture( TEX0, tc );	// Kd from image
 	vec4 iA = texture(TEX1, tc);
-	if (b_shaded) {
+	if (b_shaded && !b_colored && b_texture) {
 		// light position in the eye space
 		vec4 lpos = view_matrix*light_position;
 
@@ -51,9 +53,15 @@ void main()
 
 		fragColor = phong( l, n, h, iKd );
 	}
-	else if(b_colored) {
+
+	else if(!b_shaded && b_colored && !b_texture) {
 		fragColor = color;
 	}
+	else if(!b_shaded && b_colored && b_texture)
+	{
+		fragColor = iKd * color;
+	}
+	// else if(b_texture){	// !!! bug !!!!
 	else {
 		fragColor = iKd;
 	}
