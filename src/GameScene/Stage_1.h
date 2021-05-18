@@ -78,8 +78,8 @@ public:
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 
 		/* Texture */
-		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
-		Texture* meteorTexture = new Texture("textures/venus.jpg");
+		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
+		Texture* meteorTexture = ResourceManager::getTexture("venus");
 
 		/* Shader */
 		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");

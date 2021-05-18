@@ -29,6 +29,9 @@ private:
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glActiveTexture(GL_TEXTURE0);								// notify GL the current texture slot is 0
 
+		ResourceManager::createTexture("Milky_Way", "textures/Milky_Way.jpg");
+		ResourceManager::createTexture("venus", "textures/venus.jpg");
+
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);
 	}
