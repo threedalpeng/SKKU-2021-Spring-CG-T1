@@ -16,6 +16,7 @@ void SceneManager::loadScene(Scene* scene) {
 }
 void SceneManager::startScene() {
 	if (_currentScene) {
+		_currentScene->clear();
 		_componentManager->clear();
 		GameObject::clear();
 		delete _currentScene;
