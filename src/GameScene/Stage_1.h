@@ -219,18 +219,19 @@ public:
 			transform = player->getComponent<Transform>();
 			transform->position = vec3(-3.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			transform->mass = 1.0f;
 			PlayerScript* playerScript = new PlayerScript();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
+			btCollisionShape* colShape = new btSphereShape(btScalar((transform->scale).x));
 			collisionShapes.push_back(colShape);
 
 			/// Create Dynamic Objects
 			btTransform startTransform;
 			startTransform.setIdentity();
 
-			btScalar mass(1.f);
+			btScalar mass(transform->mass);
 
 			//rigidbody is dynamic if and only if mass is non zero, otherwise static
 			bool isDynamic = (mass != 0.f);
@@ -239,7 +240,7 @@ public:
 			if (isDynamic)
 				colShape->calculateLocalInertia(mass, localInertia);
 
-			startTransform.setOrigin(btVector3(-3.0f, 0.0f, 0.0f));
+			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
 
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -308,3 +309,4 @@ public:
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
 	}
 };
+
