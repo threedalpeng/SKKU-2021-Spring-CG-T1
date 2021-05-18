@@ -7,7 +7,6 @@ class Scene {
 public:
 	Scene() {}
 	virtual ~Scene() {
-		clear();
 	}
 	virtual void init();
 	virtual void clear();
