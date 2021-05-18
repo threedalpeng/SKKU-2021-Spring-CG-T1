@@ -67,14 +67,14 @@ private:
 		"ESC ", " - Quit to Desktop\n",
 		"P ", " - Pause Menu\n",
 		"F1 ", " - Help\n",
-		"Click or Press Enter ", " to Leave.\n"
+		"Click or Press F1 ", " to Leave.\n"
 	};
 	std::vector<std::string> imagePaths = {
 		"images/arrow.jpg",
 		"images/ESC.jpg",
 		"images/P.jpg",
 		"images/F1.jpg",
-		"images/Enter.jpg",
+		"images/F1.jpg",
 	};
 	std::vector<GLuint> images = {};
 
@@ -117,15 +117,17 @@ public:
 				currentMode = Mode::HELP;
 			}
 		}
-
-		if (Input::getKeyDown(GLFW_KEY_ENTER)) {
-			switch (currentMode) {
-			case Mode::DIALOG:
-				dialogIndex++;
-				break;
-			case Mode::HELP:
+		else if (currentMode == Mode::HELP) {
+			if (Input::getKeyDown(GLFW_KEY_F1)) {
 				currentMode = Mode::GAME;
-				break;
+			}
+			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
+				currentMode = Mode::GAME;
+			}
+		}
+		else if (currentMode == Mode::DIALOG) {
+			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
+				dialogIndex++;
 			}
 		}
 	}
