@@ -111,110 +111,110 @@ public:
 
 			camera->setThisMainCamera();
 
-		// player
-		PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();
-		playerAnimationScript->leftArmAxis = playerLeftArmAxis->getComponent<Transform>();
-		playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
-		playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
-		playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
-		player->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
-		{// head
-			transform = playerHead->getComponent<Transform>();
-			transform->translate(1.5f, 0.f, 0.f);
-			transform->scale = vec3(0.5f);
-			meshRenderer = playerHead->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
+			// player
+			PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();
+			playerAnimationScript->leftArmAxis = playerLeftArmAxis->getComponent<Transform>();
+			playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
+			playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
+			playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
+			player->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
+			{// head
+				transform = playerHead->getComponent<Transform>();
+				transform->translate(1.5f, 0.f, 0.f);
+				transform->scale = vec3(0.5f);
+				meshRenderer = playerHead->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(sphereMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{// body
+				transform = playerBody->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.5f, 0.25f);
+				meshRenderer = playerBody->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerBack->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.5f);
+				transform->scale = vec3(0.5f, 0.25f, 0.25f);
+				meshRenderer = playerBack->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{//arm
+				transform = playerLeftArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, 0.75f, 0.f);
+
+				transform = playerLeftArm->getComponent<Transform>();
+				transform->translate(0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, -0.75f, 0.f);
+
+				transform = playerRightArm->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerRightArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{// leg
+				transform = playerLeftLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, 0.5f, 0.f);
+
+				transform = playerLeftLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, -0.5f, 0.f);
+
+				transform = playerRightLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+
+			// gui
+			GameStartGUIScript* guiScript = new GameStartGUIScript();
+			gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
+			soundPlayer = gameStartGUI->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/space.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Background);
 		}
-		{// body
-			transform = playerBody->getComponent<Transform>();
-			transform->translate(0.f, 0.f, 0.f);
-			transform->scale = vec3(1.0f, 0.5f, 0.25f);
-			meshRenderer = playerBody->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-
-			transform = playerBack->getComponent<Transform>();
-			transform->translate(0.f, 0.f, 0.5f);
-			transform->scale = vec3(0.5f, 0.25f, 0.25f);
-			meshRenderer = playerBack->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-		}
-		{//arm
-			transform = playerLeftArmAxis->getComponent<Transform>();
-			transform->translate(0.75f, 0.75f, 0.f);
-
-			transform = playerLeftArm->getComponent<Transform>();
-			transform->translate(0.75f, 0.f, 0.f);
-			transform->scale = vec3(1.f, 0.25f, 0.25f);
-			meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-
-			transform = playerRightArmAxis->getComponent<Transform>();
-			transform->translate(0.75f, -0.75f, 0.f);
-
-			transform = playerRightArm->getComponent<Transform>();
-			transform->translate(-0.75f, 0.f, 0.f);
-			transform->scale = vec3(1.f, 0.25f, 0.25f);
-			meshRenderer = playerRightArm->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-		}
-		{// leg
-			transform = playerLeftLegAxis->getComponent<Transform>();
-			transform->translate(-1.25f, 0.5f, 0.f);
-
-			transform = playerLeftLeg->getComponent<Transform>();
-			transform->translate(-0.75f, 0.f, 0.f);
-			transform->scale = vec3(1.0f, 0.25f, 0.25f);
-			meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-
-			transform = playerRightLegAxis->getComponent<Transform>();
-			transform->translate(-1.25f, -0.5f, 0.f);
-
-			transform = playerRightLeg->getComponent<Transform>();
-			transform->translate(-0.75f, 0.f, 0.f);
-			transform->scale = vec3(1.0f, 0.25f, 0.25f);
-			meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadShader(basicShader);
-			meshRenderer->isShaded = false;
-			meshRenderer->isColored = true;
-			meshRenderer->color = vec4(1.f);
-		}
-
-		// gui
-		GameStartGUIScript* guiScript = new GameStartGUIScript();
-		gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
-		soundPlayer = gameStartGUI->addComponent<SoundPlayer>();
-		soundPlayer->loadSoundFrom("sounds/space.mp3");
-		soundPlayer->setType(SoundPlayer::Type::Background);
 	}
 
-	void terminate() {
-	}
+private:
 
 	Mesh* createCylinderMesh() {
 		Mesh* mesh = new Mesh();
