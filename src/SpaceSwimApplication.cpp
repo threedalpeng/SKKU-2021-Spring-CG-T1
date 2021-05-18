@@ -21,7 +21,7 @@ private:
 		ResourceManager::addFont("consola 40", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 40.f));
 		ResourceManager::addFont("consola 60", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 60.f));
 
-		glClearColor(39 / 255.0f, 40 / 255.0f, 34 / 255.0f, 1.0f);	// set clear color
+		glClearColor(0 / 255.0f, 0 / 255.0f, 0 / 255.0f, 0.0f);	// set clear color
 		glEnable(GL_BLEND);
 		glEnable(GL_CULL_FACE);										// turn on backface culling
 		glEnable(GL_DEPTH_TEST);									// turn on depth tests
@@ -31,6 +31,9 @@ private:
 
 		ResourceManager::createTexture("Milky_Way", "textures/Milky_Way.jpg");
 		ResourceManager::createTexture("venus", "textures/venus.jpg");
+		ResourceManager::createTexture("fire", "textures/fire.jpg");
+		ResourceManager::createTexture("fireParticle", "textures/fireParticle.jpg");
+		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);

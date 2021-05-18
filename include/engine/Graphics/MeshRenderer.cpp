@@ -37,6 +37,7 @@ void MeshRenderer::render()
 
 	glUniform1i(_shader->getUniformLocation("b_shaded"), isShaded);
 	glUniform1i(_shader->getUniformLocation("b_colored"), isColored);
+	glUniform1i(_shader->getUniformLocation("b_texture"), hasTexture);
 	glUniform4fv(_shader->getUniformLocation("color"), 1, color);
 
 	if (_material) {
