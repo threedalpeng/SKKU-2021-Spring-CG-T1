@@ -10,6 +10,7 @@
 #include "Scripts/CameraScript.h"
 #include "Scripts/BackgroundScript.h"
 #include "Scripts/GameStartGUIScript.h"
+#include "Scripts/PlayerAnimationScript.h"
 #include "imgui/imgui.h"
 
 #include "../Tool/MeshMaker.h"
@@ -21,8 +22,8 @@ public:
 	void init() {
 		/* Mesh */
 		Mesh* cylinderMesh = createCylinderMesh();
-		Mesh* boxMesh = MeshMaker::makeBoxMesh();
-		Mesh* planeMesh = create2DRectMesh();
+		Mesh* boxMesh = createBoxMesh();
+		Mesh* sphereMesh = MeshMaker::makeSphere();
 
 		/* Texture */
 		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
@@ -35,11 +36,39 @@ public:
 
 		GameObject* mainCamera = GameObject::create("Main Camera");
 
+		// charater
+		GameObject* player = GameObject::create("Player");
+		GameObject* playerHead = GameObject::create("Player Head");
+		GameObject* playerBody = GameObject::create("Player Body");
+		GameObject* playerBack = GameObject::create("Player Back");
+		GameObject* playerLeftArmAxis = GameObject::create("Player Left Arm Axis");
+		GameObject* playerLeftArm = GameObject::create("Player Left Arm");
+		GameObject* playerRightArmAxis = GameObject::create("Player Left Arm Axis");
+		GameObject* playerRightArm = GameObject::create("Player Right Arm");
+		GameObject* playerLeftLegAxis = GameObject::create("Player Left Leg Axis");
+		GameObject* playerLeftLeg = GameObject::create("Player Left Leg");
+		GameObject* playerRightLegAxis = GameObject::create("Player Right Leg Axis");
+		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
+
 		GameObject* gameStartGUI = GameObject::create("Game Start GUI");
 
 		/* Link Objects */
 		addObject(background);
 		addObject(mainCamera);
+
+		addObject(player);
+		/**/ player->addChildren(playerHead);
+		/**/ player->addChildren(playerBody);
+		/**/ player->addChildren(playerBack);
+		/**/ player->addChildren(playerLeftArmAxis);
+		/**//**/ playerLeftArmAxis->addChildren(playerLeftArm);
+		/**/ player->addChildren(playerRightArmAxis);
+		/**//**/ playerRightArmAxis->addChildren(playerRightArm);
+		/**/ player->addChildren(playerLeftLegAxis);
+		/**//**/ playerLeftLegAxis->addChildren(playerLeftLeg);
+		/**/ player->addChildren(playerRightLegAxis);
+		/**//**/ playerRightLegAxis->addChildren(playerRightLeg);
+
 		addObject(gameStartGUI);
 
 		/* Initialize Objects with Components */
@@ -64,7 +93,7 @@ public:
 			transform->scale = vec3(50, 100, 50);
 			BackgroundScript* backgroundScript = new BackgroundScript();
 			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
-			
+
 			// soundPlayer = background->addComponent<SoundPlayer>();
 			// soundPlayer->loadSoundFrom("sounds/hello.mp3");
 			// soundPlayer->setType(SoundPlayer::Type::Background);
@@ -82,6 +111,101 @@ public:
 
 			camera->setThisMainCamera();
 
+			// player
+			PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();
+			playerAnimationScript->leftArmAxis = playerLeftArmAxis->getComponent<Transform>();
+			playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
+			playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
+			playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
+			player->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
+			{// head
+				transform = playerHead->getComponent<Transform>();
+				transform->translate(1.5f, 0.f, 0.f);
+				transform->scale = vec3(0.5f);
+				meshRenderer = playerHead->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(sphereMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{// body
+				transform = playerBody->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.5f, 0.25f);
+				meshRenderer = playerBody->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerBack->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.5f);
+				transform->scale = vec3(0.5f, 0.25f, 0.25f);
+				meshRenderer = playerBack->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{//arm
+				transform = playerLeftArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, 0.75f, 0.f);
+
+				transform = playerLeftArm->getComponent<Transform>();
+				transform->translate(0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, -0.75f, 0.f);
+
+				transform = playerRightArm->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerRightArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{// leg
+				transform = playerLeftLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, 0.5f, 0.f);
+
+				transform = playerLeftLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, -0.5f, 0.f);
+
+				transform = playerRightLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+
+			// gui
 			GameStartGUIScript* guiScript = new GameStartGUIScript();
 			gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
 			soundPlayer = gameStartGUI->addComponent<SoundPlayer>();
@@ -89,6 +213,8 @@ public:
 			soundPlayer->setType(SoundPlayer::Type::Background);
 		}
 	}
+
+private:
 
 	Mesh* createCylinderMesh() {
 		Mesh* mesh = new Mesh();
@@ -128,95 +254,41 @@ public:
 		return mesh;
 	}
 
-	Mesh* create2DRectMesh() {
-		Mesh* mesh = new Mesh();
-
-		mesh->vertex_list = {
-			{ vec3(0,1,0), vec3(0,0,0), vec2(0.0f,0.0f) },
-			{ vec3(0,0,0), vec3(0,0,0), vec2(0.0f,1.0f) },
-			{ vec3(1,0,0), vec3(0,0,0), vec2(1.0f,1.0f) },
-			{ vec3(0,1,0), vec3(0,0,0), vec2(0.0f,0.0f) },
-			{ vec3(1,0,0), vec3(0,0,0), vec2(1.0f,1.0f) },
-			{ vec3(1,1,0), vec3(0,0,0), vec2(1.0f,0.0f) }
-		};
-
-		mesh->index_list = {
-			1, 2, 3, 1, 3, 4
-		};
-
-		glGenBuffers(1, &(mesh->vertex_buffer));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
-		glGenBuffers(1, &(mesh->index_buffer));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
-
-		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
-		return mesh;
-	}
-
 	Mesh* createBoxMesh() {
 		Mesh* mesh = new Mesh();
+
+		uint nCircleVertex = 48;
 
 		mesh->vertex_buffer = 0;
 		mesh->index_buffer = 0;
 
-		mesh->vertex_list.push_back({ vec3(0.5f, 0.5f, 0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(-0.5f, 0.5f, 0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(-0.5f, 0.5f, -0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(0.5f, 0.5f, -0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(0.5f, -0.5f, 0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(-0.5f, -0.5f, 0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(-0.5f, -0.5f, -0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
-		mesh->vertex_list.push_back({ vec3(0.5f, -0.5f, -0.5f), vec3(0, 0, -1.f), vec2(1.0f) });
+		// Create vertex list
+		mesh->vertex_list = {
+			{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -1.f, -1.f), vec2(0.f, 0.f) },
+			{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -1.f, -1.f), vec2(0.f, 0.f) },
+			{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, +1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, +1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, +1.f, -1.f), vec2(0.f, 0.f) },
+			{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, +1.f, -1.f), vec2(0.f, 0.f) },
+		};
 
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(2);
-		mesh->index_list.push_back(4);
-
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(4);
-		mesh->index_list.push_back(5);
-
-		mesh->index_list.push_back(1);
-		mesh->index_list.push_back(5);
-		mesh->index_list.push_back(2);
-
-		mesh->index_list.push_back(6);
-		mesh->index_list.push_back(7);
-		mesh->index_list.push_back(2);
-
-		mesh->index_list.push_back(6);
-		mesh->index_list.push_back(5);
-		mesh->index_list.push_back(7);
-
-		mesh->index_list.push_back(6);
-		mesh->index_list.push_back(2);
-		mesh->index_list.push_back(5);
-
-		mesh->index_list.push_back(8);
-		mesh->index_list.push_back(5);
-		mesh->index_list.push_back(4);
-
-		mesh->index_list.push_back(8);
-		mesh->index_list.push_back(4);
-		mesh->index_list.push_back(7);
-
-		mesh->index_list.push_back(8);
-		mesh->index_list.push_back(7);
-		mesh->index_list.push_back(5);
-
-		mesh->index_list.push_back(3);
-		mesh->index_list.push_back(4);
-		mesh->index_list.push_back(2);
-
-		mesh->index_list.push_back(3);
-		mesh->index_list.push_back(2);
-		mesh->index_list.push_back(7);
-
-		mesh->index_list.push_back(3);
-		mesh->index_list.push_back(7);
-		mesh->index_list.push_back(4);
+		// Create index list
+		mesh->index_list = {
+			0, 1, 4,
+			1, 5, 4,
+			1, 2, 5,
+			2, 6, 5,
+			0, 4, 3,
+			4, 7, 3,
+			7, 6, 2,
+			3, 7, 2,
+			7, 4, 5,
+			6, 7, 5,
+			0, 3, 1,
+			1, 3, 2,
+		};
 
 		glGenBuffers(1, &(mesh->vertex_buffer));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
