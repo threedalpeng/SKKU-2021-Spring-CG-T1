@@ -326,7 +326,7 @@ public:
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
 
-		ParticleMaker::makeExplodeParticle();
+		
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());

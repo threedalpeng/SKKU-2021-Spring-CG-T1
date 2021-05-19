@@ -47,7 +47,7 @@ public:
 
 	static std::random_device rd;
 	static std::mt19937 gen;
-	static std::uniform_real_distribution<float> dist;
+	static std::normal_distribution<float> dist;
 
 
 
@@ -68,7 +68,7 @@ int GameManager::_nowParticle = 0;
 
 std::random_device GameManager::rd = std::random_device();
 std::mt19937 GameManager::gen = std::mt19937(GameManager::rd());
-std::uniform_real_distribution<float> GameManager::dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
+std::normal_distribution<float> GameManager::dist = std::normal_distribution<float>(0.0f, 1.0f);
 
 
 bool GameManager::setStage(int state)

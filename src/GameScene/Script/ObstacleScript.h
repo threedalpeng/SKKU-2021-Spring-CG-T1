@@ -1,7 +1,8 @@
 #pragma once
 #include "engine/Core.h"
 #include <iostream>
-// #include "../Tool/ParticleMaker.h"
+
+#include "../Tool/ParticleMaker.h"
 
 class ObstacleScript : public Script
 {
@@ -14,16 +15,27 @@ public:
 private:
 	Transform* transform = nullptr;
 	bool leave = true;
+	float remainLife = 2.0f;
 
 public:
 
-	void init() override {
+	void init() override 
+	{
 		transform = getComponent<Transform>();
 	}
 
-	void update() override {
+	void update() override 
+	{
 		vec3 distance = _velocity * Time::delta();
 		transform->translate(distance);
+
+		if (!leave) remainLife -= Time::delta();
+		if (remainLife < 0.0f)
+		{
+			GameObject* thisObject = getObject();
+			GameManager::dynamicsWorld->removeCollisionObject(transform->body);
+			thisObject->remove();
+		}
 	}
 
 	void collide()
@@ -33,6 +45,7 @@ public:
 		// std::cout << "collide meteor " << soundPlayer << std::endl;
 
 		// soundPlayer->play();
+		
 		if (leave)
 		{
 			explode();
@@ -40,8 +53,11 @@ public:
 		}
 	}
 
+		
+
 	void explode()
 	{
+		ParticleMaker::makeExplodeParticle(transform->position);
 		if (hasSound)
 			getComponent<SoundPlayer>()->play();
 	}
