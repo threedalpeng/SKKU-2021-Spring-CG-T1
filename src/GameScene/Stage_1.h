@@ -213,10 +213,10 @@ public:
 			meshRenderer->hasTexture = false;
 
 			transform = lightPoint->getComponent<Transform>();
-			transform->position = vec3(0.0f, 0.0f, 200.0f);
+			transform->position = vec3(200.0f, 0.0f, 100.0f);
 
 			light = lightPoint->addComponent<Light>();
-			light->setType(Light::Type::Point);
+			light->setType(Light::Type::Directional);
 			light->loadShader(basicShader);
 
 			obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
