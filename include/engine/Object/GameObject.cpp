@@ -2,6 +2,7 @@
 #include "engine/Transform/Transform.h"
 #include "engine/ServiceLocator.h"
 #include "engine/Component/ComponentManager.h"
+#include "engine/Scene/SceneManager.h"
 
 GameObject::GameObjectList GameObject::_gameObjectList = GameObjectList();
 
@@ -80,6 +81,9 @@ void GameObject::remove()
 {
 	if (!_parent.expired()) {
 		_parent.lock()->removeChildren(this);
+	}
+	else if (Scene* scene = SceneManager::scene()) {
+		auto result = scene->getRootObjects().erase(this);
 	}
 	_gameObjectList.erase(_name);
 	ComponentManager* componentManager = ServiceLocator::getService<ComponentManager>();
