@@ -42,6 +42,8 @@ private:
 	void update() {
 		if (GameManager::getChanged()) changeScene();
 
+		GameManager::cleanRemoveList();
+
 		if (GameManager::dynamicsWorld)
 		{
 			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);

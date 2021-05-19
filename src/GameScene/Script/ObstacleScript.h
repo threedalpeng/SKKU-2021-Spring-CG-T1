@@ -33,8 +33,9 @@ public:
 		if (remainLife < 0.0f)
 		{
 			GameObject* thisObject = getObject();
-			GameManager::dynamicsWorld->removeCollisionObject(transform->body);
-			thisObject->remove();
+			// GameManager::dynamicsWorld->removeCollisionObject(transform->body);
+			// thisObject->remove();
+			GameManager::removeList.push_back(thisObject);
 		}
 	}
 

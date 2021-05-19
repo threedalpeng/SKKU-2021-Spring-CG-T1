@@ -49,6 +49,9 @@ public:
 	static std::mt19937 gen;
 	static std::normal_distribution<float> dist;
 
+	static std::vector<GameObject*> removeList;
+	static void cleanRemoveList();
+
 
 
 private:
@@ -65,6 +68,7 @@ bool GameManager::_isChanged = false;
 btDiscreteDynamicsWorld* GameManager::dynamicsWorld = nullptr;
 int GameManager::_maxParticle = 400;
 int GameManager::_nowParticle = 0;
+std::vector<GameObject*> GameManager::removeList = std::vector<GameObject*>();
 
 std::random_device GameManager::rd = std::random_device();
 std::mt19937 GameManager::gen = std::mt19937(GameManager::rd());
@@ -125,4 +129,15 @@ void  GameManager::increaseParticle()
 void GameManager::decreaseParticle()
 {
 	_nowParticle--;
+}
+
+void GameManager::cleanRemoveList()
+{
+	for(GameObject* obj : removeList)
+	{
+		btRigidBody* objBody = obj->getComponent<Transform>()->body;
+		if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
+		obj->remove();
+	}
+	removeList.clear();
 }
