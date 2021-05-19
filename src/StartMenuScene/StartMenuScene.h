@@ -38,6 +38,7 @@ public:
 
 		// charater
 		GameObject* player = GameObject::create("Player");
+		GameObject* playerAxis = GameObject::create("Player Axis");
 		GameObject* playerHead = GameObject::create("Player Head");
 		GameObject* playerBody = GameObject::create("Player Body");
 		GameObject* playerBack = GameObject::create("Player Back");
@@ -54,20 +55,21 @@ public:
 
 		/* Link Objects */
 		addObject(background);
-		addObject(mainCamera);
 
 		addObject(player);
-		/**/ player->addChildren(playerHead);
-		/**/ player->addChildren(playerBody);
-		/**/ player->addChildren(playerBack);
-		/**/ player->addChildren(playerLeftArmAxis);
-		/**//**/ playerLeftArmAxis->addChildren(playerLeftArm);
-		/**/ player->addChildren(playerRightArmAxis);
-		/**//**/ playerRightArmAxis->addChildren(playerRightArm);
-		/**/ player->addChildren(playerLeftLegAxis);
-		/**//**/ playerLeftLegAxis->addChildren(playerLeftLeg);
-		/**/ player->addChildren(playerRightLegAxis);
-		/**//**/ playerRightLegAxis->addChildren(playerRightLeg);
+		/**/ player->addChildren(playerAxis);
+		/**//**/ playerAxis->addChildren(playerHead);
+		/**//**/ playerAxis->addChildren(playerBody);
+		/**//**/ playerAxis->addChildren(playerBack);
+		/**//**/ playerAxis->addChildren(playerLeftArmAxis);
+		/**//**//**/ playerLeftArmAxis->addChildren(playerLeftArm);
+		/**//**/ playerAxis->addChildren(playerRightArmAxis);
+		/**//**//**/ playerRightArmAxis->addChildren(playerRightArm);
+		/**//**/ playerAxis->addChildren(playerLeftLegAxis);
+		/**//**//**/ playerLeftLegAxis->addChildren(playerLeftLeg);
+		/**//**/ playerAxis->addChildren(playerRightLegAxis);
+		/**//**//**/ playerRightLegAxis->addChildren(playerRightLeg);
+		/**/ player->addChildren(mainCamera);
 
 		addObject(gameStartGUI);
 
@@ -117,7 +119,7 @@ public:
 			playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
 			playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
 			playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
-			player->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
+			playerAxis->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
 			{// head
 				transform = playerHead->getComponent<Transform>();
 				transform->translate(1.5f, 0.f, 0.f);
