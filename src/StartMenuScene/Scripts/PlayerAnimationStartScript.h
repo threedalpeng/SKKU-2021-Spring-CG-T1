@@ -1,10 +1,10 @@
 #pragma once
 #include "engine/Core.h"
 
-class PlayerAnimationScript : public Script
+class PlayerAnimationStartScript : public Script
 {
 public:
-	PlayerAnimationScript() : Script() {}
+	PlayerAnimationStartScript() : Script() {}
 	Transform* player = nullptr;
 	Transform* leftArmAxis = nullptr;
 	Transform* rightArmAxis = nullptr;
@@ -24,26 +24,6 @@ public:
 	}
 
 	void update() {
-		vec3 targetPos = vec3();
-		if (Input::getKey(GLFW_KEY_DOWN)) {
-			targetPos.y -= 1.f;
-		}
-		if (Input::getKey(GLFW_KEY_UP)) {
-			targetPos.y += 1.f;
-		}
-		if (Input::getKey(GLFW_KEY_RIGHT)) {
-			targetPos.x += 1.f;
-		}
-		if (Input::getKey(GLFW_KEY_LEFT)) {
-			targetPos.x -= 1.f;
-		}
-
-		if (targetPos != vec3()) {
-			targetPos = targetPos.normalize();
-			float angle = atan2f(targetPos.y, targetPos.x);
-			getComponent<Transform>()->rotation = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), angle * 180.f / PI);
-		}
-
 		angle = Time::delta() * legSpeed;
 		acc += angle;
 		if (acc > 360.f) acc -= 360.f;

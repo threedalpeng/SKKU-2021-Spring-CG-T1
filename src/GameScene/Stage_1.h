@@ -9,6 +9,7 @@
 // My Application
 #include "Script/ObstacleScript.h"
 #include "Script/PlayerScript.h"
+#include "Script/PlayerAnimationScript.h"
 #include "Script/Stage1GUIScript.h"
 #include "Script/EmptyBoxScript.h"
 #include "../StartMenuScene/Scripts/DepthCameraScript.h"
@@ -93,6 +94,7 @@ public:
 		Texture* fireTexture = ResourceManager::getTexture("fire");
 		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 		Texture* whiteTexture = ResourceManager::getTexture("white");
+		Texture* headTexture = ResourceManager::getTexture("Player Head");
 		wallTexture = ResourceManager::getTexture("mercury");
 
 		/* Material */
@@ -108,7 +110,20 @@ public:
 		GameObject* background = GameObject::create("Background Space");
 		GameObject* lightPoint = GameObject::create("light point");
 
-		GameObject* player = GameObject::create("player");
+		GameObject* player = GameObject::create("Player");
+		GameObject* playerAxis = GameObject::create("Player Axis");
+		GameObject* playerHead = GameObject::create("Player Head");
+		GameObject* playerBody = GameObject::create("Player Body");
+		GameObject* playerBack = GameObject::create("Player Back");
+		GameObject* playerLeftArmAxis = GameObject::create("Player Left Arm Axis");
+		GameObject* playerLeftArm = GameObject::create("Player Left Arm");
+		GameObject* playerRightArmAxis = GameObject::create("Player Left Arm Axis");
+		GameObject* playerRightArm = GameObject::create("Player Right Arm");
+		GameObject* playerLeftLegAxis = GameObject::create("Player Left Leg Axis");
+		GameObject* playerLeftLeg = GameObject::create("Player Left Leg");
+		GameObject* playerRightLegAxis = GameObject::create("Player Right Leg Axis");
+		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
+
 		GameObject* meteor = GameObject::create("meteor");
 
 		GameObject* particle = GameObject::create("particle");
@@ -146,6 +161,18 @@ public:
 		addObject(lightPoint);
 
 		addObject(player);
+		/**/ player->addChildren(playerAxis);
+		/**//**/ playerAxis->addChildren(playerHead);
+		/**//**/ playerAxis->addChildren(playerBody);
+		/**//**/ playerAxis->addChildren(playerBack);
+		/**//**/ playerAxis->addChildren(playerLeftArmAxis);
+		/**//**//**/ playerLeftArmAxis->addChildren(playerLeftArm);
+		/**//**/ playerAxis->addChildren(playerRightArmAxis);
+		/**//**//**/ playerRightArmAxis->addChildren(playerRightArm);
+		/**//**/ playerAxis->addChildren(playerLeftLegAxis);
+		/**//**//**/ playerLeftLegAxis->addChildren(playerLeftLeg);
+		/**//**/ playerAxis->addChildren(playerRightLegAxis);
+		/**//**//**/ playerRightLegAxis->addChildren(playerRightLeg);
 		/**/ player->addChildren(background);
 		/**/ player->addChildren(mainCamera);
 		addObject(depthCamera);
@@ -254,16 +281,6 @@ public:
 
 		// player //
 		{
-			meshRenderer = player->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
-			meshRenderer->loadTexture(meteorTexture);
-			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
-			meshRenderer->loadMaterial(material);
-			meshRenderer->isShaded = true;
-			meshRenderer->isColored = false;
-			meshRenderer->hasTexture = true;
-
 			transform = player->getComponent<Transform>();
 			transform->position = vec3(-3.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
@@ -300,8 +317,117 @@ public:
 			transform->body = body;
 			body->setLinearVelocity(btVector3(0.0f, 0, 0));
 			body->gameObject = player;
+
+			// player
+			PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();
+			playerAnimationScript->player = player->getComponent<Transform>();
+			playerAnimationScript->leftArmAxis = playerLeftArmAxis->getComponent<Transform>();
+			playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
+			playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
+			playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
+			playerAxis->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
+
+			{// head
+				transform = playerHead->getComponent<Transform>();
+				transform->translate(1.5f, 0.f, 0.f);
+				transform->scale = vec3(0.5f);
+				meshRenderer = playerHead->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(sphereMesh);
+				meshRenderer->loadTexture(headTexture);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				//meshRenderer->isColored = true;
+				//meshRenderer->color = vec4(1.f);
+			}
+			{// body
+				transform = playerBody->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.5f, 0.25f);
+				meshRenderer = playerBody->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerBack->getComponent<Transform>();
+				transform->translate(0.f, 0.f, 0.5f);
+				transform->scale = vec3(0.5f, 0.25f, 0.25f);
+				meshRenderer = playerBack->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(0.5f, 0.5f, 0.5f, 1.f);
+			}
+			{//arm
+				transform = playerLeftArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, 0.75f, 0.f);
+
+				transform = playerLeftArm->getComponent<Transform>();
+				transform->translate(0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightArmAxis->getComponent<Transform>();
+				transform->translate(0.75f, -0.75f, 0.f);
+
+				transform = playerRightArm->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.f, 0.25f, 0.25f);
+				meshRenderer = playerRightArm->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			{// leg
+				transform = playerLeftLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, 0.5f, 0.f);
+
+				transform = playerLeftLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+
+				transform = playerRightLegAxis->getComponent<Transform>();
+				transform->translate(-1.25f, -0.5f, 0.f);
+
+				transform = playerRightLeg->getComponent<Transform>();
+				transform->translate(-0.75f, 0.f, 0.f);
+				transform->scale = vec3(1.0f, 0.25f, 0.25f);
+				meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
+				meshRenderer->loadMesh(boxMesh);
+				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->isShaded = false;
+				meshRenderer->isColored = true;
+				meshRenderer->color = vec4(1.f);
+			}
+			/*
+			meshRenderer = player->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+			*/
 		}
 
+		// walls
 		{
 			addObject(createWall(vec3(-13.0f, 0.0f, 0.0f), 90.f, vec3(15.f, 3.f, 10.f)));
 			addObject(createWall(vec3(+10.0f, 12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 10.f)));
