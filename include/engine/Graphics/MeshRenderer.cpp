@@ -24,6 +24,11 @@ void MeshRenderer::loadShader(Shader* shader)
 	_shader = shader;
 }
 
+void MeshRenderer::loadShaderDepth(Shader* shader)
+{
+	_shaderDepth = shader;
+}
+
 void MeshRenderer::render()
 {
 	glUseProgram(_shader->getProgram());
@@ -38,6 +43,7 @@ void MeshRenderer::render()
 	glUniform1i(_shader->getUniformLocation("b_shaded"), isShaded);
 	glUniform1i(_shader->getUniformLocation("b_colored"), isColored);
 	glUniform1i(_shader->getUniformLocation("b_texture"), hasTexture);
+	glUniform1i(_shader->getUniformLocation("b_alpha_tex"), hasAlpha);
 	glUniform4fv(_shader->getUniformLocation("color"), 1, color);
 
 	if (_material) {
@@ -65,6 +71,20 @@ void MeshRenderer::render()
 			break;
 		}
 	}
+
+	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
+}
+
+void MeshRenderer::renderDepth()
+{
+	glUseProgram(_shaderDepth->getProgram());
+
+	if (_mesh && _mesh->getVertexArray())
+		glBindVertexArray(_mesh->getVertexArray());
+
+	Transform* transform = getComponent<Transform>();
+	mat4 model_matrix = transform->getModelMatrix();
+	glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
 
 	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
 }

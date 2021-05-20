@@ -27,8 +27,7 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 	Mesh* sphereMesh = MeshMaker::makeSphere();
 	Texture* fireTexture = ResourceManager::getTexture("fire");
 	Material* material = new Material();
-	// Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
-	// auto basicShader = std::make_shared<Shader*>("shaders/solar-system.vert", "shaders/solar-system.frag");
+	
 	Transform* transform;
 	GameObject* particle;
 
@@ -40,7 +39,7 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 		meshRenderer->loadMesh(sphereMesh);
 		meshRenderer->loadTexture(fireTexture);
 		meshRenderer->loadMaterial(material);
-		meshRenderer->loadShader(basicShader);
+		meshRenderer->loadShader(GameManager::basicShader);
 
 		meshRenderer->isShaded = false;
 		meshRenderer->isColored = true;

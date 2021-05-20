@@ -34,6 +34,10 @@ public:
 		_shader = shader;
 	}
 
+	void loadShaderDepth(Shader* shader) {
+		_shaderDepth = shader;
+	}
+
 	void render() {
 		glUseProgram(_shader->getProgram());
 
@@ -45,7 +49,12 @@ public:
 		glUniform4fv(_shader->getUniformLocation("Is"), 1, specular);
 	}
 
+	void renderDepth() {
+		glUseProgram(_shaderDepth->getProgram());
+	}
+
 private:
 	Type _type = Type::Directional;
 	Shader* _shader = nullptr;
+	Shader* _shaderDepth = nullptr;
 };

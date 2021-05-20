@@ -15,7 +15,7 @@ public:
 private:
 	void init() {
 		Application::init();
-
+		
 		ImGuiIO& io = ImGui::GetIO(); (void)io;
 		ResourceManager::addFont("consola 20", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 20.f));
 		ResourceManager::addFont("consola 40", io.Fonts->AddFontFromFileTTF("fonts/consola.ttf", 40.f));
@@ -33,7 +33,11 @@ private:
 		ResourceManager::createTexture("venus", "textures/venus.jpg");
 		ResourceManager::createTexture("fire", "textures/fire.jpg");
 		ResourceManager::createTexture("fireParticle", "textures/fireParticle.jpg");
+		ResourceManager::createTexture("white", "textures/white.jpg");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
+
+		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);

@@ -262,26 +262,50 @@ void Application::update()
 
 void Application::render()
 {
-	Camera* mainCamera = Camera::main;
+	Camera* mainCamera = Camera::depth;
 	if (!mainCamera) {
 		std::cout << "No Camera." << std::endl;
 		return;
 	}
-	mainCamera->render();
+	else{
+		mainCamera->render();
+		
+		if (auto componentList = _componentManager.getComponentList<Light>()) {
+			for (auto componentPair : *componentList) {
+				Light* light = componentPair.second.get();
+				light->renderDepth();
+			}
+		}
 
-	if (auto componentList = _componentManager.getComponentList<Light>()) {
-		for (auto componentPair : *componentList) {
-			Light* light = componentPair.second.get();
-			light->render();
+		if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
+			for (auto componentPair : *componentList) {
+				MeshRenderer* renderer = componentPair.second.get();
+				renderer->renderDepth();
+			}
 		}
 	}
+	
 
-	if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
-		for (auto componentPair : *componentList) {
-			MeshRenderer* renderer = componentPair.second.get();
-			renderer->render();
-		}
-	}
+	// Camera* mainCamera = Camera::main;
+	// if (!mainCamera) {
+	// 	std::cout << "No Camera." << std::endl;
+	// 	return;
+	// }
+	// mainCamera->render();
+
+	// if (auto componentList = _componentManager.getComponentList<Light>()) {
+	// 	for (auto componentPair : *componentList) {
+	// 		Light* light = componentPair.second.get();
+	// 		light->render();
+	// 	}
+	// }
+
+	// if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
+	// 	for (auto componentPair : *componentList) {
+	// 		MeshRenderer* renderer = componentPair.second.get();
+	// 		renderer->render();
+	// 	}
+	// }
 }
 
 void Application::onGUIRender()
