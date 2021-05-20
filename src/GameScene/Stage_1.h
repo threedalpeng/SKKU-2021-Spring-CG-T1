@@ -303,11 +303,19 @@ public:
 		}
 
 		{
-			addObject(createWall(vec3(-13.0f, 0.0f, 0.0f), 90.f, vec3(15.f, 3.f, 1.f)));
-			addObject(createWall(vec3(+10.0f, 12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 1.f)));
-			addObject(createWall(vec3(+10.0f, -12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 1.f)));
-			addObject(createWall(vec3(+36.0f, -9.0f, 0.0f), 30.f, vec3(10.f, 3.f, 0.95f)));
-			addObject(createWall(vec3(+40.0f, 6.0f, 0.0f), -30.f, vec3(10.f, 3.f, 0.9f)));
+			addObject(createWall(vec3(-13.0f, 0.0f, 0.0f), 90.f, vec3(15.f, 3.f, 10.f)));
+			addObject(createWall(vec3(+10.0f, 12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 10.f)));
+			addObject(createWall(vec3(+10.0f, -12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 10.f)));
+			addObject(createWall(vec3(+47.47f, 1.43f, 0.0f), -30.f, vec3(31.35f, 3.f, 9.5f)));
+			addObject(createWall(vec3(+32.13f, -10.0f, 0.0f), 30.f, vec3(7.52f, 3.f, 9.75f)));
+			addObject(createWall(vec3(44.63f, -11.47f, 0.0f), -30.f, vec3(10.4f, 3.f, 10.f)));
+			addObject(createWall(vec3(55.28f, -28.4f, 0.0f), 45.f, vec3(23.3f, 3.f, 10.f)));
+			addObject(createWall(vec3(35.68f, -31.46f, 0.0f), 45.f, vec3(20.25f, 3.f, 10.f)));
+			addObject(createWall(vec3(29.66f, -49.9f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
+			addObject(createWall(vec3(45.68f, -58.6f, 0.0f), 45.f, vec3(13.25f, 3.f, 10.f)));
+			addObject(createWall(vec3(40.15f, -80.89f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
+			addObject(createWall(vec3(44.21f, -46.03f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
+			addObject(createWall(vec3(22.46f, -63.2f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
 		}
 
 		// meteor //
