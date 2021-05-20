@@ -17,7 +17,6 @@
 #include "../Tool/ParticleMaker.h"
 #include "../Custom/CustomRigidBody.h"
 
-
 //*******************************************************************
 // bullet3
 #include "btBulletCollisionCommon.h"
@@ -89,7 +88,6 @@ public:
 		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 		Texture* whiteTexture = ResourceManager::getTexture("white");
 
-
 		/* Shader */
 		// Shader* basicShader = ResourceManager::getShader("basicShader");	 	// !!! bug
 
@@ -144,7 +142,7 @@ public:
 
 		addObject(player);
 		// addObject(meteor);
-		
+
 		// addObject(gui);
 
 		/* Initialize Objects with Components */
@@ -164,10 +162,10 @@ public:
 			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 			camera->addShader(GameManager::basicShader);
 			camera->addShader(GameManager::depthShader);
-			
+
 			camera->setThisMainCamera();
 		}
-		
+
 		// background //
 		{
 			meshRenderer = background->addComponent<MeshRenderer>();
@@ -236,15 +234,14 @@ public:
 			////////////////////////////////////////////////////////
 
 			camera = depthCamera->addComponent<Camera>();
-			
+
 			DepthCameraScript* cameraScript = new DepthCameraScript();
 			depthCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 			cameraScript->light = lightPoint;
 			camera->addShader(GameManager::basicShader);
 			camera->addShader(GameManager::depthShader);
-			camera->setThisDepthCamera();			
+			camera->setThisDepthCamera();
 		}
-		
 
 		// player //
 		{
@@ -298,57 +295,57 @@ public:
 
 		// meteor //
 		{
-		 	meshRenderer = meteor->addComponent<MeshRenderer>();
-		 	meshRenderer->loadMesh(sphereMesh);
-		 	meshRenderer->loadTexture(meteorTexture);
-		 	meshRenderer->loadShader(GameManager::basicShader);
-		 	meshRenderer->loadShaderDepth(GameManager::depthShader);
-		 	meshRenderer->loadMaterial(material);
-		 	meshRenderer->isShaded = true;
-		 	meshRenderer->isColored = false;
-		 	meshRenderer->hasTexture = true;
+			meshRenderer = meteor->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
 
-		 	transform = meteor->getComponent<Transform>();
-		 	transform->position = vec3(0.0f, 0.0f, 0.0f);
-		 	transform->scale = vec3(0.6f, 0.6f, 0.6f);
-		 	obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
-		 	obstacleScript->hasSound = true;
-		 	meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
+			transform = meteor->getComponent<Transform>();
+			transform->position = vec3(0.0f, 0.0f, 0.0f);
+			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+			obstacleScript->hasSound = true;
+			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
-		 	//create a dynamic rigidbody
-		 	btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
-		 	collisionShapes.push_back(colShape);
+			//create a dynamic rigidbody
+			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
+			collisionShapes.push_back(colShape);
 
-		 	// Create Dynamic Objects
-		 	btTransform startTransform;
-		 	startTransform.setIdentity();
+			// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
 
-		 	btScalar mass(1.f);
+			btScalar mass(1.f);
 
-		 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		 	bool isDynamic = (mass != 0.f);
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (mass != 0.f);
 
-		 	btVector3 localInertia(0, 0, 0);
-		 	if (isDynamic)
-		 		colShape->calculateLocalInertia(mass, localInertia);
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(mass, localInertia);
 
-		 	startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+			startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
 
-		 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		 	CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
 
-		 	GameManager::dynamicsWorld->addRigidBody(body);
+			GameManager::dynamicsWorld->addRigidBody(body);
 
-		 	transform->body = body;
-		 	body->setLinearVelocity(btVector3(-3.f, 0, 0));
-		 	body->gameObject = meteor;
+			transform->body = body;
+			body->setLinearVelocity(btVector3(-3.f, 0, 0));
+			body->gameObject = meteor;
 
-		 	soundPlayer = meteor->addComponent<SoundPlayer>();
-		 	soundPlayer->loadSoundFrom("sounds/explode.mp3");
-		 	soundPlayer->setType(SoundPlayer::Type::Event2D);
-		 }
+			soundPlayer = meteor->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/explode.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Event2D);
+		}
 
 		// {
 		// 	GameObject* backBox = GameObject::create("back box");
@@ -377,19 +374,18 @@ public:
 		// 	backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
 		// }
 
-		
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
 		unsigned int depthMapFBO;
-    	glGenFramebuffers(1, &depthMapFBO);
+		glGenFramebuffers(1, &depthMapFBO);
 
 		GLuint depthMap;
-		glGenTextures(1, &depthMap); 
+		glGenTextures(1, &depthMap);
 		glBindTexture(GL_TEXTURE_2D, depthMap);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
@@ -402,4 +398,3 @@ public:
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
 	}
 };
-

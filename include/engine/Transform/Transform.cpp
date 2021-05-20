@@ -15,6 +15,9 @@ void Transform::rotate(vec3 axis, float angle) {
 	Quaternion q = Quaternion::axisAngle(axis, angle);
 	rotation = rotation * q;
 }
+void Transform::rotate(Quaternion q) {
+	rotation = rotation * q;
+}
 
 void Transform::rotateAround(vec3 worldPoint, vec3 axis, float angle)
 {
@@ -24,7 +27,7 @@ void Transform::rotateAround(vec3 worldPoint, vec3 axis, float angle)
 }
 
 void Transform::update() {
-	if(body) calWolrPositionBT();
+	if (body) calWolrPositionBT();
 	GameObject* parent = getCurrentObject()->getParent();
 	if (parent) {
 		Transform* parentTransform = parent->getComponent<Transform>();
@@ -57,7 +60,7 @@ mat4 Transform::getModelMatrix() {
 }
 
 void Transform::setModelMatrix(mat4* m) {
-	for(int i = 0; i < 16; i++) _modelMatrix[i] = m->a[i];
+	for (int i = 0; i < 16; i++) _modelMatrix[i] = m->a[i];
 }
 
 vec3 Transform::localToWorldPoint(vec3 v)
@@ -76,16 +79,15 @@ void Transform::calWolrPositionBT()
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	btVector3 tmp = trans.getOrigin();
 	position = vec3(tmp.getX(), tmp.getY(), tmp.getZ());
-	
 }
 
 void Transform::setWorlPositionBT(btVector3 new_position)
-{	
+{
 	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	trans.setOrigin(new_position);
 	body->setWorldTransform(trans);
-}	
+}
 
 btVector3 Transform::getVelocityBT()
 {

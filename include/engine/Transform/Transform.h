@@ -17,14 +17,14 @@ public:
 	vec3 worldPosition = vec3();
 	Quaternion worldRotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 	vec3 worldScale = vec3(1.f, 1.f, 1.f);
-	
+
 	vec3 _normal = vec3();
 	btRigidBody* body = nullptr;
-
 
 	void translate(const vec3& v);
 	void translate(float x, float y, float z);
 	void rotate(vec3 axis, float angle);
+	void rotate(Quaternion q);
 	void rotateAround(vec3 worldPoint, vec3 axis, float angle);
 
 	void update();
