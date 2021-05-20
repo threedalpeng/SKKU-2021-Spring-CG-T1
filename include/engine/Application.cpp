@@ -239,6 +239,10 @@ void Application::fixedUpdate()
 
 void Application::update()
 {
+	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
+		iterateTransform(rootObj);
+	}
+
 	if (auto componentList = _componentManager.getComponentList<ScriptLoader>()) {
 		for (auto componentPair : *componentList) {
 			ScriptLoader* scriptLoader = componentPair.second.get();

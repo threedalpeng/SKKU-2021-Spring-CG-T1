@@ -11,7 +11,7 @@ public:
 private:
 	Camera* camera = nullptr;
 
-	float distance = 10.f;
+	float distance = 20.f;
 	float rangeRadius = 0.f;
 	float rangeAngle = 20.f * PI / 180.f;
 
@@ -19,12 +19,14 @@ public:
 	void init() override {
 		getComponent<Transform>()->translate(vec3(0, 0, distance));
 		camera = getComponent<Camera>();
-		camera->at = vec3(0, 0, 0);
+		// camera->at = vec3(0, 0, 0);
+		target = getObject()->getParent()->getComponent<Transform>();
+		camera->activateTracking(target);
 		rangeRadius = tanf(rangeAngle) * distance;
 	}
 
 	void update() override {
-		vec3 currentPos = getComponent<Transform>()->worldPosition;
+		vec3 currentPos = getComponent<Transform>()->position;
 		vec3 originPos = vec3(0.f, 0.f, distance);
 		vec3 targetPos = vec3();
 		if (Input::getKey(GLFW_KEY_DOWN)) {

@@ -101,6 +101,8 @@ public:
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
 
+		GameObject* staticObject = GameObject::create("static object");
+
 		GameObject* particle = GameObject::create("particle");
 
 		GameObject* gui = GameObject::create("GUI");
@@ -134,14 +136,16 @@ public:
 
 		//*********************************************
 		/* Link Objects */
-		addObject(mainCamera);
-		addObject(depthCamera);
 
-		addObject(background);
 		addObject(lightPoint);
 
 		addObject(player);
+		/**/ player->addChildren(background);
+		/**/ player->addChildren(mainCamera);
+		addObject(depthCamera);
 		addObject(meteor);
+
+		addObject(staticObject);
 
 		// addObject(gui);
 
@@ -343,6 +347,57 @@ public:
 			body->gameObject = meteor;
 
 			soundPlayer = meteor->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/explode.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Event2D);
+		}
+
+		{
+			// static object test
+			meshRenderer = staticObject->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+
+			transform = staticObject->getComponent<Transform>();
+			transform->position = vec3(0.0f, 6.0f, 0.0f);
+			transform->scale = vec3(3.0f);
+
+			//create a dynamic rigidbody
+			btCollisionShape* colShape = new btSphereShape(btScalar(3.f));
+			collisionShapes.push_back(colShape);
+
+			// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
+
+			btScalar mass(0.f);
+
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (mass != 0.f);
+
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(mass, localInertia);
+
+			startTransform.setOrigin(btVector3(0.0f, 6.0f, 0.0f));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
+
+			GameManager::dynamicsWorld->addRigidBody(body);
+
+			transform->body = body;
+			body->setLinearVelocity(btVector3(0.f, 0, 0));
+			body->gameObject = staticObject;
+
+			soundPlayer = staticObject->addComponent<SoundPlayer>();
 			soundPlayer->loadSoundFrom("sounds/explode.mp3");
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
