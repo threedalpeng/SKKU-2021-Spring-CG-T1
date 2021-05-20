@@ -127,7 +127,7 @@ public:
 
 		GameManager::dynamicsWorld = new btMultiBodyDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
 
-		// dynamicsWorld->setGravity(btVector3(0, -10, 0));
+		//GameManager::dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
@@ -141,7 +141,7 @@ public:
 		addObject(lightPoint);
 
 		addObject(player);
-		// addObject(meteor);
+		addObject(meteor);
 
 		// addObject(gui);
 
