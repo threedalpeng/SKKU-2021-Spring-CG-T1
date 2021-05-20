@@ -69,6 +69,11 @@ class Stage_1 : public Scene {
 public:
 	Stage_1() : Scene() {};
 
+	Mesh* boxMesh = nullptr;
+	Texture* wallTexture = nullptr;
+
+	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+
 	void init() {
 		/* Font */
 		/*
@@ -80,7 +85,7 @@ public:
 		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 		//Mesh* boxMesh = MeshMaker::makeBoxMesh();
-		Mesh* boxMesh = createBoxMesh();
+		boxMesh = createBoxMesh();
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
@@ -88,6 +93,10 @@ public:
 		Texture* fireTexture = ResourceManager::getTexture("fire");
 		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 		Texture* whiteTexture = ResourceManager::getTexture("white");
+		wallTexture = ResourceManager::getTexture("mercury");
+
+		/* Material */
+		Material* material = ResourceManager::getMaterial("Basic");
 
 		/* Shader */
 		// Shader* basicShader = ResourceManager::getShader("basicShader");	 	// !!! bug
@@ -101,8 +110,6 @@ public:
 
 		GameObject* player = GameObject::create("player");
 		GameObject* meteor = GameObject::create("meteor");
-
-		GameObject* staticObject = GameObject::create("static object");
 
 		GameObject* particle = GameObject::create("particle");
 
@@ -133,8 +140,6 @@ public:
 		//GameManager::dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
-		btAlignedObjectArray<btCollisionShape*> collisionShapes;
-
 		//*********************************************
 		/* Link Objects */
 
@@ -146,8 +151,6 @@ public:
 		addObject(depthCamera);
 		addObject(meteor);
 
-		addObject(staticObject);
-
 		// addObject(gui);
 
 		/* Initialize Objects with Components */
@@ -156,7 +159,6 @@ public:
 		//TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
-		Material* material = new Material();
 		ObstacleScript* obstacleScript;
 		SoundPlayer* soundPlayer;
 
@@ -188,6 +190,7 @@ public:
 			BackgroundScript* backgroundScript = new BackgroundScript();
 			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 
+			/*
 			btCollisionShape* groundShape = new btBoxShape(btVector3(btScalar(50.), btScalar(50.), btScalar(50.)));
 
 			collisionShapes.push_back(groundShape);
@@ -212,6 +215,7 @@ public:
 			//add the body to the dynamics world
 			GameManager::dynamicsWorld->addRigidBody(body);
 			body->gameObject = background;
+			*/
 		}
 
 		// light point && depth camera
@@ -298,6 +302,14 @@ public:
 			body->gameObject = player;
 		}
 
+		{
+			addObject(createWall(vec3(-13.0f, 0.0f, 0.0f), 90.f, vec3(15.f, 3.f, 1.f)));
+			addObject(createWall(vec3(+10.0f, 12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 1.f)));
+			addObject(createWall(vec3(+10.0f, -12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 1.f)));
+			addObject(createWall(vec3(+36.0f, -9.0f, 0.0f), 30.f, vec3(10.f, 3.f, 0.95f)));
+			addObject(createWall(vec3(+40.0f, 6.0f, 0.0f), -30.f, vec3(10.f, 3.f, 0.9f)));
+		}
+
 		// meteor //
 		{
 			meshRenderer = meteor->addComponent<MeshRenderer>();
@@ -352,61 +364,6 @@ public:
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
 
-		{
-			// static object test
-			Quaternion q = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), 45.f);
-
-			meshRenderer = staticObject->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadTexture(meteorTexture);
-			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
-			meshRenderer->loadMaterial(material);
-			meshRenderer->isShaded = true;
-			meshRenderer->isColored = false;
-			meshRenderer->hasTexture = true;
-
-			transform = staticObject->getComponent<Transform>();
-			transform->position = vec3(0.0f, 6.0f, 0.0f);
-			transform->scale = vec3(50.f, 2.5f, 1.f);
-			transform->rotation = q;
-
-			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btBoxShape(btVector3(50.f, 2.5f, 1.f));
-			collisionShapes.push_back(colShape);
-
-			// Create Dynamic Objects
-			btTransform startTransform;
-			startTransform.setIdentity();
-
-			btScalar mass(0.f);
-
-			//rigidbody is dynamic if and only if mass is non zero, otherwise static
-			bool isDynamic = (mass != 0.f);
-
-			btVector3 localInertia(0, 0, 0);
-			if (isDynamic)
-				colShape->calculateLocalInertia(mass, localInertia);
-
-			startTransform.setOrigin(btVector3(0.0f, 6.0f, 0.0f));
-			startTransform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
-
-			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
-
-			GameManager::dynamicsWorld->addRigidBody(body);
-
-			transform->body = body;
-			body->setLinearVelocity(btVector3(0.f, 0, 0));
-			body->gameObject = staticObject;
-
-			soundPlayer = staticObject->addComponent<SoundPlayer>();
-			soundPlayer->loadSoundFrom("sounds/explode.mp3");
-			soundPlayer->setType(SoundPlayer::Type::Event2D);
-		}
-
 		// {
 		// 	GameObject* backBox = GameObject::create("back box");
 		// 	addObject(backBox);
@@ -456,12 +413,11 @@ public:
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
+		soundPlayer = gui->addComponent<SoundPlayer>();
 	}
 
 	Mesh* createBoxMesh() {
 		Mesh* mesh = new Mesh();
-
-		uint nCircleVertex = 48;
 
 		mesh->vertex_buffer = 0;
 		mesh->index_buffer = 0;
@@ -503,5 +459,65 @@ public:
 
 		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
 		return mesh;
+	}
+
+	GameObject* createWall(vec3 pos, float rotAngle, vec3 scale) {
+		//Material* material = ResourceManager::getMaterial("Basic");
+
+		// static object test
+		Quaternion q = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), rotAngle);
+		btQuaternion btq = btQuaternion(q.x, q.y, q.z, q.w);
+		btVector3 btpos = btVector3(pos.x, pos.y, pos.z);
+		btVector3 btscale = btVector3(scale.x, scale.y, scale.z);
+
+		GameObject* wall = GameObject::create("Wall");
+
+		MeshRenderer* meshRenderer = wall->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(boxMesh);
+		meshRenderer->loadTexture(wallTexture);
+		meshRenderer->loadShader(GameManager::basicShader);
+		meshRenderer->loadShaderDepth(GameManager::depthShader);
+		//meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = false;
+		meshRenderer->hasTexture = true;
+
+		Transform* transform = wall->getComponent<Transform>();
+		transform->position = pos;
+		transform->scale = scale;
+		transform->rotation = q;
+
+		//create a dynamic rigidbody
+		btCollisionShape* colShape = new btBoxShape(btscale);
+		collisionShapes.push_back(colShape);
+
+		// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+		btScalar mass(0.f);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btpos);
+		startTransform.setRotation(btq);
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
+
+		GameManager::dynamicsWorld->addRigidBody(body);
+
+		transform->body = body;
+		body->setLinearVelocity(btVector3(0.f, 0, 0));
+		body->gameObject = wall;
+
+		return wall;
 	}
 };

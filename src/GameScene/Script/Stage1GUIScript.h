@@ -57,6 +57,10 @@ private:
 	float hp = 200;
 	float maxHp = 200;
 
+	bool gameFirstStarted = true;
+
+	SoundPlayer* soundPlayer;
+
 	size_t dialogIndex = 0;
 	std::vector<std::pair<std::string, std::string>> dialogs = {
 		{"How To", "P - Pause Menu\nESC - Quit to Desktop"},
@@ -78,6 +82,11 @@ private:
 	};
 	std::vector<GLuint> images = {};
 
+	std::vector<std::string> soundList = {
+		"sounds/2 - Can you swim... in space.mp3",
+		"sounds/3 - Space Swim!.mp3",
+	};
+
 public:
 
 	void init() override {
@@ -88,11 +97,23 @@ public:
 			LoadTextureFromFile(imagePaths[i].c_str(), &texture, &imageWidth, &imageHeight);
 			images.push_back(texture);
 		}
+		soundPlayer = getComponent<SoundPlayer>();
+		soundPlayer->loadSoundFrom(soundList[0]);
+		soundPlayer->setType(SoundPlayer::Type::Background);
+		soundPlayer->setVolume(0.2f);
 	}
 
 	void update() override {
 		static bool damaged = true;
 		if (currentMode == Mode::GAME) {
+			if (gameFirstStarted) {
+				soundPlayer->loadSoundFrom(soundList[1]);
+				soundPlayer->setType(SoundPlayer::Type::Background);
+				soundPlayer->setVolume(0.5f);
+				gameFirstStarted = false;
+			}
+			soundPlayer->play();
+
 			if (damaged) {
 				hp -= 10.f * Time::delta();
 			}
@@ -118,6 +139,7 @@ public:
 			}
 		}
 		else if (currentMode == Mode::HELP) {
+			soundPlayer->pause();
 			if (Input::getKeyDown(GLFW_KEY_F1)) {
 				currentMode = Mode::GAME;
 			}
@@ -129,6 +151,9 @@ public:
 			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
 				dialogIndex++;
 			}
+		}
+		else if (currentMode == Mode::PAUSE) {
+			soundPlayer->pause();
 		}
 	}
 
@@ -174,6 +199,13 @@ private:
 		);
 
 		if (dialogIndex < dialogs.size()) {
+			if (0 <= dialogIndex && dialogIndex <= 1) {
+				soundPlayer->play();
+			}
+			else {
+				soundPlayer->stop();
+			}
+
 			ImGui::Begin(dialogs[dialogIndex].first.c_str(), NULL, windowFlags);
 			{
 				ImVec2 windowSize = ImGui::GetWindowSize();

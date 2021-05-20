@@ -215,8 +215,9 @@ public:
 			GameStartGUIScript* guiScript = new GameStartGUIScript();
 			gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
 			soundPlayer = gameStartGUI->addComponent<SoundPlayer>();
-			soundPlayer->loadSoundFrom("sounds/space.mp3");
+			soundPlayer->loadSoundFrom("sounds/1 - Quite Space.mp3");
 			soundPlayer->setType(SoundPlayer::Type::Background);
+			soundPlayer->setVolume(0.5f);
 		}
 	}
 

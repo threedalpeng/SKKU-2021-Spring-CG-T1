@@ -35,6 +35,9 @@ private:
 		ResourceManager::createTexture("fireParticle", "textures/fireParticle.jpg");
 		ResourceManager::createTexture("white", "textures/white.jpg");
 		ResourceManager::createTexture("Player Head", "textures/spacehead.png");
+		ResourceManager::createTexture("mercury", "textures/mercury.jpg");
+
+		ResourceManager::createMaterial("Basic");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");

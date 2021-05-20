@@ -146,5 +146,9 @@
     <Media Include="bin\sounds\space.mp3" />
     <Media Include="bin\sounds\strange-alarm.mp3" />
     <Media Include="bin\sounds\strange-alarm.wav" />
+    <Media Include="bin\sounds\4 - Too Dangerous To Swim.mp3" />
+    <Media Include="bin\sounds\1 - Quite Space.mp3" />
+    <Media Include="bin\sounds\2 - Can you swim... in space.mp3" />
+    <Media Include="bin\sounds\3 - Space Swim!.mp3" />
   </ItemGroup>
 </Project>

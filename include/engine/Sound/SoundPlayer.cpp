@@ -9,6 +9,8 @@ SoundPlayer::~SoundPlayer()
 }
 
 void SoundPlayer::loadSoundFrom(std::string soundPath) {
+	clear();
+	std::cout << "Loading sound...: " << soundPath << std::endl;
 	_soundSource = _engine->addSoundSourceFromFile(soundPath.c_str());
 }
 
@@ -63,7 +65,7 @@ void SoundPlayer::setVolume(float volume) {
 		_sound->setVolume(volume);
 	}
 	if (_soundSource) {
-		_sound->setVolume(volume);
+		_soundSource->setDefaultVolume(volume);
 	}
 }
 

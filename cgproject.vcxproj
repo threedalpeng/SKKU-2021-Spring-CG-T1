@@ -295,6 +295,10 @@
     <Library Include="lib\irrKlang\irrKlang.lib" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="bin\sounds\1 - Quite Space.mp3" />
+    <Media Include="bin\sounds\2 - Can you swim... in space.mp3" />
+    <Media Include="bin\sounds\3 - Space Swim!.mp3" />
+    <Media Include="bin\sounds\4 - Too Dangerous To Swim.mp3" />
     <Media Include="bin\sounds\explode.mp3" />
     <Media Include="bin\sounds\hello.mp3" />
     <Media Include="bin\sounds\hello.wav" />
