@@ -47,8 +47,9 @@ public:
 		*/
 
 		btVector3 btv = player->getVelocityBT();
-		vec3 vel = vec3(btv.x(), btv.y(), 0.f).normalize();
+		vec3 vel = vec3(btv.x(), btv.y(), 0.f);
 		if (vel != vec3()) {
+			vel = vel.normalize();
 			float angle = atan2f(vel.y, vel.x);
 			getComponent<Transform>()->rotation = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), angle * 180.f / PI);
 		}
