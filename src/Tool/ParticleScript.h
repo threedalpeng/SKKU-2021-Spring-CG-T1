@@ -34,7 +34,8 @@ public:
 
         if(remainLife < 0.0f)
         {
-            
+            GameObject* thisObject = getObject();
+			GameManager::removeList.push_back(thisObject);
         }
     }
     

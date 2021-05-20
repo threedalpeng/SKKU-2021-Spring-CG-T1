@@ -20,7 +20,7 @@ stage
 	1~9: n-state
 	10 : endding scene
 */
-Shader* basicShader;
+
 class GameManager
 {
 public:
@@ -52,6 +52,8 @@ public:
 	static std::vector<GameObject*> removeList;
 	static void cleanRemoveList();
 
+	static Shader* basicShader;
+	static Shader* depthShader;
 
 
 private:
@@ -74,6 +76,8 @@ std::random_device GameManager::rd = std::random_device();
 std::mt19937 GameManager::gen = std::mt19937(GameManager::rd());
 std::normal_distribution<float> GameManager::dist = std::normal_distribution<float>(0.0f, 1.0f);
 
+Shader* GameManager::basicShader = nullptr;
+Shader* GameManager::depthShader = nullptr;
 
 bool GameManager::setStage(int state)
 {

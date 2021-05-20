@@ -61,6 +61,10 @@ public:
 		main = this;
 	}
 
+	void setThisDepthCamera() {
+		depth = this;
+	}
+
 	vec3 viewportToWorldPoint(vec3 v) {
 		return mat3(view_matrix).transpose() * v;
 	}
@@ -83,6 +87,7 @@ public:
 	mat4 projection_matrix;
 
 	static Camera* main;
+	static Camera* depth;
 
 	vec3 eye = vec3(0, 30, 300);
 	vec3 at = vec3(0, 0, 0);

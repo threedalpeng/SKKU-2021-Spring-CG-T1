@@ -33,7 +33,12 @@ private:
 		ResourceManager::createTexture("venus", "textures/venus.jpg");
 		ResourceManager::createTexture("fire", "textures/fire.jpg");
 		ResourceManager::createTexture("fireParticle", "textures/fireParticle.jpg");
+		ResourceManager::createTexture("white", "textures/white.jpg");
+		ResourceManager::createTexture("Player Head", "textures/spacehead.png");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
+
+		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
+		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);

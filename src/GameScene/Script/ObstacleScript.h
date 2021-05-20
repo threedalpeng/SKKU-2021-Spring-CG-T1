@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "engine/Core.h"
 #include <iostream>
 
@@ -29,12 +29,16 @@ public:
 		vec3 distance = _velocity * Time::delta();
 		transform->translate(distance);
 
-		if (!leave) remainLife -= Time::delta();
+		if (!leave){
+			remainLife -= Time::delta();
+			GameObject* thisObject = getObject();
+			MeshRenderer* thisMeshRenderer = thisObject->getComponent<MeshRenderer>();
+			thisMeshRenderer->color.w = std::max(remainLife / 2.0f, 0.0f);
+		} 
+
 		if (remainLife < 0.0f)
 		{
 			GameObject* thisObject = getObject();
-			// GameManager::dynamicsWorld->removeCollisionObject(transform->body);
-			// thisObject->remove();
 			GameManager::removeList.push_back(thisObject);
 		}
 	}
@@ -50,6 +54,13 @@ public:
 		if (leave)
 		{
 			explode();
+			GameObject* thisObject = getObject();
+			MeshRenderer* thisMeshRenderer = thisObject->getComponent<MeshRenderer>();
+			thisMeshRenderer->isColored = true;
+			thisMeshRenderer->isShaded = true;
+			thisMeshRenderer->hasTexture = true;
+			thisMeshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
 			leave = false;
 		}
 	}
