@@ -79,7 +79,8 @@ public:
 		/* Mesh */
 		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
 		Mesh* sphereMesh = MeshMaker::makeSphere();
-		Mesh* boxMesh = MeshMaker::makeBoxMesh();
+		//Mesh* boxMesh = MeshMaker::makeBoxMesh();
+		Mesh* boxMesh = createBoxMesh();
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
@@ -353,8 +354,10 @@ public:
 
 		{
 			// static object test
+			Quaternion q = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), 45.f);
+
 			meshRenderer = staticObject->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadMesh(boxMesh);
 			meshRenderer->loadTexture(meteorTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
 			meshRenderer->loadShaderDepth(GameManager::depthShader);
@@ -365,10 +368,11 @@ public:
 
 			transform = staticObject->getComponent<Transform>();
 			transform->position = vec3(0.0f, 6.0f, 0.0f);
-			transform->scale = vec3(3.0f);
+			transform->scale = vec3(50.f, 2.5f, 1.f);
+			transform->rotation = q;
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(3.f));
+			btCollisionShape* colShape = new btBoxShape(btVector3(50.f, 2.5f, 1.f));
 			collisionShapes.push_back(colShape);
 
 			// Create Dynamic Objects
@@ -385,6 +389,7 @@ public:
 				colShape->calculateLocalInertia(mass, localInertia);
 
 			startTransform.setOrigin(btVector3(0.0f, 6.0f, 0.0f));
+			startTransform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
 
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -451,5 +456,52 @@ public:
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
+	}
+
+	Mesh* createBoxMesh() {
+		Mesh* mesh = new Mesh();
+
+		uint nCircleVertex = 48;
+
+		mesh->vertex_buffer = 0;
+		mesh->index_buffer = 0;
+
+		// Create vertex list
+		mesh->vertex_list = {
+			{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -1.f, +1.f), vec2(0.f, 0.f) },
+			{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -1.f, -1.f), vec2(0.f, 0.f) },
+			{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -1.f, -1.f), vec2(0.f, 0.f) },
+			{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, +1.f, +1.f), vec2(1.f, 1.f) },
+			{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, +1.f, +1.f), vec2(1.f, 1.f) },
+			{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, +1.f, -1.f), vec2(1.f, 1.f) },
+			{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, +1.f, -1.f), vec2(1.f, 1.f) },
+		};
+
+		// Create index list
+		mesh->index_list = {
+			0, 1, 4,
+			1, 5, 4,
+			1, 2, 5,
+			2, 6, 5,
+			0, 4, 3,
+			4, 7, 3,
+			7, 6, 2,
+			3, 7, 2,
+			7, 4, 5,
+			6, 7, 5,
+			0, 3, 1,
+			1, 3, 2,
+		};
+
+		glGenBuffers(1, &(mesh->vertex_buffer));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
+		glGenBuffers(1, &(mesh->index_buffer));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+
+		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
+		return mesh;
 	}
 };
