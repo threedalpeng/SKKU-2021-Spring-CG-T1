@@ -27,6 +27,7 @@ public:
 
 		/* Texture */
 		Texture* backgroundTexture = new Texture("textures/Milky_Way.jpg");
+		Texture* headTexture = new Texture("textures/spacehead.png");
 
 		/* Shader */
 		Shader* basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
@@ -126,10 +127,11 @@ public:
 				transform->scale = vec3(0.5f);
 				meshRenderer = playerHead->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(sphereMesh);
+				meshRenderer->loadTexture(headTexture);
 				meshRenderer->loadShader(basicShader);
 				meshRenderer->isShaded = false;
-				meshRenderer->isColored = true;
-				meshRenderer->color = vec4(1.f);
+				//meshRenderer->isColored = true;
+				//meshRenderer->color = vec4(1.f);
 			}
 			{// body
 				transform = playerBody->getComponent<Transform>();
@@ -150,7 +152,7 @@ public:
 				meshRenderer->loadShader(basicShader);
 				meshRenderer->isShaded = false;
 				meshRenderer->isColored = true;
-				meshRenderer->color = vec4(1.f);
+				meshRenderer->color = vec4(0.5f, 0.5f, 0.5f, 1.f);
 			}
 			{//arm
 				transform = playerLeftArmAxis->getComponent<Transform>();

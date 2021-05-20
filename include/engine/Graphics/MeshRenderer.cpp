@@ -54,7 +54,7 @@ void MeshRenderer::render()
 		case Texture::Type::Default:
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, texture->textureId);
-			glUniform1i(_shader->getUniformLocation("b_alpha"), false);
+			//glUniform1i(_shader->getUniformLocation("b_alpha"), false);
 			glUniform1i(_shader->getUniformLocation("TEX0"), 0);
 			break;
 		case Texture::Type::Alpha:
