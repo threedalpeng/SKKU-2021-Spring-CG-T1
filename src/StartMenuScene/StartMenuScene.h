@@ -116,11 +116,13 @@ public:
 
 			// player
 			PlayerAnimationScript* playerAnimationScript = new PlayerAnimationScript();
+			playerAnimationScript->player = player->getComponent<Transform>();
 			playerAnimationScript->leftArmAxis = playerLeftArmAxis->getComponent<Transform>();
 			playerAnimationScript->rightArmAxis = playerRightArmAxis->getComponent<Transform>();
 			playerAnimationScript->leftLegAxis = playerLeftLegAxis->getComponent<Transform>();
 			playerAnimationScript->rightLegAxis = playerRightLegAxis->getComponent<Transform>();
 			playerAxis->addComponent<ScriptLoader>()->addScript(playerAnimationScript);
+
 			{// head
 				transform = playerHead->getComponent<Transform>();
 				transform->translate(1.5f, 0.f, 0.f);

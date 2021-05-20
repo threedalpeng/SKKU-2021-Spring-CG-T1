@@ -65,6 +65,13 @@ public:
 	inline vec3 operator*(const vec3& v) const {
 		return (mat3(this->toMatrix()) * v);
 	}
+	inline Quaternion operator/(const Quaternion& q) const {
+		vec3 v = vec3(x, y, z);
+		vec3 qV = vec3(q.x, q.y, q.z);
+		vec3 tV = -w * qV + q.w * v - v.cross(qV);
+		float tW = w * q.w + v.dot(qV);
+		return Quaternion(tV, tW).normalize();
+	}
 
 	inline float length() const {
 		return sqrtf(x * x + y * y + z * z + w * w);
