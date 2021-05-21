@@ -13,6 +13,10 @@ class PlayerScript : public Script
 {
 public:
 	PlayerScript() : Script() {}
+	~PlayerScript() {
+		EventManager<GuiEvent>::removeListener(guiEventId);
+	}
+
 	int HP = 100;
 	btVector3 savePoint = btVector3(-3.0f, 0, 0);
 	float 	lastWallCollistion = 0.0f;
@@ -23,27 +27,52 @@ private:
 	EventCheckerSphere gravityFallEventChecker = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), 5.f);
 	EventCheckerSphere gravityStopEventChecker = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), 5.f);
 	EventCheckerSphere endEventChecker = EventCheckerSphere(vec3(262.4f, 35.7f, 0.f), 15.f);
+	uint guiEventId = 0;
+
+	bool gameStopped = true;
+	bool gravityOn = false;
+
 public:
+
+	bool guiFinished(const GuiEvent& e) {
+		if (e.guiId == -1)
+			gameStopped = false;
+		if (gravityOn) {
+			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
+			gravityOn = false;
+		}
+		return true;
+	}
 
 	void init() override {
 		transform = getComponent<Transform>();
+		guiEventId = EventManager<GuiEvent>::addListener([this](const GuiEvent& e) -> bool {
+			return guiFinished(e);
+			});
 	}
 
 	void update() override {
 		//printf("%f, %f\n", transform->worldPosition.x, transform->worldPosition.y);
+		if (gameStopped) {
+			return;
+		}
+
 		if (warningEventChecker.shouldTrigger(transform->worldPosition)) {
-			//EventManager<GuiEvent>::tringgerEvent({ 2 });
+			stopPlayer();
+			EventManager<GuiEvent>::tringgerEvent({ 4 });
 			printf("watch out!\n");
 		}
 		if (gravityFallEventChecker.shouldTrigger(transform->worldPosition)) {
-			//EventManager<GuiEvent>::tringgerEvent({ 2 });
-			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
+			stopPlayer();
+			EventManager<GuiEvent>::tringgerEvent({ 5 });
+			gravityOn = true;
 		}
 		if (gravityStopEventChecker.shouldTrigger(transform->worldPosition)) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
 		}
 		if (endEventChecker.shouldTrigger(transform->worldPosition)) {
-			//EventManager<GuiEvent>::tringgerEvent({ 2 });
+			stopPlayer();
+			EventManager<GuiEvent>::tringgerEvent({ 6 });
 			printf("finished!\n");
 		}
 
@@ -91,5 +120,10 @@ public:
 	{
 		MeshRenderer* meshRenderer;
 		Mesh* sphereMesh = MeshMaker::makeSphere();
+	}
+
+	void stopPlayer() {
+		gameStopped = true;
+		transform->setVelocityBT(btVector3(0.f, 0.f, 0.f));
 	}
 };

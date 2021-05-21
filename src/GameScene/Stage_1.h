@@ -71,6 +71,7 @@ public:
 
 	Texture* wallTexture = nullptr;
 	Texture* radioactiveTexture = nullptr;
+	Texture* meteorTexture = nullptr;
 
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 
@@ -88,7 +89,7 @@ public:
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
-		Texture* meteorTexture = ResourceManager::getTexture("venus");
+		meteorTexture = ResourceManager::getTexture("venus");
 		Texture* fireTexture = ResourceManager::getTexture("fire");
 		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 		Texture* whiteTexture = ResourceManager::getTexture("white");
@@ -175,7 +176,7 @@ public:
 		addObject(backBox);
 		addObject(meteor);
 
-		// addObject(gui);
+		addObject(gui);
 
 		/* Initialize Objects with Components */
 		MeshRenderer* meshRenderer;
@@ -668,5 +669,62 @@ public:
 		body->gameObject = wall;
 
 		return wall;
+	}
+
+	GameObject* createMeteor(vec3 pos, float rotAngle, vec3 scale) {
+		GameObject* meteor = GameObject::create("Meteor");
+
+		MeshRenderer* meshRenderer = meteor->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(ResourceManager::getMesh("Sphere"));
+		meshRenderer->loadTexture(meteorTexture);
+		meshRenderer->loadShader(GameManager::basicShader);
+		meshRenderer->loadShaderDepth(GameManager::depthShader);
+		meshRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
+		meshRenderer->isShaded = true;
+		meshRenderer->isColored = false;
+		meshRenderer->hasTexture = true;
+
+		Transform* transform = meteor->getComponent<Transform>();
+		transform->position = vec3(6.0f, 0.0f, 0.0f);
+		transform->scale = vec3(0.6f, 0.6f, 0.6f);
+		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+		obstacleScript->hasSound = true;
+		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
+
+		//create a dynamic rigidbody
+		btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
+		collisionShapes.push_back(colShape);
+
+		// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+		btScalar mass(1.f);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
+
+		GameManager::dynamicsWorld->addRigidBody(body);
+
+		transform->body = body;
+		body->setLinearVelocity(btVector3(-3.f, 0, 0));
+		body->gameObject = meteor;
+
+		SoundPlayer* soundPlayer = meteor->addComponent<SoundPlayer>();
+		soundPlayer->loadSoundFrom("sounds/explode.mp3");
+		soundPlayer->setType(SoundPlayer::Type::Event2D);
+
+		return meteor;
 	}
 };
