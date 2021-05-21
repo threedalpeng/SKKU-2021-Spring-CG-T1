@@ -28,14 +28,14 @@ public:
 	static ImFont* getFont(const std::string& fontName);
 
 	static Mesh* createMesh(const std::string& meshName, const std::string& vertexBinaryPath, const std::string& indexBinaryPath);
-	static Mesh* addMesh(const std::string& meshName, Mesh* mesh);
 	static Shader* createShader(const std::string& shaderName, const std::string& vertexShaderPath, const std::string& fragShaderPath);
 	static Material* createMaterial(const std::string& materialName);
 	static Texture* createTexture(const std::string& textureName, const std::string& texturePath);
 
 	static void addFont(const std::string& fontName, ImFont* font);
+	static void addMesh(const std::string& meshName, Mesh* mesh);
 private:
-	static std::unordered_map<std::string, Mesh> _meshList;
+	static std::unordered_map<std::string, Mesh*> _meshList;
 	static std::unordered_map<std::string, Shader> _shaderList;
 	static std::unordered_map<std::string, Material> _materialList;
 	static std::unordered_map<std::string, Texture> _textureList;

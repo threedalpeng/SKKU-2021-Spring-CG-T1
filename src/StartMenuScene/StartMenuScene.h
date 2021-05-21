@@ -21,9 +21,9 @@ public:
 
 	void init() {
 		/* Mesh */
-		Mesh* cylinderMesh = MeshMaker::makeSkyCylinderMesh();
-		Mesh* boxMesh = createBoxMesh();
-		Mesh* sphereMesh = MeshMaker::makeSphere();
+		Mesh* skyCylinderMesh = ResourceManager::getMesh("Sky Cylinder");
+		Mesh* boxMesh = ResourceManager::getMesh("Box");
+		Mesh* sphereMesh = ResourceManager::getMesh("Sphere");
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
@@ -84,7 +84,7 @@ public:
 		// background
 		{
 			meshRenderer = background->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(cylinderMesh);
+			meshRenderer->loadMesh(skyCylinderMesh);
 			meshRenderer->loadTexture(backgroundTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
 			meshRenderer->loadMaterial(material);

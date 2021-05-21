@@ -69,8 +69,8 @@ class Stage_1 : public Scene {
 public:
 	Stage_1() : Scene() {};
 
-	Mesh* boxMesh = nullptr;
 	Texture* wallTexture = nullptr;
+	Texture* radioactiveTexture = nullptr;
 
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 
@@ -82,10 +82,9 @@ public:
 		*/
 
 		/* Mesh */
-		Mesh* cylinderMesh = MeshMaker::makeSkyCylinderMesh();
-		Mesh* sphereMesh = MeshMaker::makeSphere();
-		//Mesh* boxMesh = MeshMaker::makeBoxMesh();
-		boxMesh = createBoxMesh();
+		Mesh* skyCylinderMesh = ResourceManager::getMesh("Sky Cylinder");
+		Mesh* sphereMesh = ResourceManager::getMesh("Sphere");
+		Mesh* boxMesh = ResourceManager::getMesh("Box");
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
@@ -94,7 +93,8 @@ public:
 		Texture* fireParticleTexture = ResourceManager::getTexture("fireParticle");
 		Texture* whiteTexture = ResourceManager::getTexture("white");
 		Texture* headTexture = ResourceManager::getTexture("Player Head");
-		wallTexture = ResourceManager::getTexture("mercury");
+		wallTexture = ResourceManager::getTexture("moon");
+		radioactiveTexture = ResourceManager::getTexture("radioactive");
 
 		/* Material */
 		Material* material = ResourceManager::getMaterial("Basic");
@@ -200,7 +200,7 @@ public:
 		// background //
 		{
 			meshRenderer = background->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(cylinderMesh);
+			meshRenderer->loadMesh(skyCylinderMesh);
 			meshRenderer->loadTexture(backgroundTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
 			// meshRenderer->loadShaderDepth(GameManager::depthShader);
@@ -432,9 +432,17 @@ public:
 			addObject(createWall(vec3(35.68f, -31.46f, 0.0f), 45.f, vec3(20.25f, 3.f, 10.f)));
 			addObject(createWall(vec3(29.66f, -49.9f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
 			addObject(createWall(vec3(45.68f, -58.6f, 0.0f), 45.f, vec3(13.25f, 3.f, 10.f)));
-			addObject(createWall(vec3(40.15f, -80.89f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
+			addObject(createWall(vec3(40.f, -81.1f, 0.0f), 45.f, vec3(14.65f, 3.f, 10.f)));
 			addObject(createWall(vec3(44.21f, -46.03f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
 			addObject(createWall(vec3(22.46f, -63.2f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
+			addObject(createRadioactiveWall(vec3(23.09f, -81.01f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
+			addObject(createWall(vec3(60.5f, -59.5f, 0.0f), 0.f, vec3(15.05f, 3.f, 10.f)));
+			addObject(createWall(vec3(69.41f, -71.67f, 0.0f), 0.f, vec3(21.2f, 3.f, 10.f)));
+			addObject(createWall(vec3(87.4f, -33.44f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
+			addObject(createWall(vec3(73.3f, -6.3f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
+			addObject(createRadioactiveWall(vec3(80.12f, 52.6f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
+			addObject(createWall(vec3(91.7f, 52.08f, 0.0f), 0.f, vec3(21.2f, 3.f, 10.f)));
+			addObject(createWall(vec3(98.62f, 19.8f, 0.0f), 0.f, vec3(10.05f, 3.f, 10.f)));
 		}
 
 		{
@@ -540,75 +548,9 @@ public:
 		soundPlayer = gui->addComponent<SoundPlayer>();
 	}
 
-	Mesh* createBoxMesh() {
-		Mesh* mesh = new Mesh();
-
-		mesh->vertex_buffer = 0;
-		mesh->index_buffer = 0;
-
-		// Create vertex list
-		mesh->vertex_list = {
-			// front
-			{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -0.1f, +1.f), vec2(0.f, 1.f) }, // 0
-			{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -0.1f, +1.f), vec2(1.f, 1.f) }, // 1
-			{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, 0.1f, +1.f), vec2(0.f, 1.f) }, // 4
-			{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, 0.1f, +1.f), vec2(1.f, 1.f) }, // 5
-
-			// left
-			{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -0.1f, 0.1f), vec2(1.f, 1.f) }, // 1
-			{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -0.1f, -0.1f), vec2(1.f, 0.f) }, // 2
-			{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, 0.1f, 0.1f), vec2(1.f, 1.f) }, // 5
-			{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, 0.1f, -0.1f), vec2(1.f, 0.f) }, // 6
-
-			// right
-			{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -0.1f, 0.1f), vec2(0.f, 1.f) }, // 0
-			{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, 0.1f, 0.1f), vec2(0.f, 1.f) }, // 4
-			{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -0.1f, -0.1f), vec2(0.f, 0.f) }, // 3
-			{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, 0.1f, -0.1f), vec2(0.f, 0.f) }, // 7
-
-			// back
-			{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, 0.1f, -1.f), vec2(0.f, 0.f) }, // 7
-			{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, 0.1f, -1.f), vec2(1.f, 0.f) }, // 6
-			{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -0.1f, -1.f), vec2(0.f, 0.f) }, // 3
-			{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -0.1f, -1.f), vec2(1.f, 0.f) }, // 2
-
-			// top
-			{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, +1.f, -0.1f), vec2(0.f, 0.f) }, // 7
-			{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, +1.f, 0.1f), vec2(0.f, 1.f) }, // 4
-			{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, +1.f, -0.1f), vec2(1.f, 0.f) }, // 6
-			{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, +1.f, 0.1f), vec2(1.f, 1.f) }, // 5
-
-			// bottom
-			{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -1.f, 0.1f), vec2(0.f, 1.f) }, // 0
-			{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -1.f, -0.1f), vec2(0.f, 0.f) }, // 3
-			{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -1.f, 0.1f), vec2(1.f, 1.f) }, // 1
-			{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -1.f, -0.1f), vec2(1.f, 0.f) }, // 2
-		};
-
-		// Create index list
-		for (uint i = 0; i < 6; i++) {
-			uint k = i * 4;
-			mesh->index_list.push_back(k);
-			mesh->index_list.push_back(k + 1);
-			mesh->index_list.push_back(k + 2);
-			mesh->index_list.push_back(k + 1);
-			mesh->index_list.push_back(k + 3);
-			mesh->index_list.push_back(k + 2);
-		}
-
-		glGenBuffers(1, &(mesh->vertex_buffer));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
-		glGenBuffers(1, &(mesh->index_buffer));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
-
-		mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
-		return mesh;
-	}
-
 	GameObject* createWall(vec3 pos, float rotAngle, vec3 scale) {
 		//Material* material = ResourceManager::getMaterial("Basic");
+		Mesh* boxMesh = ResourceManager::getMesh("Box");
 
 		// static object test
 		Quaternion q = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), rotAngle);
@@ -660,7 +602,66 @@ public:
 		GameManager::dynamicsWorld->addRigidBody(body);
 
 		transform->body = body;
-		body->setLinearVelocity(btVector3(0.f, 0, 0));
+		body->setLinearVelocity(btVector3(0.f, 0.f, 0.f));
+		body->gameObject = wall;
+
+		return wall;
+	}
+
+	GameObject* createRadioactiveWall(vec3 pos, float rotAngle, vec3 scale) {
+		Mesh* cylinderMesh = ResourceManager::getMesh("Cylinder");
+
+		// static object test
+		Quaternion q = Quaternion::axisAngle(vec3(1.f, 0.f, 0.f), 90.f);
+		btQuaternion btq = btQuaternion(q.x, q.y, q.z, q.w);
+		btVector3 btpos = btVector3(pos.x, pos.y, pos.z);
+		btVector3 btscale = btVector3(scale.x, scale.z, scale.y);
+
+		GameObject* wall = GameObject::create("Radioactive Wall");
+
+		MeshRenderer* meshRenderer = wall->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(cylinderMesh);
+		meshRenderer->loadTexture(radioactiveTexture);
+		meshRenderer->loadShader(GameManager::basicShader);
+		//meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = false;
+		meshRenderer->hasTexture = true;
+
+		Transform* transform = wall->getComponent<Transform>();
+		transform->position = pos;
+		transform->scale = vec3(scale.x, scale.z, scale.y);
+		transform->rotation = q;
+
+		//create a dynamic rigidbody
+		btCollisionShape* colShape = new btCylinderShape(btscale);
+		collisionShapes.push_back(colShape);
+
+		// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+		btScalar mass(0.f);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btpos);
+		startTransform.setRotation(btq);
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
+
+		GameManager::dynamicsWorld->addRigidBody(body);
+
+		transform->body = body;
+		body->setLinearVelocity(btVector3(0.f, 0.f, 0.f));
 		body->gameObject = wall;
 
 		return wall;

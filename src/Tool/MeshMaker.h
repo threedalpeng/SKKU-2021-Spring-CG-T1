@@ -18,43 +18,11 @@ public:
 	static Mesh* makeCylinderMesh();
 };
 
-Mesh* MeshMaker::makeBoxMesh()
-{
-	Mesh* mesh = new Mesh();
-
-	mesh->vertex_buffer = 0;
-	mesh->index_buffer = 0;
-
-	// Create vertex list
-	mesh->vertex_list = {
-		{ vec3(1,1,0), vec3(1,1,0), vec2(1.0f, 1.0f) },
-		{ vec3(1,-1,0), vec3(1,-1,0), vec2(1.0f, 0.0f) },
-		{ vec3(-1,-1,0), vec3(-1,-1,0), vec2(0.0f, 0.0f) },
-		{ vec3(-1,1,0), vec3(-1,1,0), vec2(0.0f, 1.0f) }
-	};
-
-	// Create index list
-	mesh->index_list = {
-		{0, 2, 1,
-		0, 3, 2}
-	};
-
-	glGenBuffers(1, &(mesh->vertex_buffer));
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
-	glGenBuffers(1, &(mesh->index_buffer));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
-
-	mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
-	return mesh;
-}
-
 Mesh* MeshMaker::make3DBoxMesh()
 {
 	Mesh* mesh = new Mesh();
 
-		mesh->vertex_buffer = 0;
+	mesh->vertex_buffer = 0;
 	mesh->index_buffer = 0;
 
 	// Create vertex list
@@ -90,38 +58,37 @@ Mesh* MeshMaker::make3DBoxMesh()
 		{ vec3(1,-1,-1), vec3(1,-1,-1), vec2(0.0f,0.0f) },
 	};
 
-	// Create index list 
-	for(int i = 0; i < 4; i++)
+	// Create index list
+	for (int i = 0; i < 4; i++)
 	{
 		int k = i * 4;
 		mesh->index_list.push_back(k);
-		mesh->index_list.push_back(k+3);
-		mesh->index_list.push_back(k+1);
+		mesh->index_list.push_back(k + 3);
+		mesh->index_list.push_back(k + 1);
 
-		mesh->index_list.push_back(k+2);
-		mesh->index_list.push_back(k+1);
-		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k + 2);
+		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 3);
 	}
 	{
 		int k = 4 * 4;
 		mesh->index_list.push_back(k);
-		mesh->index_list.push_back(k+1);
-		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 3);
 
-		mesh->index_list.push_back(k+2);
-		mesh->index_list.push_back(k+3);
-		mesh->index_list.push_back(k+1);
-
+		mesh->index_list.push_back(k + 2);
+		mesh->index_list.push_back(k + 3);
+		mesh->index_list.push_back(k + 1);
 	}
 	{
 		int k = 4 * 5;
 		mesh->index_list.push_back(k);
-		mesh->index_list.push_back(k+3);
-		mesh->index_list.push_back(k+1);
+		mesh->index_list.push_back(k + 3);
+		mesh->index_list.push_back(k + 1);
 
-		mesh->index_list.push_back(k+2);
-		mesh->index_list.push_back(k+1);
-		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k + 2);
+		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 3);
 	}
 
 	glGenBuffers(1, &(mesh->vertex_buffer));
@@ -318,14 +285,14 @@ Mesh* MeshMaker::makeCylinderMesh() {
 	mesh->vertex_list.push_back({ vec3(0.f, 1.f, 0.f), vec3(0.f, +1.f, 0.f), vec2(0.5f) }); // origin
 	for (uint k = 0; k <= nCircleVertex; k++)
 	{
-		float ct = cos(theta), st = sin(theta);
+		float ct = cos(theta * k), st = sin(theta * k);
 		mesh->vertex_list.push_back({ vec3(ct, 1.f, st), vec3(0.f, +1.f, 0.0f), vec2(ct, st) * 0.5f + 0.5f });
 	}
 
 	mesh->vertex_list.push_back({ vec3(0.f, -1.f, 0.f), vec3(0.f, -1.f, 0.f), vec2(0.5f) }); // origin
 	for (uint k = 0; k <= nCircleVertex; k++)
 	{
-		float ct = cos(theta), st = sin(theta);
+		float ct = cos(theta * k), st = sin(theta * k);
 		mesh->vertex_list.push_back({ vec3(ct, -1.f, st), vec3(0.f, -1.f, 0.0f), vec2(ct, st) * 0.5f + 0.5f });
 	}
 
@@ -333,27 +300,95 @@ Mesh* MeshMaker::makeCylinderMesh() {
 	for (uint i = 0; i < nCircleVertex; i++) {
 		uint s = i * 2;
 		mesh->index_list.push_back(s);
-		mesh->index_list.push_back(s + 1);
 		mesh->index_list.push_back(s + 2);
 		mesh->index_list.push_back(s + 1);
+		mesh->index_list.push_back(s + 1);
+		mesh->index_list.push_back(s + 2);
 		mesh->index_list.push_back(s + 3);
-		mesh->index_list.push_back(s + 2);
 	}
 
 	uint originIdx = (nCircleVertex + 1) * 2;
 	for (uint k = originIdx; k < originIdx + nCircleVertex; k++)
 	{
 		mesh->index_list.push_back(originIdx);	// the origin
-		mesh->index_list.push_back(k + 1);
 		mesh->index_list.push_back(k + 2);
+		mesh->index_list.push_back(k + 1);
+		printf("%d, %d, %d\n", originIdx, k + 1, k + 2);
 	}
 
 	originIdx += (nCircleVertex + 2);
 	for (uint k = originIdx; k < originIdx + nCircleVertex; k++)
 	{
 		mesh->index_list.push_back(originIdx);	// the origin
+		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 2);
+	}
+
+	glGenBuffers(1, &(mesh->vertex_buffer));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
+	glGenBuffers(1, &(mesh->index_buffer));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+
+	mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
+	return mesh;
+}
+
+Mesh* MeshMaker::makeBoxMesh() {
+	Mesh* mesh = new Mesh();
+
+	mesh->vertex_buffer = 0;
+	mesh->index_buffer = 0;
+
+	// Create vertex list
+	mesh->vertex_list = {
+		// front
+		{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -0.1f, +1.f), vec2(0.f, 1.f) }, // 0
+		{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -0.1f, +1.f), vec2(1.f, 1.f) }, // 1
+		{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, 0.1f, +1.f), vec2(0.f, 1.f) }, // 4
+		{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, 0.1f, +1.f), vec2(1.f, 1.f) }, // 5
+
+		// left
+		{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -0.1f, 0.1f), vec2(1.f, 1.f) }, // 1
+		{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -0.1f, -0.1f), vec2(1.f, 0.f) }, // 2
+		{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, 0.1f, 0.1f), vec2(1.f, 1.f) }, // 5
+		{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, 0.1f, -0.1f), vec2(1.f, 0.f) }, // 6
+
+		// right
+		{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -0.1f, 0.1f), vec2(0.f, 1.f) }, // 0
+		{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, 0.1f, 0.1f), vec2(0.f, 1.f) }, // 4
+		{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -0.1f, -0.1f), vec2(0.f, 0.f) }, // 3
+		{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, 0.1f, -0.1f), vec2(0.f, 0.f) }, // 7
+
+		// back
+		{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, 0.1f, -1.f), vec2(0.f, 0.f) }, // 7
+		{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, 0.1f, -1.f), vec2(1.f, 0.f) }, // 6
+		{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -0.1f, -1.f), vec2(0.f, 0.f) }, // 3
+		{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -0.1f, -1.f), vec2(1.f, 0.f) }, // 2
+
+		// top
+		{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, +1.f, -0.1f), vec2(0.f, 0.f) }, // 7
+		{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, +1.f, 0.1f), vec2(0.f, 1.f) }, // 4
+		{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, +1.f, -0.1f), vec2(1.f, 0.f) }, // 6
+		{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, +1.f, 0.1f), vec2(1.f, 1.f) }, // 5
+
+		// bottom
+		{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -1.f, 0.1f), vec2(0.f, 1.f) }, // 0
+		{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -1.f, -0.1f), vec2(0.f, 0.f) }, // 3
+		{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -1.f, 0.1f), vec2(1.f, 1.f) }, // 1
+		{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -1.f, -0.1f), vec2(1.f, 0.f) }, // 2
+	};
+
+	// Create index list
+	for (uint i = 0; i < 6; i++) {
+		uint k = i * 4;
+		mesh->index_list.push_back(k);
+		mesh->index_list.push_back(k + 1);
 		mesh->index_list.push_back(k + 2);
 		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 3);
+		mesh->index_list.push_back(k + 2);
 	}
 
 	glGenBuffers(1, &(mesh->vertex_buffer));

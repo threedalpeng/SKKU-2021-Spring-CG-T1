@@ -1,6 +1,6 @@
 #pragma once
 #include "engine/Core.h"
-#include "EventCheckerBox.h"
+#include "EventCheckerSphere.h"
 //*******************************************************************
 // bullet3
 #include "btBulletCollisionCommon.h"
@@ -13,7 +13,9 @@ public:
 
 private:
 	Transform* transform = nullptr;
-	//EventCheckerBox gravityFallEvent();
+	EventCheckerSphere warningEvent = EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), float(5.f));
+	EventCheckerSphere gravityFallEvent = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), float(5.f));
+	EventCheckerSphere gravityStopEvent = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), float(5.f));
 public:
 
 	void init() override {
@@ -21,14 +23,16 @@ public:
 	}
 
 	void update() override {
-		/*
-		if (9.f < transform->worldPosition.x && transform->worldPosition.x < 10.f) {
+		//printf("%f, %f\n", transform->worldPosition.x, transform->worldPosition.y);
+		if (warningEvent.shouldTrigger(transform->worldPosition)) {
+			printf("watch out!\n");
+		}
+		if (gravityFallEvent.shouldTrigger(transform->worldPosition)) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
 		}
-		if (15.f < transform->worldPosition.x && transform->worldPosition.x < 16.f) {
+		if (gravityStopEvent.shouldTrigger(transform->worldPosition)) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
 		}
-		*/
 
 		btVector3 addVelocity = btVector3(0, 0, 0);
 		btVector3 currentVelocity = transform->getVelocityBT();

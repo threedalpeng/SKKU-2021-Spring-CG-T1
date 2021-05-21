@@ -1,6 +1,6 @@
 #include "ResourceManager.h"
 
-std::unordered_map<std::string, Mesh> ResourceManager::_meshList = std::unordered_map<std::string, Mesh>();
+std::unordered_map<std::string, Mesh*> ResourceManager::_meshList = std::unordered_map<std::string, Mesh*>();
 std::unordered_map<std::string, Shader> ResourceManager::_shaderList = std::unordered_map<std::string, Shader>();
 std::unordered_map<std::string, Material> ResourceManager::_materialList = std::unordered_map<std::string, Material>();
 std::unordered_map<std::string, Texture> ResourceManager::_textureList = std::unordered_map<std::string, Texture>();
@@ -8,7 +8,7 @@ std::unordered_map<std::string, ImFont*> ResourceManager::_fontList = std::unord
 
 Mesh* ResourceManager::getMesh(const std::string& meshName) {
 	auto result = _meshList.find(meshName);
-	return &(result->second);
+	return (result->second);
 }
 
 Shader* ResourceManager::getShader(const std::string& shaderName) {
@@ -32,13 +32,18 @@ ImFont* ResourceManager::getFont(const std::string& fontName) {
 }
 
 Mesh* ResourceManager::createMesh(const std::string& meshName, const std::string& vertexBinaryPath, const std::string& indexBinaryPath) {
-	auto result = _meshList.emplace(meshName, Mesh(vertexBinaryPath, indexBinaryPath));
+	auto result = _meshList.emplace(meshName, new Mesh(vertexBinaryPath, indexBinaryPath));
 	if (result.second) {
-		return &(result.first->second);
+		return (result.first->second);
 	}
 	else {
 		return nullptr;
 	}
+}
+
+void ResourceManager::addMesh(const std::string& meshName, Mesh* mesh)
+{
+	_meshList.insert(std::make_pair(meshName, mesh));
 }
 
 Shader* ResourceManager::createShader(const std::string& shaderName, const std::string& vertexShaderPath, const std::string& fragShaderPath) {

@@ -26,15 +26,15 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 	MeshRenderer* meshRenderer;
 	Mesh* sphereMesh = MeshMaker::makeSphere();
 	Texture* fireTexture = ResourceManager::getTexture("fire");
-	Material* material = new Material();
-	
+	Material* material = ResourceManager::getMaterial("Basic");
+
 	Transform* transform;
 	GameObject* particle;
 
-	for(int i = 0; i < maxForOne && GameManager::particleFull(); i++)
+	for (int i = 0; i < maxForOne && GameManager::particleFull(); i++)
 	{
 		particle = GameObject::create("particle");
-		
+
 		meshRenderer = particle->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(sphereMesh);
 		meshRenderer->loadTexture(fireTexture);
@@ -48,7 +48,7 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 
 		transform = particle->getComponent<Transform>();
 		transform->position = parent_position;
-		transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+		transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 		transform->scale = vec3(0.05f, 0.05f, 0.05f);
 		transform->mass = 0.1f;
 
@@ -57,7 +57,7 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 		particleScript->meshRenderer = meshRenderer;
 		particleScript->transform = transform;
 		particleScript->init();
-		
+
 		SceneManager::scene()->addObject(particle);
 	}
 }
