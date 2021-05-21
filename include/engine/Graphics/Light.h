@@ -104,10 +104,10 @@ public:
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClearDepth(1.0f);
 		glDepthFunc(GL_LESS);
-		glClear(GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		mat4 lightSpaceMatrix = projection_matrix * view_matrix;
-		
+
 		glUseProgram(_shaderDepth->getProgram());
 		glUniformMatrix4fv(_shaderDepth->getUniformLocation("lightSpaceMatrix"), 1, GL_TRUE, lightSpaceMatrix);
 		hasDepthMap = true;
