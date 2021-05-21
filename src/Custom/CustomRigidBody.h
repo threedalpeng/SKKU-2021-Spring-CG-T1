@@ -7,30 +7,30 @@
 
 enum objectTypes
 {
-    BACKGROUND = 0,
-    PLAYER,
-    METEOR,
-    ITEM,
-    WALL
+	BACKGROUND = 0,
+	PLAYER,
+	METEOR,
+	ITEM,
+	WALL,
+	RADIOACTIVE_WALL
 };
 
 class CustomRigidBody : public btRigidBody
 {
-// protected:
+	// protected:
 public:
-    objectTypes objectType;
-    GameObject* gameObject;
+	objectTypes objectType;
+	GameObject* gameObject;
 
-    CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo) : btRigidBody(rbInfo) {}
-    CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo, objectTypes objectType) : btRigidBody(rbInfo), objectType(objectType){}
-    ~CustomRigidBody();
+	CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo) : btRigidBody(rbInfo) {}
+	CustomRigidBody(btRigidBody::btRigidBodyConstructionInfo rbInfo, objectTypes objectType) : btRigidBody(rbInfo), objectType(objectType) {}
+	~CustomRigidBody();
 
-    void setObjectType();
-    void getObjectType();
+	void setObjectType();
+	void getObjectType();
 
-    void setGameObject();
-    void getGameObject();
-
+	void setGameObject();
+	void getGameObject();
 };
 
 CustomRigidBody::~CustomRigidBody()

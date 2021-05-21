@@ -441,8 +441,11 @@ public:
 			addObject(createWall(vec3(87.4f, -33.44f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
 			addObject(createWall(vec3(73.3f, -6.3f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
 			addObject(createRadioactiveWall(vec3(80.12f, 52.6f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
-			addObject(createWall(vec3(91.7f, 52.08f, 0.0f), 0.f, vec3(21.2f, 3.f, 10.f)));
-			addObject(createWall(vec3(98.62f, 19.8f, 0.0f), 0.f, vec3(10.05f, 3.f, 10.f)));
+			addObject(createWall(vec3(165.f, 52.08f, 0.0f), 0.f, vec3(95.f, 3.f, 10.f)));
+			addObject(createWall(vec3(171.8f, 19.4f, 0.0f), 0.f, vec3(85.f, 3.f, 10.f)));
+			addObject(createRadioactiveWall(vec3(119.7f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
+			addObject(createRadioactiveWall(vec3(160.3f, 19.4f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
+			addObject(createRadioactiveWall(vec3(200.5f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
 		}
 
 		{
@@ -656,7 +659,7 @@ public:
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::RADIOACTIVE_WALL);
 
 		GameManager::dynamicsWorld->addRigidBody(body);
 
