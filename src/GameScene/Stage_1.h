@@ -12,7 +12,6 @@
 #include "Script/PlayerAnimationScript.h"
 #include "Script/Stage1GUIScript.h"
 #include "Script/EmptyBoxScript.h"
-#include "../StartMenuScene/Scripts/DepthCameraScript.h"
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
@@ -105,7 +104,6 @@ public:
 
 		/* GameObject */
 		GameObject* mainCamera = GameObject::create("Main Camera");
-		GameObject* depthCamera = GameObject::create("Depth Camera");
 
 		GameObject* background = GameObject::create("Background Space");
 		GameObject* lightPoint = GameObject::create("light point");
@@ -174,7 +172,7 @@ public:
 		/**//**//**/ playerRightLegAxis->addChildren(playerRightLeg);
 		/**/ player->addChildren(background);
 		/**/ player->addChildren(mainCamera);
-		addObject(depthCamera);
+		addObject(backBox);
 		addObject(meteor);
 
 		// addObject(gui);
@@ -257,26 +255,13 @@ public:
 			meshRenderer->hasTexture = false;
 
 			transform = lightPoint->getComponent<Transform>();
-			transform->position = vec3(3.0f, 0.0f, 100.0f);
+			transform->position = vec3(0.0f, 0.0f, 30.0f);
 
 			light = lightPoint->addComponent<Light>();
 			light->setType(Light::Type::Directional);
 			light->loadShader(GameManager::basicShader);
 			light->loadShaderDepth(GameManager::depthShader);
-
-			// obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
-			// lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-			////////////////////////////////////////////////////////
-
-			camera = depthCamera->addComponent<Camera>();
-
-			DepthCameraScript* cameraScript = new DepthCameraScript();
-			depthCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
-			cameraScript->light = lightPoint;
-			camera->addShader(GameManager::basicShader);
-			camera->addShader(GameManager::depthShader);
-			camera->setThisDepthCamera();
+			light->eye = transform->position;
 		}
 
 		// player //
@@ -335,6 +320,7 @@ public:
 				meshRenderer->loadMesh(sphereMesh);
 				meshRenderer->loadTexture(headTexture);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				//meshRenderer->isColored = true;
 				//meshRenderer->color = vec4(1.f);
@@ -346,6 +332,7 @@ public:
 				meshRenderer = playerBody->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -356,6 +343,7 @@ public:
 				meshRenderer = playerBack->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(0.5f, 0.5f, 0.5f, 1.f);
@@ -370,6 +358,7 @@ public:
 				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -397,6 +386,7 @@ public:
 				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -499,7 +489,6 @@ public:
 		}
 
 		{
-			addObject(backBox);
 			meshRenderer = backBox->addComponent<MeshRenderer>();
 			meshRenderer->loadMesh(boxMesh);
 			meshRenderer->loadTexture(whiteTexture);
@@ -608,7 +597,6 @@ public:
 		meshRenderer->loadMesh(boxMesh);
 		meshRenderer->loadTexture(wallTexture);
 		meshRenderer->loadShader(GameManager::basicShader);
-		// meshRenderer->loadShaderDepth(GameManager::depthShader);
 		//meshRenderer->loadMaterial(material);
 		meshRenderer->isShaded = true;
 		meshRenderer->isColored = false;
