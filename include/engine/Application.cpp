@@ -255,6 +255,13 @@ void Application::update()
 	for (auto rootObj : SceneManager::scene()->getRootObjects()) {
 		iterateTransform(rootObj);
 	}
+	
+	if (auto componentList = _componentManager.getComponentList<Light>()) {
+		for (auto componentPair : *componentList) {
+			Light* light = componentPair.second.get();
+			light->update();
+		}
+	}
 
 	if (auto componentList = _componentManager.getComponentList<Camera>()) {
 		for (auto componentPair : *componentList) {
@@ -278,6 +285,7 @@ void Application::preRender() {
 			renderer->renderDepth();
 		}
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Application::render()

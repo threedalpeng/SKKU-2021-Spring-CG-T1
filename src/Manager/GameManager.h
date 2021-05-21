@@ -55,6 +55,7 @@ public:
 	static Shader* basicShader;
 	static Shader* depthShader;
 	static Shader* debugShader;
+	static GLuint  depthMap;
 
 
 private:
@@ -80,6 +81,7 @@ std::normal_distribution<float> GameManager::dist = std::normal_distribution<flo
 Shader* GameManager::basicShader = nullptr;
 Shader* GameManager::depthShader = nullptr;
 Shader* GameManager::debugShader = nullptr;
+GLuint 	GameManager::depthMap 	= 0;
 
 bool GameManager::setStage(int state)
 {

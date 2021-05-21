@@ -9,6 +9,8 @@
 //******************************************************************
 // bullet
 
+Mesh* tmpMesh;
+
 class SpaceSwimApplication : public Application {
 public:
 	SpaceSwimApplication(const char* title) : Application(title) {};
@@ -42,13 +44,19 @@ private:
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
+		GameManager::debugShader = new Shader("shaders/depthDebug.vert", "shaders/depthDebug.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);
-	}
 
+		tmpMesh = MeshMaker::makeBoxMesh();
+	}
+ 
 	void update() {
 		if (GameManager::getChanged()) changeScene();
+
+		// reset state
+		glUniform1i(GameManager::depthShader->getUniformLocation("b_shadow"), false);
 
 		GameManager::cleanRemoveList();
 
@@ -81,6 +89,27 @@ private:
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);
 		}
+	}
+
+	void render()
+	{
+		// glViewport(0, 0, Screen::width(), Screen::height());
+		// glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+		// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// glEnable( GL_DEPTH_TEST );	
+		// glEnable( GL_CULL_FACE );								// turn on backface culling
+		// glCullFace(GL_BACK); 
+
+		// glUseProgram(GameManager::debugShader->getProgram());
+		// glBindVertexArray(tmpMesh->getVertexArray());
+		// glUniform1f( glGetUniformLocation( GameManager::debugShader->getProgram(), "near_plane" ), 1.0f );
+		// glUniform1f( glGetUniformLocation(  GameManager::debugShader->getProgram(), "far_plane" ),  5.5f );
+
+		// glActiveTexture(GL_TEXTURE0);
+		// glBindTexture(GL_TEXTURE_2D, GameManager::depthMap);
+
+		// glDrawElements(GL_TRIANGLES, tmpMesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void fixedUpdate() {

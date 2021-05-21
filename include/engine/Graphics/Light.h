@@ -2,6 +2,7 @@
 #include "engine/Component/Component.h"
 #include "engine/Transform/Transform.h"
 #include "engine/Graphics/Shader.h"
+#include "engine/Screen.h"
 #include <iostream>
 class Light : public Component
 {
@@ -18,8 +19,8 @@ public:
 	vec4 specular = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	/* Depth Camera */
-	vec3 eye = vec3();
-	vec3 at = vec3();
+	vec3 eye = vec3(3, 0, 100);
+	vec3 at = vec3(0);
 	vec3 up = vec3(0.f, 1.f, 0.f);
 	mat4	view_matrix = mat4::look_at(eye, at, up);
 
@@ -92,19 +93,21 @@ public:
 
 	void renderDepth() {
 		if (!_shaderDepth) return;
-
-		glViewport(0, 0, shadowWidth, shadowHeight);
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		// std::cout << "light render Depth" << this << std::endl;
+		// glViewport(0, 0, shadowWidth, shadowHeight);
+		// glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+		glViewport(0, 0, Screen::width(), Screen::height());
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glEnable(GL_CULL_FACE);								// turn on backface culling
 		glCullFace(GL_BACK);
 		glEnable(GL_DEPTH_TEST);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		glClearDepth(1.0f);
 		glDepthFunc(GL_LESS);
-		glClear(GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT |GL_DEPTH_BUFFER_BIT);
 
 		mat4 lightSpaceMatrix = projection_matrix * view_matrix;
-
+		
 		glUseProgram(_shaderDepth->getProgram());
 		glUniformMatrix4fv(_shaderDepth->getUniformLocation("lightSpaceMatrix"), 1, GL_TRUE, lightSpaceMatrix);
 		hasDepthMap = true;

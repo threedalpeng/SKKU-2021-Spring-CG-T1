@@ -2,6 +2,8 @@
 #include "engine/Transform/Transform.h"
 #include "engine/Object/GameObject.h"
 
+#include <iostream>
+
 MeshRenderer::MeshRenderer(std::shared_ptr<GameObject> obj) : Component(obj) {}
 
 void MeshRenderer::loadMesh(Mesh* mesh)
@@ -32,7 +34,7 @@ void MeshRenderer::loadShaderDepth(Shader* shader)
 void MeshRenderer::renderDepth()
 {
 	if (!_shaderDepth) return;
-
+	std::cout << "Mesh render Depth " << this << std::endl;
 	glUseProgram(_shaderDepth->getProgram());
 
 	if (_mesh && _mesh->getVertexArray())

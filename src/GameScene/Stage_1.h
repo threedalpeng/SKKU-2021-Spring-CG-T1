@@ -87,6 +87,7 @@ public:
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 		//Mesh* boxMesh = MeshMaker::makeBoxMesh();
 		boxMesh = createBoxMesh();
+		Mesh* Box3DMesh = MeshMaker::make3DBoxMesh();
 
 		/* Texture */
 		Texture* backgroundTexture = ResourceManager::getTexture("Milky_Way");
@@ -126,7 +127,7 @@ public:
 
 		GameObject* meteor = GameObject::create("meteor");
 
-		GameObject* particle = GameObject::create("particle");
+		GameObject* backBox = GameObject::create("back box");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -177,6 +178,7 @@ public:
 		/**/ player->addChildren(mainCamera);
 		addObject(depthCamera);
 		addObject(meteor);
+		
 
 		// addObject(gui);
 
@@ -258,12 +260,14 @@ public:
 			meshRenderer->hasTexture = false;
 
 			transform = lightPoint->getComponent<Transform>();
-			transform->position = vec3(200.0f, 0.0f, 100.0f);
+			transform->position = vec3(3.0f, 0.0f, 100.0f);
 
 			light = lightPoint->addComponent<Light>();
-			light->setType(Light::Type::Point);
+			light->setType(Light::Type::Directional);
 			light->loadShader(GameManager::basicShader);
 			light->loadShaderDepth(GameManager::depthShader);
+			GameManager::depthMap = light->depthMap;
+			std::cout << "light depthMap " << light->depthMap << std::endl;
 
 			// obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
 			// lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
@@ -458,16 +462,15 @@ public:
 			meshRenderer->hasTexture = true;
 
 			transform = meteor->getComponent<Transform>();
-			transform->position = vec3(0.0f, 0.0f, 0.0f);
+			transform->position = vec3(6.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 			obstacleScript->hasSound = true;
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
+			btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
 			collisionShapes.push_back(colShape);
-
 			// Create Dynamic Objects
 			btTransform startTransform;
 			startTransform.setIdentity();
@@ -481,7 +484,7 @@ public:
 			if (isDynamic)
 				colShape->calculateLocalInertia(mass, localInertia);
 
-			startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
 
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -499,32 +502,30 @@ public:
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
 
-		// {
-		// 	GameObject* backBox = GameObject::create("back box");
-		// 	addObject(backBox);
+		{
+			addObject(backBox);
+			meshRenderer = backBox->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(boxMesh);
+			meshRenderer->loadTexture(whiteTexture);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
-		// 	meshRenderer = backBox->addComponent<MeshRenderer>();
-		// 	meshRenderer->loadMesh(boxMesh);
-		// 	meshRenderer->loadTexture(whiteTexture);
-		// 	meshRenderer->loadMaterial(material);
-		// 	meshRenderer->loadShader(GameManager::basicShader);
-		// 	meshRenderer->loadShaderDepth(GameManager::depthShader);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+			meshRenderer->hasAlpha = false;
+			meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-		// 	meshRenderer->isShaded = true;
-		// 	meshRenderer->isColored = true;
-		// 	meshRenderer->hasTexture = false;
-		// 	meshRenderer->hasAlpha = false;
-		// 	meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			transform = backBox->getComponent<Transform>();
+			transform->position = vec3(-3.0f, 0.0f, -30.0f);
+			transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+			transform->scale = vec3(10.0f, 10.0f, 3.0f);
+			transform->mass = 1.0f;
 
-		// 	transform = backBox->getComponent<Transform>();
-		// 	transform->position = vec3(0.0f, 0.0f, -10.0f);
-		// 	transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
-		// 	transform->scale = vec3(3.0f, 3.0f, 3.0f);
-		// 	transform->mass = 1.0f;
-
-		// 	EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
-		// 	backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
-		// }
+			EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
+			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
+		}
 
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -611,7 +612,7 @@ public:
 		meshRenderer->loadMesh(boxMesh);
 		meshRenderer->loadTexture(wallTexture);
 		meshRenderer->loadShader(GameManager::basicShader);
-		meshRenderer->loadShaderDepth(GameManager::depthShader);
+		// meshRenderer->loadShaderDepth(GameManager::depthShader);
 		//meshRenderer->loadMaterial(material);
 		meshRenderer->isShaded = true;
 		meshRenderer->isColored = false;

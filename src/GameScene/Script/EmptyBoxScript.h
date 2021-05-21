@@ -24,7 +24,7 @@ public:
 
 	void update() override 
 	{
-		vec3 distance = _velocity * Time::delta();
-		transform->translate(distance);
+		// vec3 distance = _velocity * Time::delta();
+		// transform->translate(distance);
 	}
 };
