@@ -30,6 +30,8 @@ protected:
 	uint _frame_count = 0;
 	float _frame_rate = 100;
 
+	GLuint depthMapFBO;
+
 	// Managers
 	ComponentManager _componentManager;
 
@@ -38,6 +40,7 @@ protected:
 	virtual void onSceneLoaded();
 	virtual void fixedUpdate();
 	virtual void update();
+	virtual void preRender();
 	virtual void render();
 	virtual void onGUIRender();
 	virtual void terminate();

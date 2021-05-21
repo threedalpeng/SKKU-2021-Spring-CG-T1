@@ -23,10 +23,17 @@ uniform vec4	color;
 uniform bool	b_colored;
 
 // texture sampler
-uniform sampler2D TEX0;
-uniform sampler2D TEX1;
+uniform sampler2D TEX0;		// = diffuseTexture
+uniform sampler2D TEX1;		// for alpha
 uniform bool	b_texture;
-uniform bool b_alpha_tex;
+uniform bool 	b_alpha_tex;
+
+
+// for shadow
+uniform bool		b_shadow;
+uniform sampler2D 	shadowMap;
+uniform vec3 		lightPos;
+uniform vec3 		viewPos;
 
 
 vec4 phong( vec3 l, vec3 n, vec3 h, vec4 Kd )
@@ -35,6 +42,25 @@ vec4 phong( vec3 l, vec3 n, vec3 h, vec4 Kd )
 	vec4 Ird = max(Kd*dot(l,n)*Id,0.0);					// diffuse reflection
 	vec4 Irs = max(Ks*pow(dot(h,n),shininess)*Is,0.0);	// specular reflection
 	return Ira + Ird + Irs;
+}
+
+float ShadowCalculation(vec4 fragPosLightSpace)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // check whether current frag pos is in shadow
+	float bias = 0.00001;
+    float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;
+    
+    if(projCoords.z > 1.0)  shadow = 0.0;
+
+    return shadow;
 }
 
 void main()
@@ -61,7 +87,7 @@ void main()
 	{
 		fragColor = iKd * color;
 	}
-	else if(b_shaded && b_colored && b_texture)
+	else if(b_shaded && b_colored)
 	{
 		// light position in the eye space
 		vec4 lpos = view_matrix*light_position;
@@ -72,7 +98,12 @@ void main()
 		vec3 v = normalize(-p);		// eye-epos = vec3(0)-epos
 		vec3 h = normalize(l+v);	// the halfway vector
 
-		fragColor = phong( l, n, h, iKd ) * color;
+		if (b_texture) {
+			fragColor = phong( l, n, h, iKd ) * color;
+		}
+		else {
+			fragColor = phong( l, n, h, color );
+		}
 	}
 	// else if(b_texture){	// !!! bug !!!!
 	else {
@@ -81,5 +112,32 @@ void main()
 
 	if (b_alpha_tex) {
 		fragColor.a = iA.r;
+	}
+
+	if(b_shadow)
+	{
+		if(b_texture)	vec3 color = texture(TEX0, fs_in.TexCoords).rgb;
+		else vec3 color = color.xyz;		// !!! it need to be checked about it has bug or not. !!!
+		
+		vec3 normal = normalize(fs_in.Normal);
+		vec3 lightColor = vec3(0.8f);
+		// ambient
+		vec3 ambient = 0.3 * color;
+		// diffuse
+		vec3 lightDir = normalize(lightPos - fs_in.FragPos);
+		float diff = max(dot(lightDir, normal), 0.0);
+		vec3 diffuse = diff * lightColor;
+		// specular
+		vec3 viewDir = normalize(viewPos - fs_in.FragPos);
+		vec3 reflectDir = reflect(-lightDir, normal);
+		float spec = 0.0;
+		vec3 halfwayDir = normalize(lightDir + viewDir);  
+		spec = pow(max(dot(normal, halfwayDir), 0.0), 64.0);
+		vec3 specular = spec * lightColor;    
+		// calculate shadow
+		float shadow = ShadowCalculation(fs_in.FragPosLightSpace);                      
+		vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
+		
+		fragColor = vec4(lighting, 1.0);
 	}
 }

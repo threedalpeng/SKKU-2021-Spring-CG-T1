@@ -152,8 +152,8 @@ void Application::run()
 		*/
 		update();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// glClear(GL_DEPTH_BUFFER_BIT);
+		preRender();
 		render();
 		onGUIRender();
 		glfwSwapBuffers(_window);
@@ -264,32 +264,27 @@ void Application::update()
 	}
 }
 
+void Application::preRender() {
+	if (auto componentList = _componentManager.getComponentList<Light>()) {
+		for (auto componentPair : *componentList) {
+			Light* light = componentPair.second.get();
+			light->renderDepth();
+		}
+	}
+
+	if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
+		for (auto componentPair : *componentList) {
+			MeshRenderer* renderer = componentPair.second.get();
+			renderer->renderDepth();
+		}
+	}
+}
+
 void Application::render()
 {
-	/*
-	Camera* depthShader = Camera::depth;
-	if (!depthShader) {
-		std::cout << "No Depth Camera." << std::endl;
-		return;
-	}
-	else {
-		depthShader->render();
-
-		if (auto componentList = _componentManager.getComponentList<Light>()) {
-			for (auto componentPair : *componentList) {
-				Light* light = componentPair.second.get();
-				light->renderDepth();
-			}
-		}
-
-		if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
-			for (auto componentPair : *componentList) {
-				MeshRenderer* renderer = componentPair.second.get();
-				renderer->renderDepth();
-			}
-		}
-	}
-	*/
+	glViewport(0, 0, Screen::width(), Screen::height());
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	Camera* mainCamera = Camera::main;
 	if (!mainCamera) {

@@ -14,8 +14,8 @@ public:
 	static Mesh* make3DBoxMesh();
 	static Mesh* makeSphere();
 	static Mesh* makeRing();
+	static Mesh* makeSkyCylinderMesh();
 	static Mesh* makeCylinderMesh();
-	
 };
 
 Mesh* MeshMaker::makeBoxMesh()
@@ -209,7 +209,7 @@ Mesh* MeshMaker::makeRing()
 	return mesh;
 }
 
-Mesh* MeshMaker::makeCylinderMesh() {
+Mesh* MeshMaker::makeSkyCylinderMesh() {
 	Mesh* mesh = new Mesh();
 
 	uint nCircleVertex = 48;
@@ -223,6 +223,47 @@ Mesh* MeshMaker::makeCylinderMesh() {
 		float st = sinf(theta * i), ct = cosf(theta * i);
 		mesh->vertex_list.push_back({ vec3(ct, 1.f, st), vec3(-ct, 1.f, -st), vec2(i / float(nCircleVertex), 1.f) });
 		mesh->vertex_list.push_back({ vec3(ct, -1.f, st), vec3(-ct, -1.f, -st), vec2(i / float(nCircleVertex), 0.f) });
+	}
+
+	// Create index list
+	for (uint i = 0; i < nCircleVertex; i++) {
+		uint s = i * 2;
+		mesh->index_list.push_back(s);
+		mesh->index_list.push_back(s + 1);
+		mesh->index_list.push_back(s + 2);
+		mesh->index_list.push_back(s + 1);
+		mesh->index_list.push_back(s + 3);
+		mesh->index_list.push_back(s + 2);
+	}
+
+	glGenBuffers(1, &(mesh->vertex_buffer));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
+	glGenBuffers(1, &(mesh->index_buffer));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+
+	mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
+	return mesh;
+}
+
+Mesh* MeshMaker::makeCylinderMesh() {
+	Mesh* mesh = new Mesh();
+
+	uint nCircleVertex = 48;
+
+	mesh->vertex_buffer = 0;
+	mesh->index_buffer = 0;
+
+	/* Two circles for up and bottom */
+
+	/* Side */
+	// Create vertex list
+	float theta = 2.f * PI / float(nCircleVertex);
+	for (uint i = 0; i <= nCircleVertex; i++) {
+		float st = sinf(theta * i), ct = cosf(theta * i);
+		mesh->vertex_list.push_back({ vec3(ct, 1.f, st), vec3(+ct, 1.f, +st), vec2(i / float(nCircleVertex), 1.f) });
+		mesh->vertex_list.push_back({ vec3(ct, -1.f, st), vec3(+ct, -1.f, +st), vec2(i / float(nCircleVertex), 0.f) });
 	}
 
 	// Create index list

@@ -21,7 +21,7 @@ public:
 
 	void init() {
 		/* Mesh */
-		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
+		Mesh* cylinderMesh = MeshMaker::makeSkyCylinderMesh();
 		Mesh* boxMesh = createBoxMesh();
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 

@@ -83,7 +83,7 @@ public:
 		*/
 
 		/* Mesh */
-		Mesh* cylinderMesh = MeshMaker::makeCylinderMesh();
+		Mesh* cylinderMesh = MeshMaker::makeSkyCylinderMesh();
 		Mesh* sphereMesh = MeshMaker::makeSphere();
 		//Mesh* boxMesh = MeshMaker::makeBoxMesh();
 		boxMesh = createBoxMesh();
@@ -206,11 +206,12 @@ public:
 			meshRenderer->loadMesh(cylinderMesh);
 			meshRenderer->loadTexture(backgroundTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
+			// meshRenderer->loadShaderDepth(GameManager::depthShader);
 			meshRenderer->loadMaterial(material);
 			meshRenderer->isShaded = false;
 			meshRenderer->isColored = false;
 			meshRenderer->hasTexture = true;
+			meshRenderer->hasAlpha = false;
 
 			transform = background->getComponent<Transform>();
 			transform->scale = vec3(50, 100, 50);
@@ -335,7 +336,7 @@ public:
 				meshRenderer->loadMesh(sphereMesh);
 				meshRenderer->loadTexture(headTexture);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				//meshRenderer->isColored = true;
 				//meshRenderer->color = vec4(1.f);
 			}
@@ -346,7 +347,7 @@ public:
 				meshRenderer = playerBody->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
 
@@ -356,7 +357,7 @@ public:
 				meshRenderer = playerBack->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(0.5f, 0.5f, 0.5f, 1.f);
 			}
@@ -370,7 +371,7 @@ public:
 				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
 
@@ -383,7 +384,7 @@ public:
 				meshRenderer = playerRightArm->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
 			}
@@ -397,7 +398,7 @@ public:
 				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
 
@@ -410,7 +411,7 @@ public:
 				meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
-				meshRenderer->isShaded = false;
+				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
 			}
@@ -612,7 +613,7 @@ public:
 		meshRenderer->loadShader(GameManager::basicShader);
 		meshRenderer->loadShaderDepth(GameManager::depthShader);
 		//meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = false;
+		meshRenderer->isShaded = true;
 		meshRenderer->isColored = false;
 		meshRenderer->hasTexture = true;
 

@@ -29,6 +29,22 @@ void MeshRenderer::loadShaderDepth(Shader* shader)
 	_shaderDepth = shader;
 }
 
+void MeshRenderer::renderDepth()
+{
+	if (!_shaderDepth) return;
+
+	glUseProgram(_shaderDepth->getProgram());
+
+	if (_mesh && _mesh->getVertexArray())
+		glBindVertexArray(_mesh->getVertexArray());
+
+	Transform* transform = getComponent<Transform>();
+	mat4 model_matrix = transform->getModelMatrix();
+	glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
+
+	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
+}
+
 void MeshRenderer::render()
 {
 	if (!_shader) return;
@@ -57,38 +73,31 @@ void MeshRenderer::render()
 
 	// setup texture
 	// yet Sample, planned to be like this...
-	for (auto texture : _textures) {
-		switch (texture->type) {
-		case Texture::Type::Default:
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, texture->textureId);
-			//glUniform1i(_shader->getUniformLocation("b_alpha"), false);
-			glUniform1i(_shader->getUniformLocation("TEX0"), 0);
-			break;
-		case Texture::Type::Alpha:
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, texture->textureId);
-			glUniform1i(_shader->getUniformLocation("b_alpha"), true);
-			glUniform1i(_shader->getUniformLocation("TEX1"), 1);
-			break;
+	if (_textures.empty()) {
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glUniform1i(_shader->getUniformLocation("b_texture"), false);
+		//glUniform1i(_shader->getUniformLocation("b_alpha"), false);
+		glUniform1i(_shader->getUniformLocation("TEX0"), 0);
+	}
+	else {
+		for (auto texture : _textures) {
+			switch (texture->type) {
+			case Texture::Type::Default:
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texture->textureId);
+				//glUniform1i(_shader->getUniformLocation("b_alpha"), false);
+				glUniform1i(_shader->getUniformLocation("TEX0"), 0);
+				break;
+			case Texture::Type::Alpha:
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, texture->textureId);
+				glUniform1i(_shader->getUniformLocation("b_alpha"), true);
+				glUniform1i(_shader->getUniformLocation("TEX1"), 1);
+				break;
+			}
 		}
 	}
-
-	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
-}
-
-void MeshRenderer::renderDepth()
-{
-	if (!_shaderDepth) return;
-
-	glUseProgram(_shaderDepth->getProgram());
-
-	if (_mesh && _mesh->getVertexArray())
-		glBindVertexArray(_mesh->getVertexArray());
-
-	Transform* transform = getComponent<Transform>();
-	mat4 model_matrix = transform->getModelMatrix();
-	glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
 
 	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
 }

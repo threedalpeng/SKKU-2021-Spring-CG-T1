@@ -30,6 +30,7 @@ public:
 			glUseProgram(shader->getProgram());
 			glUniformMatrix4fv(shader->getUniformLocation("view_matrix"), 1, GL_TRUE, view_matrix);
 			glUniformMatrix4fv(shader->getUniformLocation("projection_matrix"), 1, GL_TRUE, projection_matrix);
+			glUniform3fv(shader->getUniformLocation("viewPos"), 1, eye);
 		}
 	}
 
