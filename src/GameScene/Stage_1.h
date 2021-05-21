@@ -454,7 +454,7 @@ public:
 			transform = backBox->getComponent<Transform>();
 			transform->position = vec3(-3.0f, 0.0f, -30.0f);
 			transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
-			transform->scale = vec3(10.0f, 10.0f, 3.0f);
+			transform->scale = vec3(50.0f, 50.0f, 3.0f);
 			transform->mass = 1.0f;
 
 			EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
@@ -655,7 +655,7 @@ public:
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::BACKGROUND);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::WALL);
 
 		GameManager::dynamicsWorld->addRigidBody(body);
 

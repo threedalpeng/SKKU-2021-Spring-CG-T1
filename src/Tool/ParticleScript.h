@@ -34,6 +34,7 @@ public:
 		{
 			GameObject* thisObject = getObject();
 			GameManager::removeList.push_back(thisObject);
+			GameManager::decreaseParticle();
 		}
 	}
 

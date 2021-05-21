@@ -19,7 +19,7 @@ public:
 	static void  makeExplodeParticle(vec3 parent_position);
 };
 
-int ParticleMaker::maxForOne = 50;
+int ParticleMaker::maxForOne = 80;
 
 void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 {
@@ -59,5 +59,6 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 		particleScript->init();
 		
 		SceneManager::scene()->addObject(particle);
+		GameManager::increaseParticle();
 	}
 }

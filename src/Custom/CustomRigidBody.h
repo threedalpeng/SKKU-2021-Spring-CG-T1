@@ -11,6 +11,7 @@ enum objectTypes
     PLAYER,
     METEOR,
     ITEM,
+    WALL
 };
 
 class CustomRigidBody : public btRigidBody

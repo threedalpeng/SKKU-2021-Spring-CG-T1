@@ -6,6 +6,7 @@
 #include "GameScene/Stage_1.h"
 
 #include "GameScene/Script/ObstacleScript.h"
+#include "GameScene/Script/PlayerScript.h"
 //******************************************************************
 // bullet
 
@@ -59,31 +60,49 @@ private:
 		if (GameManager::dynamicsWorld)
 		{
 			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
-			int numManifolds = GameManager::dynamicsWorld->getDispatcher()->getNumManifolds();
-			for (int i = 0; i < numManifolds; i++)
-			{
-				btPersistentManifold* contactManifold = GameManager::dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
-				btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-				btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-				CustomRigidBody* obAA = (CustomRigidBody*)btRigidBody::upcast(obA);
-				CustomRigidBody* obBB = (CustomRigidBody*)btRigidBody::upcast(obB);
-				// std::cout << obAA->objectType << " " << obBB->objectType << std::endl;
-				if (obBB->objectType == objectTypes::PLAYER && obAA->objectType == objectTypes::METEOR)
-				{
-					ObstacleScript* tmp = (ObstacleScript*)(obAA->gameObject->getComponent<ScriptLoader>()->getScripts().at(0));
-					tmp->collide();
-				}
-				else if (obAA->objectType == objectTypes::PLAYER && obBB->objectType == objectTypes::METEOR)
-				{
-					ObstacleScript* tmp = (ObstacleScript*)(obBB->gameObject->getComponent<ScriptLoader>()->getScripts().at(0));
-					tmp->collide();
-				}
-			}
+			collide();
 		}
 
 		Application::update();
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);
+		}
+	}
+
+	void collide()
+	{
+		int numManifolds = GameManager::dynamicsWorld->getDispatcher()->getNumManifolds();
+		for (int i = 0; i < numManifolds; i++)
+		{
+			btPersistentManifold* contactManifold = GameManager::dynamicsWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+			CustomRigidBody* obAA = (CustomRigidBody*)btRigidBody::upcast(obA);
+			CustomRigidBody* obBB = (CustomRigidBody*)btRigidBody::upcast(obB);
+			// std::cout << obAA->objectType << " " << obBB->objectType << std::endl;
+			if (obAA->objectType == objectTypes::METEOR )
+			{
+				std::vector<Script*> script_v = obAA->gameObject->getComponent<ScriptLoader>()->getScripts();
+				for(size_t i = 0; i < script_v.size(); i++)	((ObstacleScript*)script_v.at(i))->collide(obBB->objectType);
+				
+			}
+			else if (obBB->objectType == objectTypes::METEOR )
+			{
+				std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
+				for(size_t i = 0; i < script_v.size(); i++)	((ObstacleScript*)script_v.at(i))->collide(obBB->objectType);			
+			}
+
+			if (obAA->objectType == objectTypes::PLAYER)
+			{
+				std::vector<Script*> script_v = obAA->gameObject->getComponent<ScriptLoader>()->getScripts();
+				for(size_t i = 0; i < script_v.size(); i++)	((PlayerScript*)script_v.at(i))->collide(obBB->objectType);
+				
+			}
+			else if (obBB->objectType == objectTypes::PLAYER)
+			{
+				std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
+				for(size_t i = 0; i < script_v.size(); i++)	((PlayerScript*)script_v.at(i))->collide(obBB->objectType);			
+			}
 		}
 	}
 
