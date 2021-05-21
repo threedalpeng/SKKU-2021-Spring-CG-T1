@@ -373,6 +373,7 @@ public:
 				meshRenderer = playerRightArm->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -401,6 +402,7 @@ public:
 				meshRenderer = playerRightLeg->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -433,6 +435,30 @@ public:
 			addObject(createWall(vec3(40.15f, -80.89f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
 			addObject(createWall(vec3(44.21f, -46.03f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
 			addObject(createWall(vec3(22.46f, -63.2f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
+		}
+
+		{
+			meshRenderer = backBox->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(boxMesh);
+			meshRenderer->loadTexture(whiteTexture);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
+
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+			meshRenderer->hasAlpha = false;
+			meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+			transform = backBox->getComponent<Transform>();
+			transform->position = vec3(-3.0f, 0.0f, -30.0f);
+			transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
+			transform->scale = vec3(10.0f, 10.0f, 3.0f);
+			transform->mass = 1.0f;
+
+			EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
+			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
 		}
 
 		// meteor //
@@ -487,30 +513,6 @@ public:
 			soundPlayer = meteor->addComponent<SoundPlayer>();
 			soundPlayer->loadSoundFrom("sounds/explode.mp3");
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
-		}
-
-		{
-			meshRenderer = backBox->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(boxMesh);
-			meshRenderer->loadTexture(whiteTexture);
-			meshRenderer->loadMaterial(material);
-			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
-
-			meshRenderer->isShaded = true;
-			meshRenderer->isColored = false;
-			meshRenderer->hasTexture = true;
-			meshRenderer->hasAlpha = false;
-			meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-			transform = backBox->getComponent<Transform>();
-			transform->position = vec3(-3.0f, 0.0f, -30.0f);
-			transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
-			transform->scale = vec3(10.0f, 10.0f, 3.0f);
-			transform->mass = 1.0f;
-
-			EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
-			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
 		}
 
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
