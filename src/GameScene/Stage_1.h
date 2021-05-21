@@ -337,6 +337,7 @@ public:
 				meshRenderer->loadTexture(headTexture);
 				meshRenderer->loadShader(GameManager::basicShader);
 				meshRenderer->isShaded = true;
+				meshRenderer->hasTexture = true;
 				//meshRenderer->isColored = true;
 				//meshRenderer->color = vec4(1.f);
 			}
@@ -559,31 +560,53 @@ public:
 
 		// Create vertex list
 		mesh->vertex_list = {
-			{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -1.f, +1.f), vec2(0.f, 1.f) },
-			{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -1.f, +1.f), vec2(1.f, 1.f) },
-			{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -1.f, -1.f), vec2(1.f, 0.f) },
-			{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -1.f, -1.f), vec2(0.f, 0.f) },
-			{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, +1.f, +1.f), vec2(0.f, 1.f) },
-			{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, +1.f, +1.f), vec2(1.f, 1.f) },
-			{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, +1.f, -1.f), vec2(1.f, 0.f) },
-			{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, +1.f, -1.f), vec2(0.f, 0.f) },
+			// front
+			{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -0.1f, +1.f), vec2(0.f, 1.f) }, // 0
+			{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -0.1f, +1.f), vec2(1.f, 1.f) }, // 1
+			{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, 0.1f, +1.f), vec2(0.f, 1.f) }, // 4
+			{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, 0.1f, +1.f), vec2(1.f, 1.f) }, // 5
+
+			// left
+			{ vec3(+1.f, -1.f, +1.f), vec3(+1.f, -0.1f, 0.1f), vec2(1.f, 1.f) }, // 1
+			{ vec3(+1.f, -1.f, -1.f), vec3(+1.f, -0.1f, -0.1f), vec2(1.f, 0.f) }, // 2
+			{ vec3(+1.f, +1.f, +1.f), vec3(+1.f, 0.1f, 0.1f), vec2(1.f, 1.f) }, // 5
+			{ vec3(+1.f, +1.f, -1.f), vec3(+1.f, 0.1f, -0.1f), vec2(1.f, 0.f) }, // 6
+
+			// right
+			{ vec3(-1.f, -1.f, +1.f), vec3(-1.f, -0.1f, 0.1f), vec2(0.f, 1.f) }, // 0
+			{ vec3(-1.f, +1.f, +1.f), vec3(-1.f, 0.1f, 0.1f), vec2(0.f, 1.f) }, // 4
+			{ vec3(-1.f, -1.f, -1.f), vec3(-1.f, -0.1f, -0.1f), vec2(0.f, 0.f) }, // 3
+			{ vec3(-1.f, +1.f, -1.f), vec3(-1.f, 0.1f, -0.1f), vec2(0.f, 0.f) }, // 7
+
+			// back
+			{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, 0.1f, -1.f), vec2(0.f, 0.f) }, // 7
+			{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, 0.1f, -1.f), vec2(1.f, 0.f) }, // 6
+			{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -0.1f, -1.f), vec2(0.f, 0.f) }, // 3
+			{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -0.1f, -1.f), vec2(1.f, 0.f) }, // 2
+
+			// top
+			{ vec3(-1.f, +1.f, -1.f), vec3(-0.1f, +1.f, -0.1f), vec2(0.f, 0.f) }, // 7
+			{ vec3(-1.f, +1.f, +1.f), vec3(-0.1f, +1.f, 0.1f), vec2(0.f, 1.f) }, // 4
+			{ vec3(+1.f, +1.f, -1.f), vec3(0.1f, +1.f, -0.1f), vec2(1.f, 0.f) }, // 6
+			{ vec3(+1.f, +1.f, +1.f), vec3(0.1f, +1.f, 0.1f), vec2(1.f, 1.f) }, // 5
+
+			// bottom
+			{ vec3(-1.f, -1.f, +1.f), vec3(-0.1f, -1.f, 0.1f), vec2(0.f, 1.f) }, // 0
+			{ vec3(-1.f, -1.f, -1.f), vec3(-0.1f, -1.f, -0.1f), vec2(0.f, 0.f) }, // 3
+			{ vec3(+1.f, -1.f, +1.f), vec3(0.1f, -1.f, 0.1f), vec2(1.f, 1.f) }, // 1
+			{ vec3(+1.f, -1.f, -1.f), vec3(0.1f, -1.f, -0.1f), vec2(1.f, 0.f) }, // 2
 		};
 
 		// Create index list
-		mesh->index_list = {
-			0, 1, 4,
-			1, 5, 4,
-			1, 2, 5,
-			2, 6, 5,
-			0, 4, 3,
-			4, 7, 3,
-			7, 6, 2,
-			3, 7, 2,
-			7, 4, 5,
-			6, 7, 5,
-			0, 3, 1,
-			1, 3, 2,
-		};
+		for (uint i = 0; i < 6; i++) {
+			uint k = i * 4;
+			mesh->index_list.push_back(k);
+			mesh->index_list.push_back(k + 1);
+			mesh->index_list.push_back(k + 2);
+			mesh->index_list.push_back(k + 1);
+			mesh->index_list.push_back(k + 3);
+			mesh->index_list.push_back(k + 2);
+		}
 
 		glGenBuffers(1, &(mesh->vertex_buffer));
 		glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
@@ -613,7 +636,7 @@ public:
 		meshRenderer->loadShader(GameManager::basicShader);
 		meshRenderer->loadShaderDepth(GameManager::depthShader);
 		//meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = true;
+		meshRenderer->isShaded = false;
 		meshRenderer->isColored = false;
 		meshRenderer->hasTexture = true;
 

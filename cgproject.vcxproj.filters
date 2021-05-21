@@ -119,6 +119,7 @@
     <ClInclude Include="include\irrKlang\irrKlang.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\PlayerAnimationStartScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
+    <ClInclude Include="src\GameScene\Script\EventCheckerBox.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

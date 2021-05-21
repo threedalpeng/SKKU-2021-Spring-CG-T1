@@ -13,7 +13,7 @@ private:
 
 	float distance = 20.f;
 	float rangeRadius = 0.f;
-	float rangeAngle = 20.f * PI / 180.f;
+	float rangeAngle = 25.f * PI / 180.f;
 
 public:
 	void init() override {

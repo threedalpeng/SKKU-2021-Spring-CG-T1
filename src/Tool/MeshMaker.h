@@ -255,18 +255,32 @@ Mesh* MeshMaker::makeCylinderMesh() {
 	mesh->vertex_buffer = 0;
 	mesh->index_buffer = 0;
 
-	/* Two circles for up and bottom */
-
-	/* Side */
-	// Create vertex list
+	/* Create vertex list */
 	float theta = 2.f * PI / float(nCircleVertex);
+
+	// Side
 	for (uint i = 0; i <= nCircleVertex; i++) {
 		float st = sinf(theta * i), ct = cosf(theta * i);
 		mesh->vertex_list.push_back({ vec3(ct, 1.f, st), vec3(+ct, 1.f, +st), vec2(i / float(nCircleVertex), 1.f) });
 		mesh->vertex_list.push_back({ vec3(ct, -1.f, st), vec3(+ct, -1.f, +st), vec2(i / float(nCircleVertex), 0.f) });
 	}
 
-	// Create index list
+	// Two circles for up and bottom
+	mesh->vertex_list.push_back({ vec3(0.f, 1.f, 0.f), vec3(0.f, +1.f, 0.f), vec2(0.5f) }); // origin
+	for (uint k = 0; k <= nCircleVertex; k++)
+	{
+		float ct = cos(theta), st = sin(theta);
+		mesh->vertex_list.push_back({ vec3(ct, 1.f, st), vec3(0.f, +1.f, 0.0f), vec2(ct, st) * 0.5f + 0.5f });
+	}
+
+	mesh->vertex_list.push_back({ vec3(0.f, -1.f, 0.f), vec3(0.f, -1.f, 0.f), vec2(0.5f) }); // origin
+	for (uint k = 0; k <= nCircleVertex; k++)
+	{
+		float ct = cos(theta), st = sin(theta);
+		mesh->vertex_list.push_back({ vec3(ct, -1.f, st), vec3(0.f, -1.f, 0.0f), vec2(ct, st) * 0.5f + 0.5f });
+	}
+
+	/* Create index list */
 	for (uint i = 0; i < nCircleVertex; i++) {
 		uint s = i * 2;
 		mesh->index_list.push_back(s);
@@ -275,6 +289,22 @@ Mesh* MeshMaker::makeCylinderMesh() {
 		mesh->index_list.push_back(s + 1);
 		mesh->index_list.push_back(s + 3);
 		mesh->index_list.push_back(s + 2);
+	}
+
+	uint originIdx = (nCircleVertex + 1) * 2;
+	for (uint k = originIdx; k < originIdx + nCircleVertex; k++)
+	{
+		mesh->index_list.push_back(originIdx);	// the origin
+		mesh->index_list.push_back(k + 1);
+		mesh->index_list.push_back(k + 2);
+	}
+
+	originIdx += (nCircleVertex + 2);
+	for (uint k = originIdx; k < originIdx + nCircleVertex; k++)
+	{
+		mesh->index_list.push_back(originIdx);	// the origin
+		mesh->index_list.push_back(k + 2);
+		mesh->index_list.push_back(k + 1);
 	}
 
 	glGenBuffers(1, &(mesh->vertex_buffer));

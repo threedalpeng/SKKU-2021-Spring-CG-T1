@@ -1,5 +1,6 @@
 #pragma once
 #include "engine/Core.h"
+#include "EventCheckerBox.h"
 //*******************************************************************
 // bullet3
 #include "btBulletCollisionCommon.h"
@@ -12,7 +13,7 @@ public:
 
 private:
 	Transform* transform = nullptr;
-
+	//EventCheckerBox gravityFallEvent();
 public:
 
 	void init() override {
@@ -20,6 +21,15 @@ public:
 	}
 
 	void update() override {
+		/*
+		if (9.f < transform->worldPosition.x && transform->worldPosition.x < 10.f) {
+			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
+		}
+		if (15.f < transform->worldPosition.x && transform->worldPosition.x < 16.f) {
+			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
+		}
+		*/
+
 		btVector3 addVelocity = btVector3(0, 0, 0);
 		btVector3 currentVelocity = transform->getVelocityBT();
 		if (currentVelocity.getX() >= -8.0f && Input::getKey(GLFW_KEY_LEFT))  addVelocity.setX(-8.0f * Time::delta());
