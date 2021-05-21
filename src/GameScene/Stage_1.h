@@ -12,7 +12,6 @@
 #include "Script/PlayerAnimationScript.h"
 #include "Script/Stage1GUIScript.h"
 #include "Script/EmptyBoxScript.h"
-#include "../StartMenuScene/Scripts/DepthCameraScript.h"
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
@@ -105,7 +104,6 @@ public:
 
 		/* GameObject */
 		GameObject* mainCamera = GameObject::create("Main Camera");
-		GameObject* depthCamera = GameObject::create("Depth Camera");
 
 		GameObject* background = GameObject::create("Background Space");
 		GameObject* lightPoint = GameObject::create("light point");
@@ -125,8 +123,7 @@ public:
 		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
 
 		GameObject* meteor = GameObject::create("meteor");
-
-		GameObject* particle = GameObject::create("particle");
+		GameObject* backBox = GameObject::create("back box");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -175,7 +172,7 @@ public:
 		/**//**//**/ playerRightLegAxis->addChildren(playerRightLeg);
 		/**/ player->addChildren(background);
 		/**/ player->addChildren(mainCamera);
-		addObject(depthCamera);
+		addObject(backBox);
 		addObject(meteor);
 
 		// addObject(gui);
@@ -258,26 +255,13 @@ public:
 			meshRenderer->hasTexture = false;
 
 			transform = lightPoint->getComponent<Transform>();
-			transform->position = vec3(200.0f, 0.0f, 100.0f);
+			transform->position = vec3(0.0f, 0.0f, 30.0f);
 
 			light = lightPoint->addComponent<Light>();
-			light->setType(Light::Type::Point);
+			light->setType(Light::Type::Directional);
 			light->loadShader(GameManager::basicShader);
 			light->loadShaderDepth(GameManager::depthShader);
-
-			// obstacleScript = new ObstacleScript(vec3(0.0f, 0, 0));
-			// lightPoint->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-			////////////////////////////////////////////////////////
-
-			camera = depthCamera->addComponent<Camera>();
-
-			DepthCameraScript* cameraScript = new DepthCameraScript();
-			depthCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
-			cameraScript->light = lightPoint;
-			camera->addShader(GameManager::basicShader);
-			camera->addShader(GameManager::depthShader);
-			camera->setThisDepthCamera();
+			light->eye = transform->position;
 		}
 
 		// player //
@@ -336,6 +320,7 @@ public:
 				meshRenderer->loadMesh(sphereMesh);
 				meshRenderer->loadTexture(headTexture);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->hasTexture = true;
 				//meshRenderer->isColored = true;
@@ -348,6 +333,7 @@ public:
 				meshRenderer = playerBody->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -358,6 +344,7 @@ public:
 				meshRenderer = playerBack->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(0.5f, 0.5f, 0.5f, 1.f);
@@ -372,6 +359,7 @@ public:
 				meshRenderer = playerLeftArm->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -399,6 +387,7 @@ public:
 				meshRenderer = playerLeftLeg->addComponent<MeshRenderer>();
 				meshRenderer->loadMesh(boxMesh);
 				meshRenderer->loadShader(GameManager::basicShader);
+				meshRenderer->loadShaderDepth(GameManager::depthShader);
 				meshRenderer->isShaded = true;
 				meshRenderer->isColored = true;
 				meshRenderer->color = vec4(1.f);
@@ -459,14 +448,14 @@ public:
 			meshRenderer->hasTexture = true;
 
 			transform = meteor->getComponent<Transform>();
-			transform->position = vec3(0.0f, 0.0f, 0.0f);
+			transform->position = vec3(6.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
 			obstacleScript->hasSound = true;
 			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
 			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(0.6f));
+			btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
 			collisionShapes.push_back(colShape);
 
 			// Create Dynamic Objects
@@ -482,7 +471,7 @@ public:
 			if (isDynamic)
 				colShape->calculateLocalInertia(mass, localInertia);
 
-			startTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
 
 			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -500,32 +489,29 @@ public:
 			soundPlayer->setType(SoundPlayer::Type::Event2D);
 		}
 
-		// {
-		// 	GameObject* backBox = GameObject::create("back box");
-		// 	addObject(backBox);
+		{
+			meshRenderer = backBox->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(boxMesh);
+			meshRenderer->loadTexture(whiteTexture);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
-		// 	meshRenderer = backBox->addComponent<MeshRenderer>();
-		// 	meshRenderer->loadMesh(boxMesh);
-		// 	meshRenderer->loadTexture(whiteTexture);
-		// 	meshRenderer->loadMaterial(material);
-		// 	meshRenderer->loadShader(GameManager::basicShader);
-		// 	meshRenderer->loadShaderDepth(GameManager::depthShader);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
+			meshRenderer->hasAlpha = false;
+			meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
-		// 	meshRenderer->isShaded = true;
-		// 	meshRenderer->isColored = true;
-		// 	meshRenderer->hasTexture = false;
-		// 	meshRenderer->hasAlpha = false;
-		// 	meshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			transform = backBox->getComponent<Transform>();
+			transform->position = vec3(-3.0f, 0.0f, -30.0f);
+			transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+			transform->scale = vec3(10.0f, 10.0f, 3.0f);
+			transform->mass = 1.0f;
 
-		// 	transform = backBox->getComponent<Transform>();
-		// 	transform->position = vec3(0.0f, 0.0f, -10.0f);
-		// 	transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
-		// 	transform->scale = vec3(3.0f, 3.0f, 3.0f);
-		// 	transform->mass = 1.0f;
-
-		// 	EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
-		// 	backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
-		// }
+			EmptyBoxScript* emptyBoxScript = new EmptyBoxScript();
+			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
+		}
 
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
@@ -634,7 +620,6 @@ public:
 		meshRenderer->loadMesh(boxMesh);
 		meshRenderer->loadTexture(wallTexture);
 		meshRenderer->loadShader(GameManager::basicShader);
-		meshRenderer->loadShaderDepth(GameManager::depthShader);
 		//meshRenderer->loadMaterial(material);
 		meshRenderer->isShaded = false;
 		meshRenderer->isColored = false;

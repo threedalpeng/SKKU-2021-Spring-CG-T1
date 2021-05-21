@@ -40,7 +40,7 @@ void MeshRenderer::renderDepth()
 
 	Transform* transform = getComponent<Transform>();
 	mat4 model_matrix = transform->getModelMatrix();
-	glUniformMatrix4fv(_shader->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
+	glUniformMatrix4fv(_shaderDepth->getUniformLocation("model_matrix"), 1, GL_TRUE, model_matrix);
 
 	glDrawElements(GL_TRIANGLES, _mesh->index_list.size(), GL_UNSIGNED_INT, nullptr);
 }

@@ -42,6 +42,7 @@ private:
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
+		GameManager::debugShader = new Shader("shaders/depthDebug.vert", "shaders/depthDebug.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);
@@ -49,6 +50,9 @@ private:
 
 	void update() {
 		if (GameManager::getChanged()) changeScene();
+
+		// reset section
+		glUniform1i(GameManager::depthShader->getUniformLocation("b_shadow"), false);
 
 		GameManager::cleanRemoveList();
 
