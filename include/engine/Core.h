@@ -9,6 +9,8 @@
 #include "Screen.h"
 #include "Time.h"
 
+#include "Event/EventManager.h"
+
 #include "Object/GameObject.h"
 #include "Object/Factory.h"
 

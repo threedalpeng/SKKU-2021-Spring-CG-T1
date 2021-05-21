@@ -43,19 +43,25 @@ class Stage1GUIScript : public Script
 {
 public:
 	Stage1GUIScript() : Script() {}
+	~Stage1GUIScript() {
+		EventManager<GuiEvent>::removeListener(guiEventId);
+		EventManager<HpChangedEvent>::removeListener(hpEventId);
+	}
 
 	enum class Mode {
 		DIALOG,
 		HELP,
 		GAME,
-		PAUSE
+		PAUSE,
+		MONOLOG1,
+		MONOLOG2,
+		MONOLOG3,
 	};
 	Mode currentMode = Mode::DIALOG;
 
 private:
-	// Sample data
-	float hp = 200;
-	float maxHp = 200;
+	int hp = 50;
+	int maxHp = 100;
 
 	bool gameFirstStarted = true;
 
@@ -64,6 +70,19 @@ private:
 	size_t dialogIndex = 0;
 	std::vector<std::pair<std::string, std::string>> dialogs = {
 		{"How To", "P - Pause Menu\nESC - Quit to Desktop"},
+	};
+
+	std::vector<std::pair<std::string, std::string>> monolog1 = {
+		{"Player", "Oh, wait. Radioactive material is being detected in the front now."},
+		{"Player", "My spaceship would prevent it but...\nI think I should AVOID that GREEN ROCK."},
+	};
+	std::vector<std::pair<std::string, std::string>> monolog2 = {
+		{"Player", "I feel gravity pulling me... UPWARD?"},
+		{"Player", "I need to SLOW DOWN as much as I can!"},
+	};
+	std::vector<std::pair<std::string, std::string>> monolog3 = {
+		{"Player", "What? that is... METEOR!!!"},
+		{"Player", "What is happending outside?"},
 	};
 
 	std::vector<std::string> helpTexts = {
@@ -87,7 +106,19 @@ private:
 		"sounds/3 - Space Swim!.mp3",
 	};
 
+	uint guiEventId = 0;
+	uint hpEventId = 0;
+
 public:
+
+	bool changeGuiState(const GuiEvent& e) {
+		currentMode = static_cast<Mode>(e.guiId);
+		return true;
+	}
+	bool changeHp(const HpChangedEvent& e) {
+		hp = e.hp;
+		return true;
+	}
 
 	void init() override {
 		for (size_t i = 0; i < imagePaths.size(); i++) {
@@ -101,10 +132,20 @@ public:
 		soundPlayer->loadSoundFrom(soundList[0]);
 		soundPlayer->setType(SoundPlayer::Type::Background);
 		soundPlayer->setVolume(0.2f);
+
+		guiEventId = EventManager<GuiEvent>::addListener([this](const GuiEvent& e)->bool {
+			return changeGuiState(e);
+			});
+		hpEventId = EventManager<HpChangedEvent>::addListener([this](const HpChangedEvent& e)->bool {
+			printf("hp changed: %d\n", e.hp);
+			return changeHp(e);
+			});
 	}
 
 	void update() override {
-		static bool damaged = true;
+	}
+
+	void onGUIRender() override {
 		if (currentMode == Mode::GAME) {
 			if (gameFirstStarted) {
 				soundPlayer->loadSoundFrom(soundList[1]);
@@ -113,21 +154,6 @@ public:
 				gameFirstStarted = false;
 			}
 			soundPlayer->play();
-
-			if (damaged) {
-				hp -= 10.f * Time::delta();
-			}
-			else {
-				hp += 10.f * Time::delta();
-			}
-			if (hp < 0.0f) {
-				hp = 0.0f;
-				damaged = false;
-			}
-			if (hp > maxHp) {
-				hp = maxHp;
-				damaged = true;
-			}
 
 			if (Input::getKeyDown(GLFW_KEY_P)) {
 				std::cout << "Pause.." << std::endl;
@@ -155,9 +181,7 @@ public:
 		else if (currentMode == Mode::PAUSE) {
 			soundPlayer->pause();
 		}
-	}
 
-	void onGUIRender() override {
 		switch (currentMode) {
 		case Mode::DIALOG:
 			showDialog();
@@ -306,8 +330,8 @@ private:
 				ImGui::SameLine(40.f);
 
 				char buf[32];
-				sprintf(buf, "%d/%d", int(hp), int(maxHp));
-				ImGui::ProgressBar(hp / maxHp, ImVec2(-1.f, -1.f), buf);
+				sprintf(buf, "%d/%d", hp, maxHp);
+				ImGui::ProgressBar(float(hp) / float(maxHp), ImVec2(-1.f, -1.f), buf);
 			}
 		}
 		ImGui::End();

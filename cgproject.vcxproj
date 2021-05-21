@@ -194,6 +194,7 @@
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\engine\Event\EventManager.h" />
     <ClInclude Include="include\engine\Sound\SoundPlayer.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />

@@ -13,15 +13,16 @@ class PlayerScript : public Script
 {
 public:
 	PlayerScript() : Script() {}
-	btVector3	savePoint = btVector3(-3.0f, 0, 0);
-	int 	HP = 100;
+	int HP = 100;
+	btVector3 savePoint = btVector3(-3.0f, 0, 0);
 	float 	lastWallCollistion = 0.0f;
 
 private:
 	Transform* transform = nullptr;
-	EventCheckerSphere warningEvent = EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), float(5.f));
-	EventCheckerSphere gravityFallEvent = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), float(5.f));
-	EventCheckerSphere gravityStopEvent = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), float(5.f));
+	EventCheckerSphere warningEventChecker = EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), 5.f);
+	EventCheckerSphere gravityFallEventChecker = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), 5.f);
+	EventCheckerSphere gravityStopEventChecker = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), 5.f);
+	EventCheckerSphere endEventChecker = EventCheckerSphere(vec3(262.4f, 35.7f, 0.f), 15.f);
 public:
 
 	void init() override {
@@ -30,14 +31,20 @@ public:
 
 	void update() override {
 		//printf("%f, %f\n", transform->worldPosition.x, transform->worldPosition.y);
-		if (warningEvent.shouldTrigger(transform->worldPosition)) {
+		if (warningEventChecker.shouldTrigger(transform->worldPosition)) {
+			//EventManager<GuiEvent>::tringgerEvent({ 2 });
 			printf("watch out!\n");
 		}
-		if (gravityFallEvent.shouldTrigger(transform->worldPosition)) {
+		if (gravityFallEventChecker.shouldTrigger(transform->worldPosition)) {
+			//EventManager<GuiEvent>::tringgerEvent({ 2 });
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
 		}
-		if (gravityStopEvent.shouldTrigger(transform->worldPosition)) {
+		if (gravityStopEventChecker.shouldTrigger(transform->worldPosition)) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
+		}
+		if (endEventChecker.shouldTrigger(transform->worldPosition)) {
+			//EventManager<GuiEvent>::tringgerEvent({ 2 });
+			printf("finished!\n");
 		}
 
 		btVector3 addVelocity = btVector3(0, 0, 0);
@@ -54,25 +61,30 @@ public:
 			transform->setVelocityBT(btVector3(0, 0, 0));
 			transform->setWorlPositionBT(savePoint);
 		}
-		else if(Input::getKeyDown(GLFW_KEY_SPACE))
+		else if (Input::getKeyDown(GLFW_KEY_SPACE))
 		{
-
 		}
 		transform->addVelocityBT(addVelocity);
 		lastWallCollistion = std::max(0.0f, lastWallCollistion - Time::delta());
 	}
 
 	void collide(objectTypes oppositeType) {
-		if(oppositeType == objectTypes::METEOR){
+		if (oppositeType == objectTypes::METEOR) {
 			HP -= 10;
 			std::cout << "Now player's HP is " << HP << "\r";
-		}		
-		else if(oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f){
+			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+		}
+		else if (oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f) {
 			HP -= 1;
 			lastWallCollistion = 1.0f;
 			std::cout << "Now player's HP is " << HP << "\r";
-		}	
-		
+			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+		}
+		else if (oppositeType == objectTypes::RADIOACTIVE_WALL && lastWallCollistion < 0.1f) {
+			HP -= 20;
+			lastWallCollistion = 1.0f;
+			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+		}
 	}
 
 	void shot()

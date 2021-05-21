@@ -120,6 +120,7 @@
     <ClInclude Include="src\StartMenuScene\Scripts\PlayerAnimationStartScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
     <ClInclude Include="src\GameScene\Script\EventCheckerSphere.h" />
+    <ClInclude Include="include\engine\Event\EventManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
