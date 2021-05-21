@@ -141,8 +141,8 @@ void GameManager::cleanRemoveList()
 {
 	for(GameObject* obj : removeList)
 	{
-		btRigidBody* objBody = obj->getComponent<Transform>()->body;
-		if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
+		// btRigidBody* objBody = obj->getComponent<Transform>()->body;
+		// if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
 		obj->remove();
 	}
 	removeList.clear();

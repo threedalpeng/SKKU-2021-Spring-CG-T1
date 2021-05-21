@@ -36,7 +36,7 @@ public:
 			thisMeshRenderer->color.w = std::max(remainLife / 2.0f, 0.0f);
 		} 
 
-		if (remainLife < 0.0f)
+		if (remainLife < 0.1f)
 		{
 			GameObject* thisObject = getObject();
 			GameManager::removeList.push_back(thisObject);
@@ -44,13 +44,7 @@ public:
 	}
 
 	void collide()
-	{
-		// getComponent<SoundPlayer>()->play();
-		// std::cout << "collide meteor " << getComponent<SoundPlayer>() << std::endl;
-		// std::cout << "collide meteor " << soundPlayer << std::endl;
-
-		// soundPlayer->play();
-		
+	{		
 		if (leave)
 		{
 			explode();
@@ -65,10 +59,14 @@ public:
 		}
 	}
 
-		
-
 	void explode()
 	{
+		GameObject* thisObject = getObject();
+		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
+		if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
+		objBody = nullptr;
+		thisObject->getComponent<MeshRenderer>()->color.w = 0.0f;
+		
 		ParticleMaker::makeExplodeParticle(transform->position);
 		if (hasSound)
 			getComponent<SoundPlayer>()->play();
