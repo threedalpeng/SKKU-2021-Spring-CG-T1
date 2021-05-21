@@ -35,6 +35,13 @@ uniform sampler2D 	shadowMap;
 uniform vec3 		lightPos;
 uniform vec3 		viewPos;
 
+in VS_OUT {
+    vec3 FragPos;
+    vec3 Normal;
+    vec2 TexCoords;
+    vec4 FragPosLightSpace;
+} fs_in;
+
 
 vec4 phong( vec3 l, vec3 n, vec3 h, vec4 Kd )
 {
@@ -116,13 +123,14 @@ void main()
 
 	if(b_shadow)
 	{
-		if(b_texture)	vec3 color = texture(TEX0, fs_in.TexCoords).rgb;
-		else vec3 color = color.xyz;		// !!! it need to be checked about it has bug or not. !!!
+		vec3 color3;
+		if(b_texture)	color3 = texture(TEX0, fs_in.TexCoords).rgb;
+		else color3 = color.xyz;		// !!! it need to be checked about it has bug or not. !!!
 		
 		vec3 normal = normalize(fs_in.Normal);
 		vec3 lightColor = vec3(0.8f);
 		// ambient
-		vec3 ambient = 0.3 * color;
+		vec3 ambient = 0.3 * color3;
 		// diffuse
 		vec3 lightDir = normalize(lightPos - fs_in.FragPos);
 		float diff = max(dot(lightDir, normal), 0.0);
@@ -136,7 +144,7 @@ void main()
 		vec3 specular = spec * lightColor;    
 		// calculate shadow
 		float shadow = ShadowCalculation(fs_in.FragPosLightSpace);                      
-		vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;    
+		vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color3;    
 		
 		fragColor = vec4(lighting, 1.0);
 	}

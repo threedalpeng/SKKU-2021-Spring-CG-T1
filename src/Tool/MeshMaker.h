@@ -27,18 +27,16 @@ Mesh* MeshMaker::makeBoxMesh()
 
 	// Create vertex list
 	mesh->vertex_list = {
-		{ vec3(0,1,0), vec3(0,1,0), vec2(0.0f,0.0f) },
-		{ vec3(0,0,0), vec3(0,0,0), vec2(0.0f,1.0f) },
-		{ vec3(1,0,0), vec3(1,0,0), vec2(1.0f,1.0f) },
-		{ vec3(0,1,0), vec3(0,1,0), vec2(0.0f,0.0f) },
-		{ vec3(1,0,0), vec3(1,0,0), vec2(1.0f,1.0f) },
-		{ vec3(1,1,0), vec3(1,1,0), vec2(1.0f,0.0f) }
+		{ vec3(1,1,0), vec3(1,1,0), vec2(1.0f, 1.0f) },
+		{ vec3(1,-1,0), vec3(1,-1,0), vec2(1.0f, 0.0f) },
+		{ vec3(-1,-1,0), vec3(-1,-1,0), vec2(0.0f, 0.0f) },
+		{ vec3(-1,1,0), vec3(-1,1,0), vec2(0.0f, 1.0f) }
 	};
 
 	// Create index list
 	mesh->index_list = {
-		{0, 1, 2,
-		3, 4, 5}
+		{0, 2, 1,
+		0, 3, 2}
 	};
 
 	glGenBuffers(1, &(mesh->vertex_buffer));
@@ -56,33 +54,84 @@ Mesh* MeshMaker::make3DBoxMesh()
 {
 	Mesh* mesh = new Mesh();
 
-	// mesh->vertex_buffer = 0;
-	// mesh->index_buffer = 0;
+		mesh->vertex_buffer = 0;
+	mesh->index_buffer = 0;
 
-	// // Create vertex list
-	// mesh->vertex_list = {
-	// 	{ vec3(0,1,0), vec3(0,1,0), vec2(0.0f,0.0f) },
-	// 	{ vec3(0,0,0), vec3(0,0,0), vec2(0.0f,1.0f) },
-	// 	{ vec3(1,0,0), vec3(1,0,0), vec2(1.0f,1.0f) },
-	// 	{ vec3(0,1,0), vec3(0,1,0), vec2(0.0f,0.0f) },
-	// 	{ vec3(1,0,0), vec3(1,0,0), vec2(1.0f,1.0f) },
-	// 	{ vec3(1,1,0), vec3(1,1,0), vec2(1.0f,0.0f) }
-	// };
+	// Create vertex list
+	mesh->vertex_list = {
+		{ vec3(1,1,1), vec3(1,1,1), vec2(0.0f,1.0f) },
+		{ vec3(-1,1,1), vec3(-1,1,1), vec2(1.0f,1.0f) },
+		{ vec3(-1,1,-1), vec3(-1,1,-1), vec2(1.0f,0.0f) },
+		{ vec3(1,1,-1), vec3(1,1,-1), vec2(0.0f,0.0f) },
 
-	// // Create index list
-	// mesh->index_list = {
-	// 	{0, 1, 2,
-	// 	3, 4, 5}
-	// };
+		{ vec3(-1,1,1), vec3(-1,1,1), vec2(0.0f,1.0f) },
+		{ vec3(-1,-1,1), vec3(-1,-1,1), vec2(1.0f,1.0f) },
+		{ vec3(-1,-1,-1), vec3(-1,-1,-1), vec2(1.0f,0.0f) },
+		{ vec3(-1,1,-1), vec3(-1,1,-1), vec2(0.0f,0.0f) },
 
-	// glGenBuffers(1, &(mesh->vertex_buffer));
-	// glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
-	// glGenBuffers(1, &(mesh->index_buffer));
-	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
-	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+		{ vec3(-1,-1,1), vec3(-1,-1,1), vec2(0.0f,1.0f) },
+		{ vec3(1,-1,1), vec3(1,-1,1), vec2(1.0f,1.0f) },
+		{ vec3(1,-1,-1), vec3(1,-1,-1), vec2(0.0f,0.0f) },
+		{ vec3(-1,-1,-1), vec3(-1,-1,-1), vec2(0.0f,0.0f) },
 
-	// mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
+		{ vec3(1,-1,1), vec3(1,-1,1), vec2(0.0f,1.0f) },
+		{ vec3(1,1,1), vec3(1,1,1), vec2(1.0f,1.0f) },
+		{ vec3(1,1,-1), vec3(1,1,-1), vec2(1.0f,0.0f) },
+		{ vec3(1,-1,-1), vec3(1,-1,-1), vec2(0.0f,0.0f) },
+
+		{ vec3(1,1,1), vec3(1,1,1), vec2(0.0f,1.0f) },
+		{ vec3(-1,1,1), vec3(-1,1,1), vec2(1.0f,1.0f) },
+		{ vec3(-1,-1,1), vec3(-1,-1,1), vec2(1.0f,0.0f) },
+		{ vec3(1,-1,1), vec3(1,-1,1), vec2(0.0f,0.0f) },
+
+		{ vec3(1,1,-1), vec3(1,1,-1), vec2(0.0f,1.0f) },
+		{ vec3(-1,1,-1), vec3(-1,1,-1), vec2(1.0f,1.0f) },
+		{ vec3(-1,-1,-1), vec3(-1,-1,-1), vec2(1.0f,0.0f) },
+		{ vec3(1,-1,-1), vec3(1,-1,-1), vec2(0.0f,0.0f) },
+	};
+
+	// Create index list 
+	for(int i = 0; i < 4; i++)
+	{
+		int k = i * 4;
+		mesh->index_list.push_back(k);
+		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k+1);
+
+		mesh->index_list.push_back(k+2);
+		mesh->index_list.push_back(k+1);
+		mesh->index_list.push_back(k+3);
+	}
+	{
+		int k = 4 * 4;
+		mesh->index_list.push_back(k);
+		mesh->index_list.push_back(k+1);
+		mesh->index_list.push_back(k+3);
+
+		mesh->index_list.push_back(k+2);
+		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k+1);
+
+	}
+	{
+		int k = 4 * 5;
+		mesh->index_list.push_back(k);
+		mesh->index_list.push_back(k+3);
+		mesh->index_list.push_back(k+1);
+
+		mesh->index_list.push_back(k+2);
+		mesh->index_list.push_back(k+1);
+		mesh->index_list.push_back(k+3);
+	}
+
+	glGenBuffers(1, &(mesh->vertex_buffer));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertex_buffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex) * mesh->vertex_list.size(), &(mesh->vertex_list[0]), GL_STATIC_DRAW);
+	glGenBuffers(1, &(mesh->index_buffer));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->index_buffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->index_list.size(), &(mesh->index_list[0]), GL_STATIC_DRAW);
+
+	mesh->vertex_array = cg_create_vertex_array(mesh->vertex_buffer, mesh->index_buffer);
 	return mesh;
 }
 

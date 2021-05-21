@@ -223,6 +223,20 @@ void Application::onSceneLoaded()
 		iterateTransform(rootObj);
 	}
 
+	if (auto componentList = _componentManager.getComponentList<Light>()) {
+		for (auto componentPair : *componentList) {
+			Light* light = componentPair.second.get();
+			light->init();
+		}
+	}
+
+	if (auto componentList = _componentManager.getComponentList<Light>()) {
+		for (auto componentPair : *componentList) {
+			Light* light = componentPair.second.get();
+			light->update();
+		}
+	}
+
 	if (auto componentList = _componentManager.getComponentList<Camera>()) {
 		for (auto componentPair : *componentList) {
 			Camera* camera = componentPair.second.get();
@@ -256,12 +270,20 @@ void Application::update()
 		iterateTransform(rootObj);
 	}
 
+	if (auto componentList = _componentManager.getComponentList<Light>()) {
+		for (auto componentPair : *componentList) {
+			Light* light = componentPair.second.get();
+			light->update();
+		}
+	}
+
 	if (auto componentList = _componentManager.getComponentList<Camera>()) {
 		for (auto componentPair : *componentList) {
 			Camera* camera = componentPair.second.get();
 			camera->update();
 		}
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void Application::preRender() {

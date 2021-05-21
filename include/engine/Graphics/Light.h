@@ -18,8 +18,8 @@ public:
 	vec4 specular = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	/* Depth Camera */
-	vec3 eye = vec3();
-	vec3 at = vec3();
+	vec3 eye = vec3(3, 0, 100);
+	vec3 at = vec3(0);
 	vec3 up = vec3(0.f, 1.f, 0.f);
 	mat4	view_matrix = mat4::look_at(eye, at, up);
 
