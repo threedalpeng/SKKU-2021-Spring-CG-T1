@@ -5,11 +5,17 @@
 // bullet3
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
+#include "../../Custom/CustomRigidBody.h"
+
+#include <iostream>
 
 class PlayerScript : public Script
 {
 public:
 	PlayerScript() : Script() {}
+	btVector3	savePoint = btVector3(-3.0f, 0, 0);
+	int 	HP = 100;
+	float 	lastWallCollistion = 0.0f;
 
 private:
 	Transform* transform = nullptr;
@@ -46,11 +52,32 @@ public:
 			// _velocity = vec3(0);
 			// transform->position = vec3(-3.0f, 0.0f, 0.0f);
 			transform->setVelocityBT(btVector3(0, 0, 0));
-			transform->setWorlPositionBT(btVector3(-3.0f, 0, 0));
+			transform->setWorlPositionBT(savePoint);
+		}
+		else if(Input::getKeyDown(GLFW_KEY_SPACE))
+		{
+
 		}
 		transform->addVelocityBT(addVelocity);
+		lastWallCollistion = std::max(0.0f, lastWallCollistion - Time::delta());
 	}
 
-	void collide() {
+	void collide(objectTypes oppositeType) {
+		if(oppositeType == objectTypes::METEOR){
+			HP -= 10;
+			std::cout << "Now player's HP is " << HP << "\r";
+		}		
+		else if(oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f){
+			HP -= 1;
+			lastWallCollistion = 1.0f;
+			std::cout << "Now player's HP is " << HP << "\r";
+		}	
+		
+	}
+
+	void shot()
+	{
+		MeshRenderer* meshRenderer;
+		Mesh* sphereMesh = MeshMaker::makeSphere();
 	}
 };

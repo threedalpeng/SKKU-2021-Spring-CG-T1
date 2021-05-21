@@ -4,18 +4,19 @@
 
 #include "../Tool/ParticleMaker.h"
 #include "../../Custom/CustomRigidBody.h"
-class ObstacleScript : public Script
+class BulletScript : public Script
 {
 public:
-	ObstacleScript() : Script() {}
-	ObstacleScript(vec3 velocity) : Script() { _velocity = velocity; }
+	BulletScript() : Script() {}
+	BulletScript(vec3 velocity) : Script() { _velocity = velocity; }
 	vec3 _velocity = vec3(0, 0, 0);
 	bool hasSound = false;
+	float mass = 0.00000000000001f;
 
 private:
 	Transform* transform = nullptr;
 	bool leave = true;
-	float remainLife = 2.0f;
+	float remainLife = 30.0f;
 
 public:
 
@@ -29,11 +30,12 @@ public:
 		vec3 distance = _velocity * Time::delta();
 		transform->translate(distance);
 
+		remainLife -= Time::delta();
+
 		if (!leave){
-			remainLife -= Time::delta();
 			GameObject* thisObject = getObject();
 			MeshRenderer* thisMeshRenderer = thisObject->getComponent<MeshRenderer>();
-			thisMeshRenderer->color.w = std::max(remainLife / 4.0f, 0.0f);
+			thisMeshRenderer->color.w = 0.0f;
 		} 
 
 		if (remainLife < 0.1f)
@@ -66,7 +68,6 @@ public:
 		if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
 		objBody = nullptr;
 		
-		ParticleMaker::makeExplodeParticle(transform->position);
 		if (hasSound)
 			getComponent<SoundPlayer>()->play();
 	}
