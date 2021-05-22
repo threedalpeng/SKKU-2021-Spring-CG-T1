@@ -23,11 +23,36 @@ public:
 
 private:
 	Transform* transform = nullptr;
-	EventCheckerSphere warningEventChecker = EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), 5.f);
-	EventCheckerSphere gravityFallEventChecker = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), 5.f);
-	EventCheckerSphere gravityStopEventChecker = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), 5.f);
-	EventCheckerSphere savePointEventChecker = EventCheckerSphere(vec3(100.6f, 30.2f, 0.f), 8.5f);
-	EventCheckerSphere meteorEventChecker = EventCheckerSphere(vec3(247.8f, 35.7f, 0.f), 15.f);
+	int eventProgress = 0;
+	int saveEventProgress = 0;
+	std::vector<EventCheckerSphere> eventCheckers = {
+		EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), 5.f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 4 }); // Monolog 1
+			}),
+		EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), 5.f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 5 }); // Monolog 2
+			gravityOn = true;
+			}),
+		EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), 5.f, [this]() {
+			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
+			}),
+		EventCheckerSphere(vec3(100.6f, 30.2f, 0.f), 8.5f, [this]() {
+			savePoint = btVector3(100.6f, 30.2f, 0.f);
+			saveEventProgress = eventProgress + 1;
+			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
+			}),
+		EventCheckerSphere(vec3(247.8f, 35.7f, 0.f), 15.f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 7 }); // Monolog 4
+			}),
+		EventCheckerSphere(vec3(324.95f, 35.7f, 0.f), 15.f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 8 }); // End
+			}),
+	};
+
 	uint guiEventId = 0;
 
 	bool gameStopped = true;
@@ -57,27 +82,10 @@ public:
 		if (gameStopped) {
 			return;
 		}
-
-		if (warningEventChecker.shouldTrigger(transform->worldPosition)) {
-			stopPlayer();
-			EventManager<GuiEvent>::triggerEvent({ 4 }); // Monolog 1
-			printf("watch out!\n");
-		}
-		if (gravityFallEventChecker.shouldTrigger(transform->worldPosition)) {
-			stopPlayer();
-			EventManager<GuiEvent>::triggerEvent({ 5 }); // Monolog 2
-			gravityOn = true;
-		}
-		if (gravityStopEventChecker.shouldTrigger(transform->worldPosition)) {
-			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
-		}
-		if (savePointEventChecker.shouldTrigger(transform->worldPosition)) {
-			savePoint = btVector3(100.6f, 30.2f, 0.f);
-		}
-		if (meteorEventChecker.shouldTrigger(transform->worldPosition)) {
-			stopPlayer();
-			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
-			printf("finished!\n");
+		for (int i = eventProgress; i < eventCheckers.size(); i++) {
+			if (eventCheckers[i].trigger(transform->worldPosition))
+				eventProgress++;
+			else break;
 		}
 
 		btVector3 addVelocity = btVector3(0, 0, 0);
@@ -93,6 +101,10 @@ public:
 			// transform->position = vec3(-3.0f, 0.0f, 0.0f);
 			transform->setVelocityBT(btVector3(0, 0, 0));
 			transform->setWorlPositionBT(savePoint);
+			eventProgress = saveEventProgress;
+			for (int i = eventProgress; i < eventCheckers.size(); i++) {
+				eventCheckers[i].retry();
+			}
 		}
 		else if (Input::getKeyDown(GLFW_KEY_SPACE))
 		{

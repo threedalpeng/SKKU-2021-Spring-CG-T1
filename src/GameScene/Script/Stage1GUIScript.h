@@ -56,6 +56,8 @@ public:
 		MONOLOG1,
 		MONOLOG2,
 		MONOLOG3,
+		MONOLOG4,
+		END,
 	};
 	Mode currentMode = Mode::DIALOG;
 
@@ -100,8 +102,17 @@ private:
 		{"Player", "I need to SLOW DOWN as much as I can!"},
 	};
 	std::vector<std::pair<std::string, std::string>> monolog3 = {
-		{"Player", "What? that is... METEOR!!!"},
-		{"Player", "What is happending outside?"},
+		{"Player", "Phew... I need to rest here..."},
+		{"Player", "(Save Point Reached.\nPress 'R' to return here.)"},
+	};
+	std::vector<std::pair<std::string, std::string>> monolog4 = {
+		{"Player", "What? that is... METEOR!!! This is so..."},
+		{"Player", "Awesome!\nI always wanted to destroy them."},
+		{"Player", "Let's shoot them out!\n(press 'S?' to shot a bullet)"},
+	};
+	std::vector<std::pair<std::string, std::string>> endMonolog = {
+		{"Player", "What is happening outside?"},
+		{"Player", ""},
 	};
 
 	std::vector<std::string> helpTexts = {
@@ -167,7 +178,19 @@ public:
 	}
 
 	void onGUIRender() override {
-		if (currentMode == Mode::GAME) {
+		switch (currentMode) {
+		case Mode::HELP:
+			soundPlayer->pause();
+			if (Input::getKeyDown(GLFW_KEY_F1)) {
+				currentMode = Mode::GAME;
+				EventManager<GuiEvent>::triggerEvent({ -1 });
+			}
+			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
+				currentMode = Mode::GAME;
+				EventManager<GuiEvent>::triggerEvent({ -1 });
+			}
+			break;
+		case Mode::GAME:
 			if (gameFirstStarted) {
 				soundPlayer->loadSoundFrom(soundList[1]);
 				soundPlayer->setType(SoundPlayer::Type::Background);
@@ -184,25 +207,20 @@ public:
 				std::cout << "Help" << std::endl;
 				currentMode = Mode::HELP;
 			}
-		}
-		else if (currentMode == Mode::HELP) {
+			break;
+		case Mode::PAUSE:
 			soundPlayer->pause();
-			if (Input::getKeyDown(GLFW_KEY_F1)) {
-				currentMode = Mode::GAME;
-				EventManager<GuiEvent>::triggerEvent({ -1 });
-			}
-			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
-				currentMode = Mode::GAME;
-				EventManager<GuiEvent>::triggerEvent({ -1 });
-			}
-		}
-		else if (currentMode == Mode::DIALOG || currentMode == Mode::MONOLOG1 || currentMode == Mode::MONOLOG2 || currentMode == Mode::MONOLOG3) {
+			break;
+		case Mode::DIALOG:
+		case Mode::MONOLOG1:
+		case Mode::MONOLOG2:
+		case Mode::MONOLOG3:
+		case Mode::MONOLOG4:
+		case Mode::END:
 			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
 				dialogIndex++;
 			}
-		}
-		else if (currentMode == Mode::PAUSE) {
-			soundPlayer->pause();
+			break;
 		}
 
 		switch (currentMode) {
@@ -226,6 +244,12 @@ public:
 			break;
 		case Mode::MONOLOG3:
 			showMonolog3();
+			break;
+		case Mode::MONOLOG4:
+			showMonolog4();
+			break;
+		case Mode::END:
+			showEnding();
 			break;
 		}
 	}
@@ -427,7 +451,103 @@ private:
 		else {
 			currentMode = Mode::GAME;
 			EventManager<GuiEvent>::triggerEvent({ -1 });
+		}
+	}
+
+	void showMonolog4() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			//| ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		float minDialogHeight = 150.f;
+		float dialogHeight = std::max(minDialogHeight, static_cast<float>(Screen::height()) * 0.35f);
+
+		ImGui::SetNextWindowPos(
+			ImVec2(0, static_cast<float>(Screen::height()) - dialogHeight),
+			ImGuiCond_Always);
+		ImGui::SetNextWindowSize(
+			ImVec2(static_cast<float>(Screen::width()), dialogHeight),
+			ImGuiCond_Always
+		);
+
+		if (dialogIndex < monolog4.size()) {
+			ImGui::Begin(monolog4[dialogIndex].first.c_str(), NULL, windowFlags);
+			{
+				ImVec2 windowSize = ImGui::GetWindowSize();
+
+				ImGui::BeginChild("Dialog Item", windowSize);
+				{
+					ImGui::PushFont(ResourceManager::getFont("consola 20"));
+
+					ImGui::Text(monolog4[dialogIndex].second.c_str());
+
+					ImGui::PopFont();
+				}
+				ImGui::EndChild();
+				if (ImGui::IsItemClicked()) {
+					dialogIndex++;
+				}
+			}
+			ImGui::End();
+		}
+		else {
+			currentMode = Mode::GAME;
+			EventManager<GuiEvent>::triggerEvent({ -1 });
 			EventManager<MeteorMoveEvent>::triggerEvent({ 1 });
+		}
+	}
+
+	void showEnding() {
+		ImGuiWindowFlags windowFlags = 0;
+		windowFlags = windowFlags
+			//| ImGuiWindowFlags_NoTitleBar
+			| ImGuiWindowFlags_NoScrollbar
+			| ImGuiWindowFlags_NoScrollWithMouse
+			| ImGuiWindowFlags_NoResize
+			| ImGuiWindowFlags_NoCollapse
+			//| ImGuiWindowFlags_NoBackground
+			;
+
+		float minDialogHeight = 150.f;
+		float dialogHeight = std::max(minDialogHeight, static_cast<float>(Screen::height()) * 0.35f);
+
+		ImGui::SetNextWindowPos(
+			ImVec2(0, static_cast<float>(Screen::height()) - dialogHeight),
+			ImGuiCond_Always);
+		ImGui::SetNextWindowSize(
+			ImVec2(static_cast<float>(Screen::width()), dialogHeight),
+			ImGuiCond_Always
+		);
+
+		if (dialogIndex < endMonolog.size()) {
+			ImGui::Begin(endMonolog[dialogIndex].first.c_str(), NULL, windowFlags);
+			{
+				ImVec2 windowSize = ImGui::GetWindowSize();
+
+				ImGui::BeginChild("Dialog Item", windowSize);
+				{
+					ImGui::PushFont(ResourceManager::getFont("consola 20"));
+
+					ImGui::Text(endMonolog[dialogIndex].second.c_str());
+
+					ImGui::PopFont();
+				}
+				ImGui::EndChild();
+				if (ImGui::IsItemClicked()) {
+					dialogIndex++;
+				}
+			}
+			ImGui::End();
+		}
+		else {
+			currentMode = Mode::GAME;
+			EventManager<GuiEvent>::triggerEvent({ -1 });
 		}
 	}
 
