@@ -192,7 +192,6 @@
     <ClCompile Include="include\imgui\imgui_tables.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="include\engine\Graphics\Texture.cpp" />
-    <ClCompile Include="src\GameScene\Script\Stage1GUIScript.cpp" />
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="src\SpaceSwimApplication.cpp" />
   </ItemGroup>
@@ -222,6 +221,10 @@
     <ClInclude Include="include\irrKlang\irrKlang.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
     <ClInclude Include="src\GameScene\Script\EventCheckerSphere.h" />
+    <ClInclude Include="src\GameScene\Script\Stage2GUIScript.h" />
+    <ClInclude Include="src\GameScene\Script\GameCameraScript.h" />
+    <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
+    <ClInclude Include="src\GameScene\Stage_2.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\PlayerAnimationStartScript.h" />
     <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="include\cg\stb_image.h" />
@@ -274,8 +277,8 @@
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
     <ClInclude Include="include\engine\Graphics\Texture.h" />
     <ClInclude Include="src\Player\Character.h" />
-    <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
-    <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\StartBackgroundScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\StartCameraScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartGUIScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="src\Tool\MeshMaker.h" />

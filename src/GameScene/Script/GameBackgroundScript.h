@@ -1,10 +1,10 @@
 #pragma once
 #include "engine/Core.h"
 
-class BackgroundScript : public Script
+class GameBackgroundScript : public Script
 {
 public:
-	BackgroundScript() : Script() {}
+	GameBackgroundScript() : Script() {}
 
 private:
 	Transform* transform = nullptr;

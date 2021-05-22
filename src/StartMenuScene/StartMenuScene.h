@@ -7,8 +7,8 @@
 #include "engine/Core.h"
 
 // My Application
-#include "Scripts/CameraScript.h"
-#include "Scripts/BackgroundScript.h"
+#include "Scripts/StartCameraScript.h"
+#include "Scripts/StartBackgroundScript.h"
 #include "Scripts/GameStartGUIScript.h"
 #include "Scripts/PlayerAnimationStartScript.h"
 #include "imgui/imgui.h"
@@ -94,7 +94,7 @@ public:
 
 			transform = background->getComponent<Transform>();
 			transform->scale = vec3(50, 100, 50);
-			BackgroundScript* backgroundScript = new BackgroundScript();
+			StartBackgroundScript* backgroundScript = new StartBackgroundScript();
 			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 
 			// soundPlayer = background->addComponent<SoundPlayer>();
@@ -105,7 +105,7 @@ public:
 		// main camera
 		{
 			camera = mainCamera->addComponent<Camera>();
-			CameraScript* cameraScript = new CameraScript();
+			StartCameraScript* cameraScript = new StartCameraScript();
 			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 			camera->addShader(GameManager::basicShader);
 			meshRenderer->isShaded = false;

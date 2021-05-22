@@ -37,7 +37,6 @@
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\engine\Sound\SoundPlayer.cpp" />
-    <ClCompile Include="src\GameScene\Script\Stage1GUIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -88,8 +87,8 @@
     <ClInclude Include="src\Manager\GUImanager.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\Player\Character.h" />
-    <ClInclude Include="src\StartMenuScene\Scripts\BackgroundScript.h" />
-    <ClInclude Include="src\StartMenuScene\Scripts\CameraScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\StartBackgroundScript.h" />
+    <ClInclude Include="src\StartMenuScene\Scripts\StartCameraScript.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\GameStartGUIScript.h" />
     <ClInclude Include="src\StartMenuScene\StartMenuScene.h" />
     <ClInclude Include="src\Tool\MeshMaker.h" />
@@ -122,6 +121,10 @@
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
     <ClInclude Include="src\GameScene\Script\EventCheckerSphere.h" />
     <ClInclude Include="include\engine\Event\EventManager.h" />
+    <ClInclude Include="src\GameScene\Stage_2.h" />
+    <ClInclude Include="src\GameScene\Script\Stage2GUIScript.h" />
+    <ClInclude Include="src\GameScene\Script\GameCameraScript.h" />
+    <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />
