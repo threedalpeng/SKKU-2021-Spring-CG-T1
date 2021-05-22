@@ -13,12 +13,6 @@ private:
 	Transform* transform = nullptr;
 	SoundPlayer* soundPlayer = nullptr;
 
-	/*
-	int i = 0;
-	float time = 0.f;
-	bool increase = true;
-	std::vector<GameObject*> objList = std::vector<GameObject*>();
-	*/
 public:
 
 	void init() override {
@@ -28,35 +22,6 @@ public:
 	}
 
 	void update() override {
-		/*
-		if (increase) {
-			time += Time::delta();
-			if (time >= 1.f) {
-				GameObject* sampleObj = GameObject::create("Sample");
-				getObject()->addChildren(sampleObj);
-				objList.push_back(sampleObj);
-				std::cout << "Childrens: " << getObject()->getChildren().size() << std::endl;
-				time -= 1.f;
-				i++;
-			}
-			if (i >= 5) {
-				increase = false;
-			}
-		}
-		else {
-			time += Time::delta();
-			if (time >= 1.f) {
-				GameObject* objToRemove = objList.back(); objList.pop_back();
-				objToRemove->remove();
-				std::cout << "Childrens: " << getObject()->getChildren().size() << std::endl;
-				time -= 1.f;
-				i--;
-			}
-			if (i <= 0) {
-				increase = true;
-			}
-		}
-		*/
 	}
 
 	void onGUIRender() override {
@@ -111,19 +76,25 @@ public:
 					GameManager::setChanged(true);
 				}
 				if (ImGui::IsItemHovered()) {
-					ImGui::SetTooltip("Game will be started...");
+					ImGui::SetTooltip("Game will be started");
 				}
 
 				ImGui::Spacing();
 
-				if (drawButton("Play Sound(Test)")) {
-					soundPlayer->play();
+				if (drawButton("Stage Select (But Stage 2)")) {
+					GameManager::setStage(2);
+					GameManager::setChanged(true);
+				}
+				if (ImGui::IsItemHovered()) {
+					ImGui::SetTooltip("It'll bring you to Stage 2... this time.");
 				}
 
 				ImGui::Spacing();
 
-				if (drawButton("Pause Sound(Test)")) {
-					soundPlayer->pause();
+				if (drawButton("Quit")) {
+				}
+				if (ImGui::IsItemHovered()) {
+					ImGui::SetTooltip("Good bye!");
 				}
 				ImGui::PopFont();
 			}

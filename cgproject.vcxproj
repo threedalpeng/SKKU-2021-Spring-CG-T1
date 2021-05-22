@@ -217,6 +217,7 @@
     <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
     <ClInclude Include="include\irrKlang\ik_vec3d.h" />
     <ClInclude Include="include\irrKlang\irrKlang.h" />
+    <ClInclude Include="src\GameScene\PhysicsUtil.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
     <ClInclude Include="src\GameScene\Script\EventCheckerSphere.h" />
     <ClInclude Include="src\GameScene\Script\Stage2GUIScript.h" />
@@ -270,7 +271,6 @@
     <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\Manager\GameManager.h" />
-    <ClInclude Include="src\Manager\GUImanager.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\MeshBox\MeshMaker.h" />
     <ClInclude Include="include\engine\Graphics\Texture.h" />

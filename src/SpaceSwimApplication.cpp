@@ -3,7 +3,9 @@
 #include "StartMenuScene/StartMenuScene.h"
 #include "Manager/GameManager.h"
 #include "Manager/ResourceManager.h"
+
 #include "GameScene/Stage_1.h"
+#include "GameScene/Stage_2.h"
 
 #include "GameScene/Script/ObstacleScript.h"
 #include "GameScene/Script/PlayerScript.h"
@@ -140,7 +142,6 @@ private:
 						for (size_t i = 0; i < script_v.size(); i++)	((BulletScript*)script_v.at(i))->collide(obAA->objectType);
 					}
 
-
 					break;
 				}
 			}
@@ -167,6 +168,7 @@ private:
 			scene = new Stage_1();
 			break;
 		case 2:
+			scene = new Stage_2();
 			break;
 		case 3:
 			break;

@@ -84,7 +84,6 @@
     <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />
     <ClInclude Include="src\Manager\GameManager.h" />
-    <ClInclude Include="src\Manager\GUImanager.h" />
     <ClInclude Include="src\Manager\ResourceManager.h" />
     <ClInclude Include="src\Player\Character.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\StartBackgroundScript.h" />
@@ -125,6 +124,7 @@
     <ClInclude Include="src\GameScene\Script\Stage2GUIScript.h" />
     <ClInclude Include="src\GameScene\Script\GameCameraScript.h" />
     <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
+    <ClInclude Include="src\GameScene\PhysicsUtil.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

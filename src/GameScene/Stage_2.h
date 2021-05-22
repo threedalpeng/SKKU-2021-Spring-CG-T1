@@ -24,54 +24,12 @@
 // bullet3
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
+#include "PhysicsUtil.h"
 
-#include "BulletDynamics/Featherstone/btMultiBodyDynamicsWorld.h"
-#include "BulletDynamics/Featherstone/btMultiBodyConstraintSolver.h"
-#include "BulletDynamics/Featherstone/btMultiBodyPoint2Point.h"
-#include "BulletDynamics/Featherstone/btMultiBodyLinkCollider.h"
-
-enum MyFilterModes
-{
-	FILTER_GROUPAMASKB_AND_GROUPBMASKA2 = 0,
-	FILTER_GROUPAMASKB_OR_GROUPBMASKA2
-};
-
-struct MyOverlapFilterCallback2 : public btOverlapFilterCallback
-{
-	int m_filterMode;
-
-	MyOverlapFilterCallback2()
-		: m_filterMode(FILTER_GROUPAMASKB_AND_GROUPBMASKA2)
-	{
-	}
-
-	virtual ~MyOverlapFilterCallback2()
-	{
-	}
-	// return true when pairs need collision
-	virtual bool needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
-	{
-		if (m_filterMode == FILTER_GROUPAMASKB_AND_GROUPBMASKA2)
-		{
-			bool collides = (proxy0->m_collisionFilterGroup & proxy1->m_collisionFilterMask) != 0;
-			collides = collides && (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
-			return collides;
-		}
-
-		if (m_filterMode == FILTER_GROUPAMASKB_OR_GROUPBMASKA2)
-		{
-			bool collides = (proxy0->m_collisionFilterGroup & proxy1->m_collisionFilterMask) != 0;
-			collides = collides || (proxy1->m_collisionFilterGroup & proxy0->m_collisionFilterMask);
-			return collides;
-		}
-		return false;
-	}
-};
-
-class Stage_1 : public Scene {
+class Stage_2 : public Scene {
 public:
-	Stage_1() : Scene() {};
-	~Stage_1() {
+	Stage_2() : Scene() {};
+	~Stage_2() {
 		EventManager<MeteorMoveEvent>::removeListener(meteorMoveEventId);
 	}
 
@@ -83,12 +41,6 @@ public:
 	uint meteorMoveEventId;
 
 	void init() {
-		/* Font */
-		/*
-		Font* textFont = new Font();
-		textFont->loadFrom("fonts/consola.ttf");
-		*/
-
 		/* Mesh */
 		Mesh* skyCylinderMesh = ResourceManager::getMesh("Sky Cylinder");
 		Mesh* sphereMesh = ResourceManager::getMesh("Sphere");
@@ -195,6 +147,7 @@ public:
 		{
 			camera = mainCamera->addComponent<Camera>();
 			GameCameraScript* cameraScript = new GameCameraScript();
+			cameraScript->distance = 30.f;
 			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 			camera->addShader(GameManager::basicShader);
 			camera->addShader(GameManager::depthShader);
@@ -245,7 +198,7 @@ public:
 		// player //
 		{
 			transform = player->getComponent<Transform>();
-			transform->position = vec3(-3.0f, 0.0f, 0.0f);
+			transform->position = vec3(0.0f, 21.1f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			transform->mass = 1.0f;
 			PlayerScript* playerScript = new PlayerScript();
@@ -400,30 +353,49 @@ public:
 
 		// walls
 		{
-			addObject(createWall(vec3(-13.0f, 0.0f, 0.0f), 90.f, vec3(15.f, 3.f, 10.f)));
-			addObject(createWall(vec3(+10.0f, 12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 10.f)));
-			addObject(createWall(vec3(+10.0f, -12.0f, 0.0f), 0.f, vec3(20.f, 3.f, 10.f)));
-			addObject(createWall(vec3(+47.47f, 1.43f, 0.0f), -30.f, vec3(31.35f, 3.f, 9.5f)));
-			addObject(createWall(vec3(+32.13f, -10.0f, 0.0f), 30.f, vec3(7.52f, 3.f, 9.75f)));
-			addObject(createWall(vec3(44.63f, -11.47f, 0.0f), -30.f, vec3(10.4f, 3.f, 10.f)));
-			addObject(createWall(vec3(55.28f, -28.4f, 0.0f), 45.f, vec3(23.3f, 3.f, 10.f)));
-			addObject(createWall(vec3(35.68f, -31.46f, 0.0f), 45.f, vec3(20.25f, 3.f, 10.f)));
-			addObject(createWall(vec3(29.66f, -49.9f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
-			addObject(createWall(vec3(45.68f, -58.6f, 0.0f), 45.f, vec3(13.25f, 3.f, 10.f)));
-			addObject(createWall(vec3(40.f, -81.1f, 0.0f), 45.f, vec3(14.65f, 3.f, 10.f)));
-			addObject(createWall(vec3(44.21f, -46.03f, 0.0f), -45.f, vec3(7.35f, 3.f, 10.f)));
-			addObject(createWall(vec3(22.46f, -63.2f, 0.0f), 45.f, vec3(13.22f, 3.f, 10.f)));
-			addObject(createRadioactiveWall(vec3(23.09f, -81.01f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
-			addObject(createWall(vec3(60.5f, -59.5f, 0.0f), 0.f, vec3(15.05f, 3.f, 10.f)));
-			addObject(createWall(vec3(69.41f, -71.67f, 0.0f), 0.f, vec3(21.2f, 3.f, 10.f)));
-			addObject(createWall(vec3(87.4f, -33.44f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
-			addObject(createWall(vec3(73.3f, -6.3f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
-			addObject(createRadioactiveWall(vec3(80.12f, 52.6f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
-			addObject(createWall(vec3(194.7f, 52.08f, 0.0f), 0.f, vec3(123.15f, 3.f, 10.f)));
-			addObject(createWall(vec3(200.9f, 19.4f, 0.0f), 0.f, vec3(116.5f, 3.f, 10.f)));
-			addObject(createRadioactiveWall(vec3(119.7f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
-			addObject(createRadioactiveWall(vec3(160.3f, 19.4f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
-			addObject(createRadioactiveWall(vec3(200.5f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
+			// outer wall
+			addObject(createWall(vec3(-300.0f, 60.0f, 0.0f), 60.f, vec3(61.5f, 3.f, 10.f)));
+			addObject(createWall(vec3(-300.0f, -60.0f, 0.0f), -60.f, vec3(61.5f, 3.f, 10.f)));
+			addObject(createWall(vec3(300.0f, 60.0f, 0.0f), -60.f, vec3(61.5f, 3.f, 10.f)));
+			addObject(createWall(vec3(300.0f, -60.0f, 0.0f), 60.f, vec3(61.5f, 3.f, 10.f)));
+			addObject(createWall(vec3(0.0f, 85.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
+			addObject(createWall(vec3(0.0f, -85.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
+
+			// middle wall
+			addObject(createCylinderWall(vec3(0.0f, -75.3f, 0.f), vec3(70.f, 70.f, 10.f), true));
+			addObject(createCylinderWall(vec3(-21.6f, 70.2f, 0.f), vec3(35.f, 35.f, 10.f), true));
+			addObject(createWall(vec3(10.0f, 70.f, 0.0f), 90.f, vec3(40.f, 3.f, 10.f)));
+			addObject(createWall(vec3(-10.0f, 70.f, 0.0f), 90.f, vec3(40.f, 3.f, 10.f)));
+			addObject(createWall(vec3(0.0f, -34.4f, 0.0f), 90.f, vec3(40.f, 3.f, 10.f)));
+			addObject(createWall(vec3(-7.05f, 33.05f, 0.0f), 45.f, vec3(17.45f, 3.f, 10.f)));
+			addObject(createWall(vec3(7.05f, 33.05f, 0.0f), -45.f, vec3(17.45f, 3.f, 10.f)));
+			addObject(createWall(vec3(4.11f, 9.21f, 0.0f), 45.f, vec3(7.75f, 3.f, 10.f)));
+			addObject(createWall(vec3(-4.11f, 9.21f, 0.0f), -45.f, vec3(7.75f, 3.f, 10.f)));
+
+			// Rocks (Left)
+			addObject(createSphereWall(vec3(-36.3f, -1.1f, 0.f), 10.f));
+			addObject(createSphereWall(vec3(-58.2f, 21.1f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-66.f, 59.3f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-99.5f, 38.4f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-121.7f, 21.1f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-114.5f, -36.f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-197.2f, -9.8f, 0.f), 20.f));
+			addObject(createSphereWall(vec3(-208.f, 43.4f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-204.1f, -46.9f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-243.1f, 30.2f, 0.f), 12.f));
+			addObject(createSphereWall(vec3(-264.5f, -42.1f, 0.f), 12.f));
+			addObject(createSphereWall(vec3(-279.f, 46.f, 0.f), 10.f));
+
+			addObject(createSphereWall(vec3(-42.5f, 26.7f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-70.4f, 35.2f, 0.f), 12.f, true));
+			addObject(createSphereWall(vec3(-88.3f, 2.4f, 0.f), 10.f, true));
+			addObject(createSphereWall(vec3(-57.f, -7.9f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-132.4f, 47.6f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-157.4f, -22.85f, 0.f), 10.f, true));
+
+			// Rocks (Right)
+			addObject(createCylinderWall(vec3(104.6f, 57.5f, 0.f), vec3(35.f, 80.f, 10.f), true));
+			addObject(createCylinderWall(vec3(156.6f, -80.9f, 0.f), vec3(35.f, 80.f, 10.f), true));
 		}
 
 		{
@@ -506,16 +478,7 @@ public:
 		// meteor //
 		{
 			meteorMoveEventId = EventManager<MeteorMoveEvent>::addListener([this](const MeteorMoveEvent& e)->bool {
-				GameObject* meteor;
-				meteor = createMeteor(vec3(277.2f, 41.81f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
-				meteor = createMeteor(vec3(293.6f, 30.05f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
-				meteor = createMeteor(vec3(314.1f, 36.48f, 0.f), vec3(-3.f, 0.f, 0.f), 10.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
+				spawnMeteor(vec3(), 10.f, 10, vec3());
 				return true;
 				});
 		}
@@ -525,7 +488,7 @@ public:
 		soundPlayer = gui->addComponent<SoundPlayer>();
 	}
 
-	GameObject* createWall(vec3 pos, float rotAngle, vec3 scale) {
+	GameObject* createWall(vec3 pos, float rotAngle, vec3 scale, bool radioactive = false) {
 		//Material* material = ResourceManager::getMaterial("Basic");
 		Mesh* boxMesh = ResourceManager::getMesh("Box");
 
@@ -539,7 +502,7 @@ public:
 
 		MeshRenderer* meshRenderer = wall->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(boxMesh);
-		meshRenderer->loadTexture(wallTexture);
+		meshRenderer->loadTexture((radioactive ? radioactiveTexture : wallTexture));
 		meshRenderer->loadShader(GameManager::basicShader);
 		//meshRenderer->loadMaterial(material);
 		meshRenderer->isShaded = true;
@@ -574,7 +537,7 @@ public:
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::WALL);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, (radioactive ? objectTypes::RADIOACTIVE_WALL : objectTypes::WALL));
 
 		GameManager::dynamicsWorld->addRigidBody(body);
 
@@ -585,7 +548,7 @@ public:
 		return wall;
 	}
 
-	GameObject* createRadioactiveWall(vec3 pos, float rotAngle, vec3 scale) {
+	GameObject* createCylinderWall(vec3 pos, vec3 scale, bool radioactive = false) {
 		Mesh* cylinderMesh = ResourceManager::getMesh("Cylinder");
 
 		// static object test
@@ -598,7 +561,7 @@ public:
 
 		MeshRenderer* meshRenderer = wall->addComponent<MeshRenderer>();
 		meshRenderer->loadMesh(cylinderMesh);
-		meshRenderer->loadTexture(radioactiveTexture);
+		meshRenderer->loadTexture((radioactive ? radioactiveTexture : wallTexture));
 		meshRenderer->loadShader(GameManager::basicShader);
 		//meshRenderer->loadMaterial(material);
 		meshRenderer->isShaded = false;
@@ -633,7 +596,7 @@ public:
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::RADIOACTIVE_WALL);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, (radioactive ? objectTypes::RADIOACTIVE_WALL : objectTypes::WALL));
 
 		GameManager::dynamicsWorld->addRigidBody(body);
 
@@ -642,6 +605,67 @@ public:
 		body->gameObject = wall;
 
 		return wall;
+	}
+
+	GameObject* createSphereWall(vec3 pos, float scale, bool radioactive = false) {
+		Mesh* cylinderMesh = ResourceManager::getMesh("Sphere");
+
+		// static object test
+		Quaternion q = Quaternion::axisAngle(vec3(1.f, 0.f, 0.f), 90.f);
+		btQuaternion btq = btQuaternion(q.x, q.y, q.z, q.w);
+		btVector3 btpos = btVector3(pos.x, pos.y, pos.z);
+
+		GameObject* wall = GameObject::create("Radioactive Wall");
+
+		MeshRenderer* meshRenderer = wall->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(cylinderMesh);
+		meshRenderer->loadTexture((radioactive ? radioactiveTexture : wallTexture));
+		meshRenderer->loadShader(GameManager::basicShader);
+		//meshRenderer->loadMaterial(material);
+		meshRenderer->isShaded = false;
+		meshRenderer->isColored = false;
+		meshRenderer->hasTexture = true;
+
+		Transform* transform = wall->getComponent<Transform>();
+		transform->position = pos;
+		transform->scale = vec3(scale, scale, scale);
+		transform->rotation = q;
+
+		//create a dynamic rigidbody
+		btCollisionShape* colShape = new btSphereShape(btScalar(scale));
+		collisionShapes.push_back(colShape);
+
+		// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+		btScalar mass(0.f);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btpos);
+		startTransform.setRotation(btq);
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, (radioactive ? objectTypes::RADIOACTIVE_WALL : objectTypes::WALL));
+
+		GameManager::dynamicsWorld->addRigidBody(body);
+
+		transform->body = body;
+		body->setLinearVelocity(btVector3(0.f, 0.f, 0.f));
+		body->gameObject = wall;
+
+		return wall;
+	}
+
+	void spawnMeteor(vec3 spawnPos, float spawnRange, int spawnNum, vec3 direction) {
 	}
 
 	GameObject* createMeteor(vec3 pos, vec3 velocity, float scale) {
