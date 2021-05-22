@@ -66,11 +66,17 @@ private:
 		glUniform1i(GameManager::depthShader->getUniformLocation("b_shadow"), false);
 
 		GameManager::cleanRemoveList();
-
+		GameManager::cleanRemoveBodyList();
+		
 		if (GameManager::dynamicsWorld)
 		{
 			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
-			collide();
+			try{
+				collide();
+			}catch( int expn){
+				std::cout << expn << ": there are error in bullet at collision detection step.\r" <<  std::endl;
+			}
+			
 		}
 
 		Application::update();

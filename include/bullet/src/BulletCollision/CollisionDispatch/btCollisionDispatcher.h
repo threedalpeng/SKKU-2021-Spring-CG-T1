@@ -30,6 +30,7 @@ class btPoolAllocator;
 class btCollisionConfiguration;
 
 #include "btCollisionCreateFunc.h"
+#include <iostream>
 
 #define USE_DISPATCH_REGISTRY_ARRAY 1
 
@@ -94,6 +95,7 @@ public:
 	btPersistentManifold* getManifoldByIndexInternal(int index)
 	{
 		btAssert(index>=0);
+		// std::cout << "getManifoldByIndexInternal " << index << m_manifoldsPtr.size() << std::endl;
 		btAssert(index<m_manifoldsPtr.size());
 		return m_manifoldsPtr[index];
 	}
