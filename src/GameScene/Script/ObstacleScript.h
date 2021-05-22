@@ -72,6 +72,7 @@ public:
 	{
 		GameObject* thisObject = getObject();
 		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
-		if (objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
+		// if (objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
+		if(objBody)	GameManager::removeBodyList.push_back(objBody);
 	}
 };

@@ -64,7 +64,8 @@ private:
 		glUniform1i(GameManager::depthShader->getUniformLocation("b_shadow"), false);
 
 		GameManager::cleanRemoveList();
-
+		GameManager::cleanRemoveBodyList();
+		
 		if (GameManager::dynamicsWorld)
 		{
 			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);

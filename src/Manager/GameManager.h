@@ -50,7 +50,9 @@ public:
 	static std::normal_distribution<float> dist;
 
 	static std::vector<GameObject*> removeList;
+	static std::vector<btRigidBody*> removeBodyList;
 	static void cleanRemoveList();
+	static void cleanRemoveBodyList();
 
 	static Shader* basicShader;
 	static Shader* depthShader;
@@ -72,6 +74,7 @@ btDiscreteDynamicsWorld* GameManager::dynamicsWorld = nullptr;
 int GameManager::_maxParticle = 400;
 int GameManager::_nowParticle = 0;
 std::vector<GameObject*> GameManager::removeList = std::vector<GameObject*>();
+std::vector<btRigidBody*> GameManager::removeBodyList = std::vector<btRigidBody*>();
 
 std::random_device GameManager::rd = std::random_device();
 std::mt19937 GameManager::gen = std::mt19937(GameManager::rd());
@@ -141,9 +144,16 @@ void GameManager::cleanRemoveList()
 {
 	for(GameObject* obj : removeList)
 	{
-		// btRigidBody* objBody = obj->getComponent<Transform>()->body;
-		// if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
 		obj->remove();
 	}
 	removeList.clear();
+}
+
+void GameManager::cleanRemoveBodyList()
+{
+	for(btRigidBody* body : removeBodyList)
+	{
+		GameManager::dynamicsWorld->removeCollisionObject(body);
+	}
+	removeBodyList.clear();
 }

@@ -163,12 +163,12 @@ public:
 		bulletMeshRenderer->isColored = true;
 		bulletMeshRenderer->hasTexture = false;
 		bulletMeshRenderer->hasAlpha = false;
-		bulletMeshRenderer->color = vec4(0.2f, 0.2f, 0.9f, 1.0f);
+		bulletMeshRenderer->color = vec4(0.5f, 0.5f, 1.0f, 1.0f);
 
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
 		bulletTransform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
-		bulletTransform->scale = vec3(0.1f, 0.1f, 0.1f);
+		bulletTransform->scale = vec3(0.15f, 0.15f, 0.15f);
 		bulletTransform->mass = 0.1f;
 
 		BulletScript* bulletScript = new BulletScript();
