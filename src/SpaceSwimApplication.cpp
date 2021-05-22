@@ -7,6 +7,7 @@
 
 #include "GameScene/Script/ObstacleScript.h"
 #include "GameScene/Script/PlayerScript.h"
+#include "GameScene/Script/BulletScript.h"
 //******************************************************************
 // bullet
 
@@ -103,7 +104,7 @@ private:
 					else if (obBB->objectType == objectTypes::METEOR)
 					{
 						std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
-						for (size_t i = 0; i < script_v.size(); i++)	((ObstacleScript*)script_v.at(i))->collide(obBB->objectType);
+						for (size_t i = 0; i < script_v.size(); i++)	((ObstacleScript*)script_v.at(i))->collide(obAA->objectType);
 					}
 
 					if (obAA->objectType == objectTypes::PLAYER)
@@ -114,8 +115,32 @@ private:
 					else if (obBB->objectType == objectTypes::PLAYER)
 					{
 						std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
-						for (size_t i = 0; i < script_v.size(); i++)	((PlayerScript*)script_v.at(i))->collide(obBB->objectType);
+						for (size_t i = 0; i < script_v.size(); i++)	((PlayerScript*)script_v.at(i))->collide(obAA->objectType);
 					}
+
+					if (obAA->objectType == objectTypes::SAVE_POINT)
+					{
+						std::vector<Script*> script_v = obAA->gameObject->getComponent<ScriptLoader>()->getScripts();
+						for (size_t i = 0; i < script_v.size(); i++)	((SavePointScript*)script_v.at(i))->collide(obBB->objectType);
+					}
+					else if (obBB->objectType == objectTypes::SAVE_POINT)
+					{
+						std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
+						for (size_t i = 0; i < script_v.size(); i++)	((SavePointScript*)script_v.at(i))->collide(obAA->objectType);
+					}
+
+					if (obAA->objectType == objectTypes::BULLET)
+					{
+						std::vector<Script*> script_v = obAA->gameObject->getComponent<ScriptLoader>()->getScripts();
+						for (size_t i = 0; i < script_v.size(); i++)	((BulletScript*)script_v.at(i))->collide(obBB->objectType);
+					}
+					else if (obBB->objectType == objectTypes::BULLET)
+					{
+						std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
+						for (size_t i = 0; i < script_v.size(); i++)	((BulletScript*)script_v.at(i))->collide(obAA->objectType);
+					}
+
+
 					break;
 				}
 			}

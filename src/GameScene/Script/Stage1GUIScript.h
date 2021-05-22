@@ -59,7 +59,7 @@ public:
 		MONOLOG4,
 		END,
 	};
-	Mode currentMode = Mode::DIALOG;
+	Mode currentMode = Mode::GAME;
 
 private:
 	int hp = 100;

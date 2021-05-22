@@ -32,43 +32,23 @@ public:
 
 		remainLife -= Time::delta();
 
-		if (!leave){
-			GameObject* thisObject = getObject();
-			MeshRenderer* thisMeshRenderer = thisObject->getComponent<MeshRenderer>();
-			thisMeshRenderer->color.w = 0.0f;
-		} 
-
-		if (remainLife < 0.1f)
-		{
-			GameObject* thisObject = getObject();
-			GameManager::removeList.push_back(thisObject);
-		}
+		if (remainLife < 0.1f || !leave) disappear();
 	}
 
 	void collide(objectTypes oppositeType)
 	{		
-		if (leave)
+		if (oppositeType != objectTypes::PLAYER && leave)
 		{
-			explode();
-			GameObject* thisObject = getObject();
-			MeshRenderer* thisMeshRenderer = thisObject->getComponent<MeshRenderer>();
-			thisMeshRenderer->isColored = true;
-			thisMeshRenderer->isShaded = true;
-			thisMeshRenderer->hasTexture = true;
-			thisMeshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
 			leave = false;
+			if (hasSound)	getComponent<SoundPlayer>()->play();
 		}
 	}
 
-	void explode()
+	void disappear()
 	{
 		GameObject* thisObject = getObject();
 		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
 		if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
-		objBody = nullptr;
-		
-		if (hasSound)
-			getComponent<SoundPlayer>()->play();
+		GameManager::removeList.push_back(thisObject);
 	}
 };

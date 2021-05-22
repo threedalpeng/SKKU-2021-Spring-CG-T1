@@ -12,7 +12,9 @@ enum objectTypes
 	METEOR,
 	ITEM,
 	WALL,
-	RADIOACTIVE_WALL
+	RADIOACTIVE_WALL,
+	SAVE_POINT,
+	BULLET
 };
 
 class CustomRigidBody : public btRigidBody

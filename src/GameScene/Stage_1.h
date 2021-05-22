@@ -12,6 +12,7 @@
 #include "Script/PlayerAnimationScript.h"
 #include "Script/Stage1GUIScript.h"
 #include "Script/EmptyBoxScript.h"
+#include "Script/SavePointScript.h"
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
@@ -128,6 +129,7 @@ public:
 		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
 
 		GameObject* backBox = GameObject::create("back box");
+		GameObject* savePoint_1 = GameObject::create("save point 1");
 
 		GameObject* meteor1 = GameObject::create("meteor1");
 		GameObject* meteor2 = GameObject::create("meteor2");
@@ -186,6 +188,7 @@ public:
 		addObject(meteor1);
 		addObject(meteor2);
 		addObject(meteor3);
+		addObject(savePoint_1);
 
 		addObject(gui);
 
@@ -500,27 +503,58 @@ public:
 				});
 		}
 
-		/*
-		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+		// save point 1
+		{
+			meshRenderer = savePoint_1->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadMaterial(material);
+			meshRenderer->loadTexture(meteorTexture);
+			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
-		unsigned int depthMapFBO;
-		glGenFramebuffers(1, &depthMapFBO);
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = true;
+			meshRenderer->hasTexture = false;
+			meshRenderer->hasAlpha = false;
+			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 1.0f);
 
-		GLuint depthMap;
-		glGenTextures(1, &depthMap);
-		glBindTexture(GL_TEXTURE_2D, depthMap);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			transform = savePoint_1->getComponent<Transform>();
+			transform->position = vec3(9.0f, 0.0f, 0.0f);
+			transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			transform->mass = 0.0f;
 
-		glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-		glDrawBuffer(GL_NONE);
-		glReadBuffer(GL_NONE);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		*/
+			SavePointScript* savePointScript = new SavePointScript();
+			savePoint_1->addComponent<ScriptLoader>()->addScript(savePointScript);
+
+			soundPlayer = savePoint_1->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/savePoint.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Event2D);
+			savePointScript->hasSound = true;
+
+			btCollisionShape* colShape = new btSphereShape(btScalar((transform->scale).x));
+			/// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
+			btScalar mass(transform->mass);
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (transform->mass != 0.f);
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(transform->mass, localInertia);
+			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::SAVE_POINT);
+
+			GameManager::dynamicsWorld->addRigidBody(body);
+
+			transform->body = body;
+			body->setLinearVelocity(btVector3(0.f, 0, 0));
+			body->gameObject = savePoint_1;
+		}
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
