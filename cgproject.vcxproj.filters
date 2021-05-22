@@ -37,6 +37,7 @@
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\engine\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="src\GameScene\Script\Stage1GUIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />

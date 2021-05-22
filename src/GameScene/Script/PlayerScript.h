@@ -35,7 +35,7 @@ private:
 public:
 
 	bool guiFinished(const GuiEvent& e) {
-		if (e.guiId == -1)
+		if (e.guiId == -1) // if Enter to Game Mode
 			gameStopped = false;
 		if (gravityOn) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 7.f, 0.f));
@@ -59,12 +59,12 @@ public:
 
 		if (warningEventChecker.shouldTrigger(transform->worldPosition)) {
 			stopPlayer();
-			EventManager<GuiEvent>::tringgerEvent({ 4 });
+			EventManager<GuiEvent>::triggerEvent({ 4 }); // Monolog 1
 			printf("watch out!\n");
 		}
 		if (gravityFallEventChecker.shouldTrigger(transform->worldPosition)) {
 			stopPlayer();
-			EventManager<GuiEvent>::tringgerEvent({ 5 });
+			EventManager<GuiEvent>::triggerEvent({ 5 }); // Monolog 2
 			gravityOn = true;
 		}
 		if (gravityStopEventChecker.shouldTrigger(transform->worldPosition)) {
@@ -72,7 +72,7 @@ public:
 		}
 		if (endEventChecker.shouldTrigger(transform->worldPosition)) {
 			stopPlayer();
-			EventManager<GuiEvent>::tringgerEvent({ 6 });
+			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
 			printf("finished!\n");
 		}
 
@@ -101,18 +101,18 @@ public:
 		if (oppositeType == objectTypes::METEOR) {
 			HP -= 10;
 			std::cout << "Now player's HP is " << HP << "\r";
-			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
 		else if (oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f) {
 			HP -= 1;
 			lastWallCollistion = 1.0f;
 			std::cout << "Now player's HP is " << HP << "\r";
-			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
 		else if (oppositeType == objectTypes::RADIOACTIVE_WALL && lastWallCollistion < 0.1f) {
 			HP -= 20;
 			lastWallCollistion = 1.0f;
-			EventManager<HpChangedEvent>::tringgerEvent({ HP });
+			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
 	}
 

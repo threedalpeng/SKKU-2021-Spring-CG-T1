@@ -189,11 +189,11 @@ public:
 			soundPlayer->pause();
 			if (Input::getKeyDown(GLFW_KEY_F1)) {
 				currentMode = Mode::GAME;
-				EventManager<GuiEvent>::tringgerEvent({ -1 });
+				EventManager<GuiEvent>::triggerEvent({ -1 });
 			}
 			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
 				currentMode = Mode::GAME;
-				EventManager<GuiEvent>::tringgerEvent({ -1 });
+				EventManager<GuiEvent>::triggerEvent({ -1 });
 			}
 		}
 		else if (currentMode == Mode::DIALOG || currentMode == Mode::MONOLOG1 || currentMode == Mode::MONOLOG2 || currentMode == Mode::MONOLOG3) {
@@ -330,7 +330,7 @@ private:
 		}
 		else {
 			currentMode = Mode::GAME;
-			EventManager<GuiEvent>::tringgerEvent({ -1 });
+			EventManager<GuiEvent>::triggerEvent({ -1 });
 		}
 	}
 
@@ -378,7 +378,7 @@ private:
 		}
 		else {
 			currentMode = Mode::GAME;
-			EventManager<GuiEvent>::tringgerEvent({ -1 });
+			EventManager<GuiEvent>::triggerEvent({ -1 });
 		}
 	}
 
@@ -426,7 +426,8 @@ private:
 		}
 		else {
 			currentMode = Mode::GAME;
-			EventManager<GuiEvent>::tringgerEvent({ -1 });
+			EventManager<GuiEvent>::triggerEvent({ -1 });
+			EventManager<MeteorMoveEvent>::triggerEvent({ 1 });
 		}
 	}
 
@@ -474,7 +475,7 @@ private:
 			ImGui::EndChild();
 			if (ImGui::IsItemClicked()) {
 				currentMode = Mode::GAME;
-				EventManager<GuiEvent>::tringgerEvent({ -1 });
+				EventManager<GuiEvent>::triggerEvent({ -1 });
 			}
 			ImGui::PopFont();
 		}
@@ -562,7 +563,7 @@ private:
 				);
 				if (ImGui::Button("Resume", buttonSize)) {
 					currentMode = Mode::GAME;
-					EventManager<GuiEvent>::tringgerEvent({ -1 });
+					EventManager<GuiEvent>::triggerEvent({ -1 });
 				}
 				ImGui::Spacing();
 

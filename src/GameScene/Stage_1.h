@@ -156,7 +156,7 @@ public:
 		//*********************************************
 		/* Link Objects */
 
-		addObject(lightPoint);
+		//addObject(lightPoint);
 
 		addObject(player);
 		/**/ player->addChildren(playerAxis);
@@ -173,6 +173,7 @@ public:
 		/**//**//**/ playerRightLegAxis->addChildren(playerRightLeg);
 		/**/ player->addChildren(background);
 		/**/ player->addChildren(mainCamera);
+		/**/ player->addChildren(lightPoint);
 		addObject(backBox);
 		addObject(meteor);
 

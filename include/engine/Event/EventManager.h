@@ -13,6 +13,10 @@ struct HpChangedEvent
 	int hp;
 };
 
+struct MeteorMoveEvent {
+	int id;
+};
+
 template <typename T>
 class EventManager
 {
@@ -29,7 +33,7 @@ public:
 		getHandlers().erase(handle);
 	}
 
-	static void tringgerEvent(T e)
+	static void triggerEvent(T e)
 	{
 		for (const auto& h : getHandlers())
 		{
