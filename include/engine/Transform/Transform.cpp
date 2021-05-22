@@ -3,6 +3,10 @@
 
 Transform::Transform(std::shared_ptr<GameObject> obj) : Component(obj) {}
 
+Transform::~Transform()
+{
+}
+
 void Transform::translate(const vec3& v) {
 	position += v;
 }

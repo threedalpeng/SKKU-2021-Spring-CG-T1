@@ -71,6 +71,11 @@ private:
 				true
 				});
 			}),
+		EventCheckerSphere(vec3(0.f, 21.1f, 0.f), 11.f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 6 });
+			eventProgress = 6;
+			}),
 		EventCheckerSphere(vec3(66.f, -14.6f, 0.0f), 22.5f, [this]() {
 			EventManager<MeteorMoveEvent>::triggerEvent({
 				vec3(20.7f, 5.9f, 0.f),
@@ -111,6 +116,10 @@ private:
 				true
 				});
 			}),
+		EventCheckerSphere(vec3(337.f, 0.f, 0.f), 7.5f, [this]() {
+			stopPlayer();
+			EventManager<GuiEvent>::triggerEvent({ 7 });
+			}),
 	};
 
 	uint guiEventId = 0;
@@ -125,6 +134,7 @@ public:
 
 	void init() override {
 		PlayerScript::init();
+		stopPlayer();
 		savePoint = btVector3(-330.7f, 0.f, 0.f);
 		guiEventId = EventManager<GuiEvent>::addListener([this](const GuiEvent& e) -> bool {
 			return guiFinished(e);

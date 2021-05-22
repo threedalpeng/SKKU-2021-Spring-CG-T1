@@ -18,7 +18,6 @@
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
-#include "../Tool/MeteorMaker.h"
 #include "../Custom/CustomRigidBody.h"
 
 //*******************************************************************
@@ -32,6 +31,35 @@ public:
 	Stage_1() : Scene() {};
 	~Stage_1() {
 		EventManager<MeteorMoveEvent>::removeListener(meteorMoveEventId);
+
+		for (int i = GameManager::dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+		{
+			btCollisionObject* obj = GameManager::dynamicsWorld->getCollisionObjectArray()[i];
+			GameManager::dynamicsWorld->removeCollisionObject(obj);
+			delete obj;
+		}
+		for (int j = 0; j < collisionShapes.size(); j++)
+		{
+			btCollisionShape* shape = collisionShapes[j];
+			delete shape;
+		}
+
+		//delete dynamics world
+		delete GameManager::dynamicsWorld;
+		GameManager::dynamicsWorld = nullptr;
+
+		//delete collision algorithms creation functions
+		delete m_solver;
+
+		delete m_broadphase;
+
+		delete m_pairCache;
+
+		delete m_dispatcher;
+
+		delete m_filterCallback;
+
+		delete m_collisionConfiguration;
 	}
 
 	Texture* wallTexture = nullptr;
@@ -41,6 +69,15 @@ public:
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	uint meteorMoveEventId;
 
+private:
+	btDefaultCollisionConfiguration* m_collisionConfiguration;
+	MyOverlapFilterCallback2* m_filterCallback;
+	btCollisionDispatcher* m_dispatcher;
+	btOverlappingPairCache* m_pairCache;
+	btBroadphaseInterface* m_broadphase;
+	btMultiBodyConstraintSolver* m_solver;
+
+public:
 	void init() {
 		/* Font */
 		/*
@@ -96,27 +133,17 @@ public:
 
 		//**********************************************
 		// bullet init
-		// initialize //
-		// btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-		// btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		// btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
-		// btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-		// GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
 
-		///collision configuration contains default setup for memory, collision setup
-		btDefaultCollisionConfiguration* m_collisionConfiguration = new btDefaultCollisionConfiguration();
-		//m_collisionConfiguration->setConvexConvexMultipointIterations();
-		MyOverlapFilterCallback2* m_filterCallback = new MyOverlapFilterCallback2();
-		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
-		btCollisionDispatcher* m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
-		btOverlappingPairCache* m_pairCache = new btHashedOverlappingPairCache();
+		m_collisionConfiguration = new btDefaultCollisionConfiguration();
+		m_filterCallback = new MyOverlapFilterCallback2();
+		m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
+		m_pairCache = new btHashedOverlappingPairCache();
 		m_pairCache->setOverlapFilterCallback(m_filterCallback);
-		btBroadphaseInterface* m_broadphase = new btDbvtBroadphase(m_pairCache);  //btSimpleBroadphase();
-		btMultiBodyConstraintSolver* m_solver = new btMultiBodyConstraintSolver;
+		m_broadphase = new btDbvtBroadphase(m_pairCache);
+		m_solver = new btMultiBodyConstraintSolver;
 
 		GameManager::dynamicsWorld = new btMultiBodyDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
 
-		//GameManager::dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
 		//*********************************************
@@ -443,6 +470,7 @@ public:
 			savePointScript->hasSound = true;
 
 			btCollisionShape* colShape = new btSphereShape(btScalar((transform->scale).x));
+			collisionShapes.push_back(colShape);
 			/// Create Dynamic Objects
 			btTransform startTransform;
 			startTransform.setIdentity();
@@ -605,5 +633,65 @@ public:
 		body->gameObject = wall;
 
 		return wall;
+	}
+
+	GameObject* createMeteor(vec3 pos, vec3 velocity, float scale) {
+		Texture* meteorTexture = nullptr;
+		meteorTexture = ResourceManager::getTexture("venus");
+
+		GameObject* meteor = GameObject::create("Meteor");
+
+		MeshRenderer* meshRenderer = meteor->addComponent<MeshRenderer>();
+		meshRenderer->loadMesh(ResourceManager::getMesh("Sphere"));
+		meshRenderer->loadTexture(meteorTexture);
+		meshRenderer->loadShader(GameManager::basicShader);
+		meshRenderer->loadShaderDepth(GameManager::depthShader);
+		meshRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
+		meshRenderer->isShaded = true;
+		meshRenderer->isColored = false;
+		meshRenderer->hasTexture = true;
+
+		Transform* transform = meteor->getComponent<Transform>();
+		transform->position = vec3(pos);
+		transform->scale = vec3(scale);
+		ObstacleScript* obstacleScript = new ObstacleScript(velocity);
+		obstacleScript->hasSound = true;
+		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
+
+		//create a dynamic rigidbody
+		btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
+		collisionShapes.push_back(colShape);
+
+		// Create Dynamic Objects
+		btTransform startTransform;
+		startTransform.setIdentity();
+
+		btScalar mass(scale);
+
+		//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		bool isDynamic = (mass != 0.f);
+
+		btVector3 localInertia(0, 0, 0);
+		if (isDynamic)
+			colShape->calculateLocalInertia(mass, localInertia);
+
+		startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
+
+		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
+
+		GameManager::dynamicsWorld->addRigidBody(body);
+
+		transform->body = body;
+		body->setLinearVelocity(btVector3(velocity.x, velocity.y, velocity.z));
+		body->gameObject = meteor;
+
+		SoundPlayer* soundPlayer = meteor->addComponent<SoundPlayer>();
+		soundPlayer->loadSoundFrom("sounds/explode.mp3");
+		soundPlayer->setType(SoundPlayer::Type::Event2D);
+
+		return meteor;
 	}
 };

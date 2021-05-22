@@ -8,6 +8,7 @@ class Transform : public Component
 {
 public:
 	Transform(std::shared_ptr<GameObject> obj);
+	~Transform();
 
 	vec3 position = vec3();
 	Quaternion rotation = Quaternion(0.f, 0.f, 0.f, 1.f);

@@ -32,3 +32,8 @@ void Screen::processWindowResizeEvent(int width, int height) {
 void Screen::setWindowSize(int width, int height) {
 	glfwSetWindowSize(_window, width, height);
 }
+
+void Screen::quit()
+{
+	glfwSetWindowShouldClose(_window, GL_TRUE);
+}

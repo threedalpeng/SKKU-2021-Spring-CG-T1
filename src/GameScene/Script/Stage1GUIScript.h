@@ -654,7 +654,8 @@ private:
 					pauseMenuWindowSize.x / 2.f - buttonSize.x / 2
 				);
 				if (ImGui::Button("To Main Title", buttonSize)) {
-					// do something
+					GameManager::setStage(0);
+					GameManager::setChanged(true);
 				}
 				ImGui::Spacing();
 
@@ -662,7 +663,7 @@ private:
 					pauseMenuWindowSize.x / 2.f - buttonSize.x / 2
 				);
 				if (ImGui::Button("Quit To Desktop", buttonSize)) {
-					// do something;
+					Screen::quit();
 				};
 			}
 			ImGui::EndGroup();

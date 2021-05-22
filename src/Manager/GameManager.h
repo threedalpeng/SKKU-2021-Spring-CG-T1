@@ -11,7 +11,6 @@
 #include "btBulletCollisionCommon.h"
 #include "btBulletDynamicsCommon.h"
 
-
 /*
 GameManager is global class
 
@@ -43,7 +42,7 @@ public:
 
 	static btDiscreteDynamicsWorld* dynamicsWorld;
 
-    static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
+	static std::unordered_map<btRigidBody*, GameObject*> rigidBody_gameObejct_list;
 
 	static std::random_device rd;
 	static std::mt19937 gen;
@@ -57,7 +56,6 @@ public:
 	static Shader* basicShader;
 	static Shader* depthShader;
 	static Shader* debugShader;
-
 
 private:
 	static int _stage;
@@ -142,7 +140,7 @@ void GameManager::decreaseParticle()
 
 void GameManager::cleanRemoveList()
 {
-	for(GameObject* obj : removeList)
+	for (GameObject* obj : removeList)
 	{
 		obj->remove();
 	}
@@ -151,7 +149,7 @@ void GameManager::cleanRemoveList()
 
 void GameManager::cleanRemoveBodyList()
 {
-	for(btRigidBody* body : removeBodyList)
+	for (btRigidBody* body : removeBodyList)
 	{
 		GameManager::dynamicsWorld->removeCollisionObject(body);
 	}

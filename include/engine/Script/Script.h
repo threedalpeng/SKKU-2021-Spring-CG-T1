@@ -8,6 +8,7 @@ class Script
 {
 public:
 	friend ScriptLoader;
+	virtual ~Script();
 	virtual void init();
 	virtual void update();
 	virtual void fixedUpdate();

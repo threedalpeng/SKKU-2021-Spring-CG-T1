@@ -10,6 +10,7 @@ public:
 	static float dpiScale();
 	static void processWindowResizeEvent(int width, int height);
 	static void setWindowSize(int width, int height);
+	static void quit();
 private:
 	static GLFWwindow* _window;
 	static int _width;
