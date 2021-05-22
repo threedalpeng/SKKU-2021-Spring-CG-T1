@@ -133,22 +133,16 @@ public:
 		GameObject* backBox = GameObject::create("back box");
 		GameObject* savePoint_1 = GameObject::create("save point 1");
 
+		GameObject* meteor1 = GameObject::create("meteor1");
+		GameObject* meteor2 = GameObject::create("meteor2");
+		GameObject* meteor3 = GameObject::create("meteor3");
+
 		GameObject* gui = GameObject::create("GUI");
 
 		//**********************************************
 		// bullet init
-		// initialize //
-		// btDefaultCollisionConfiguration* collisionConfiguration = new btDefaultCollisionConfiguration();
-		// btCollisionDispatcher* dispatcher = new btCollisionDispatcher(collisionConfiguration);
-		// btBroadphaseInterface* overlappingPairCache = new btDbvtBroadphase();
-		// btSequentialImpulseConstraintSolver* solver = new btSequentialImpulseConstraintSolver;
-		// GameManager::dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-
-		///collision configuration contains default setup for memory, collision setup
 		btDefaultCollisionConfiguration* m_collisionConfiguration = new btDefaultCollisionConfiguration();
-		//m_collisionConfiguration->setConvexConvexMultipointIterations();
 		MyOverlapFilterCallback2* m_filterCallback = new MyOverlapFilterCallback2();
-		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
 		btCollisionDispatcher* m_dispatcher = new btCollisionDispatcher(m_collisionConfiguration);
 		btOverlappingPairCache* m_pairCache = new btHashedOverlappingPairCache();
 		m_pairCache->setOverlapFilterCallback(m_filterCallback);
@@ -157,7 +151,6 @@ public:
 
 		GameManager::dynamicsWorld = new btMultiBodyDynamicsWorld(m_dispatcher, m_broadphase, m_solver, m_collisionConfiguration);
 
-		//GameManager::dynamicsWorld->setGravity(btVector3(0, -10, 0));
 		GameManager::dynamicsWorld->setGravity(btVector3(0, 0, 0));
 
 		//*********************************************
@@ -183,6 +176,9 @@ public:
 		/**/ player->addChildren(lightPoint);
 		addObject(backBox);
 
+		addObject(meteor1);
+		addObject(meteor2);
+		addObject(meteor3);
 		addObject(savePoint_1);
 
 		addObject(gui);

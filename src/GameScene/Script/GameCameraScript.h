@@ -2,10 +2,10 @@
 #include <iostream>
 #include "engine/Core.h"
 
-class CameraScript : public Script
+class GameCameraScript : public Script
 {
 public:
-	CameraScript() : Script() {}
+	GameCameraScript() : Script() {}
 	Transform* target = nullptr;
 
 private:
