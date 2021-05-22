@@ -80,13 +80,16 @@ public:
 
 	void explode()
 	{
-		GameObject* thisObject = getObject();
-		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
-		if (objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
-		objBody = nullptr;
-
+		disappear();
 		ParticleMaker::makeExplodeParticle(transform->position);
 		if (hasSound)
 			getComponent<SoundPlayer>()->play();
+	}
+
+	void disappear()
+	{
+		GameObject* thisObject = getObject();
+		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
+		if (objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
 	}
 };
