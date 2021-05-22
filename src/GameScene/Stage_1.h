@@ -18,6 +18,7 @@
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
+#include "../Tool/MetourMaker.h"
 #include "../Custom/CustomRigidBody.h"
 
 //*******************************************************************
@@ -646,62 +647,5 @@ public:
 		body->gameObject = wall;
 
 		return wall;
-	}
-
-	GameObject* createMeteor(vec3 pos, vec3 velocity, float scale) {
-		GameObject* meteor = GameObject::create("Meteor");
-
-		MeshRenderer* meshRenderer = meteor->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(ResourceManager::getMesh("Sphere"));
-		meshRenderer->loadTexture(meteorTexture);
-		meshRenderer->loadShader(GameManager::basicShader);
-		meshRenderer->loadShaderDepth(GameManager::depthShader);
-		meshRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
-		meshRenderer->isShaded = true;
-		meshRenderer->isColored = false;
-		meshRenderer->hasTexture = true;
-
-		Transform* transform = meteor->getComponent<Transform>();
-		transform->position = vec3(pos);
-		transform->scale = vec3(scale);
-		ObstacleScript* obstacleScript = new ObstacleScript(velocity);
-		obstacleScript->hasSound = true;
-		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-		//create a dynamic rigidbody
-		btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
-		collisionShapes.push_back(colShape);
-
-		// Create Dynamic Objects
-		btTransform startTransform;
-		startTransform.setIdentity();
-
-		btScalar mass(scale);
-
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
-
-		btVector3 localInertia(0, 0, 0);
-		if (isDynamic)
-			colShape->calculateLocalInertia(mass, localInertia);
-
-		startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
-
-		GameManager::dynamicsWorld->addRigidBody(body);
-
-		transform->body = body;
-		body->setLinearVelocity(btVector3(velocity.x, velocity.y, velocity.z));
-		body->gameObject = meteor;
-
-		SoundPlayer* soundPlayer = meteor->addComponent<SoundPlayer>();
-		soundPlayer->loadSoundFrom("sounds/explode.mp3");
-		soundPlayer->setType(SoundPlayer::Type::Event2D);
-
-		return meteor;
 	}
 };
