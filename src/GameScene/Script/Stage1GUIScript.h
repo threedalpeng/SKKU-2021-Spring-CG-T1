@@ -60,7 +60,7 @@ public:
 	Mode currentMode = Mode::DIALOG;
 
 private:
-	int hp = 50;
+	int hp = 100;
 	int maxHp = 100;
 
 	bool gameFirstStarted = true;

@@ -26,7 +26,8 @@ private:
 	EventCheckerSphere warningEventChecker = EventCheckerSphere(vec3(31.19f, -64.36f, 0.0f), 5.f);
 	EventCheckerSphere gravityFallEventChecker = EventCheckerSphere(vec3(81.12f, -59.12f, 0.0f), 5.f);
 	EventCheckerSphere gravityStopEventChecker = EventCheckerSphere(vec3(81.12f, 25.7f, 0.0f), 5.f);
-	EventCheckerSphere endEventChecker = EventCheckerSphere(vec3(262.4f, 35.7f, 0.f), 15.f);
+	EventCheckerSphere savePointEventChecker = EventCheckerSphere(vec3(100.6f, 30.2f, 0.f), 8.5f);
+	EventCheckerSphere meteorEventChecker = EventCheckerSphere(vec3(247.8f, 35.7f, 0.f), 15.f);
 	uint guiEventId = 0;
 
 	bool gameStopped = true;
@@ -70,7 +71,10 @@ public:
 		if (gravityStopEventChecker.shouldTrigger(transform->worldPosition)) {
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
 		}
-		if (endEventChecker.shouldTrigger(transform->worldPosition)) {
+		if (savePointEventChecker.shouldTrigger(transform->worldPosition)) {
+			savePoint = btVector3(100.6f, 30.2f, 0.f);
+		}
+		if (meteorEventChecker.shouldTrigger(transform->worldPosition)) {
 			stopPlayer();
 			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
 			printf("finished!\n");

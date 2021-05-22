@@ -68,12 +68,16 @@ struct MyOverlapFilterCallback2 : public btOverlapFilterCallback
 class Stage_1 : public Scene {
 public:
 	Stage_1() : Scene() {};
+	~Stage_1() {
+		EventManager<MeteorMoveEvent>::removeListener(meteorMoveEventId);
+	}
 
 	Texture* wallTexture = nullptr;
 	Texture* radioactiveTexture = nullptr;
 	Texture* meteorTexture = nullptr;
 
 	btAlignedObjectArray<btCollisionShape*> collisionShapes;
+	uint meteorMoveEventId;
 
 	void init() {
 		/* Font */
@@ -123,8 +127,11 @@ public:
 		GameObject* playerRightLegAxis = GameObject::create("Player Right Leg Axis");
 		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
 
-		GameObject* meteor = GameObject::create("meteor");
 		GameObject* backBox = GameObject::create("back box");
+
+		GameObject* meteor1 = GameObject::create("meteor1");
+		GameObject* meteor2 = GameObject::create("meteor2");
+		GameObject* meteor3 = GameObject::create("meteor3");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -175,7 +182,10 @@ public:
 		/**/ player->addChildren(mainCamera);
 		/**/ player->addChildren(lightPoint);
 		addObject(backBox);
-		addObject(meteor);
+
+		addObject(meteor1);
+		addObject(meteor2);
+		addObject(meteor3);
 
 		addObject(gui);
 
@@ -185,7 +195,6 @@ public:
 		//TextRenderer* textRenderer;
 		Transform* transform;
 		Light* light;
-		ObstacleScript* obstacleScript;
 		SoundPlayer* soundPlayer;
 
 		// main camera
@@ -443,8 +452,8 @@ public:
 			addObject(createWall(vec3(87.4f, -33.44f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
 			addObject(createWall(vec3(73.3f, -6.3f, 0.0f), 90.f, vec3(56.f, 3.f, 10.f)));
 			addObject(createRadioactiveWall(vec3(80.12f, 52.6f, 0.f), 0.f, vec3(10.f, 10.f, 1.f)));
-			addObject(createWall(vec3(165.f, 52.08f, 0.0f), 0.f, vec3(95.f, 3.f, 10.f)));
-			addObject(createWall(vec3(171.8f, 19.4f, 0.0f), 0.f, vec3(85.f, 3.f, 10.f)));
+			addObject(createWall(vec3(194.7f, 52.08f, 0.0f), 0.f, vec3(123.15f, 3.f, 10.f)));
+			addObject(createWall(vec3(200.9f, 19.4f, 0.0f), 0.f, vec3(116.5f, 3.f, 10.f)));
 			addObject(createRadioactiveWall(vec3(119.7f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
 			addObject(createRadioactiveWall(vec3(160.3f, 19.4f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
 			addObject(createRadioactiveWall(vec3(200.5f, 52.08f, 0.f), 0.f, vec3(22.5f, 22.5f, 1.f)));
@@ -476,56 +485,19 @@ public:
 
 		// meteor //
 		{
-			meshRenderer = meteor->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
-			meshRenderer->loadTexture(meteorTexture);
-			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
-			meshRenderer->loadMaterial(material);
-			meshRenderer->isShaded = true;
-			meshRenderer->isColored = false;
-			meshRenderer->hasTexture = true;
-
-			transform = meteor->getComponent<Transform>();
-			transform->position = vec3(6.0f, 0.0f, 0.0f);
-			transform->scale = vec3(0.6f, 0.6f, 0.6f);
-			obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
-			obstacleScript->hasSound = true;
-			meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-			//create a dynamic rigidbody
-			btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
-			collisionShapes.push_back(colShape);
-
-			// Create Dynamic Objects
-			btTransform startTransform;
-			startTransform.setIdentity();
-
-			btScalar mass(1.f);
-
-			//rigidbody is dynamic if and only if mass is non zero, otherwise static
-			bool isDynamic = (mass != 0.f);
-
-			btVector3 localInertia(0, 0, 0);
-			if (isDynamic)
-				colShape->calculateLocalInertia(mass, localInertia);
-
-			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
-
-			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
-
-			GameManager::dynamicsWorld->addRigidBody(body);
-
-			transform->body = body;
-			body->setLinearVelocity(btVector3(-3.f, 0, 0));
-			body->gameObject = meteor;
-
-			soundPlayer = meteor->addComponent<SoundPlayer>();
-			soundPlayer->loadSoundFrom("sounds/explode.mp3");
-			soundPlayer->setType(SoundPlayer::Type::Event2D);
+			meteorMoveEventId = EventManager<MeteorMoveEvent>::addListener([this](const MeteorMoveEvent& e)->bool {
+				GameObject* meteor;
+				meteor = createMeteor(vec3(277.2f, 41.81f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				meteor = createMeteor(vec3(293.6f, 30.05f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				meteor = createMeteor(vec3(314.1f, 36.48f, 0.f), vec3(-3.f, 0.f, 0.f), 10.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				return true;
+				});
 		}
 
 		const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
@@ -570,7 +542,7 @@ public:
 		meshRenderer->loadTexture(wallTexture);
 		meshRenderer->loadShader(GameManager::basicShader);
 		//meshRenderer->loadMaterial(material);
-		meshRenderer->isShaded = false;
+		meshRenderer->isShaded = true;
 		meshRenderer->isColored = false;
 		meshRenderer->hasTexture = true;
 
@@ -672,7 +644,7 @@ public:
 		return wall;
 	}
 
-	GameObject* createMeteor(vec3 pos, float rotAngle, vec3 scale) {
+	GameObject* createMeteor(vec3 pos, vec3 velocity, float scale) {
 		GameObject* meteor = GameObject::create("Meteor");
 
 		MeshRenderer* meshRenderer = meteor->addComponent<MeshRenderer>();
@@ -686,9 +658,9 @@ public:
 		meshRenderer->hasTexture = true;
 
 		Transform* transform = meteor->getComponent<Transform>();
-		transform->position = vec3(6.0f, 0.0f, 0.0f);
-		transform->scale = vec3(0.6f, 0.6f, 0.6f);
-		ObstacleScript* obstacleScript = new ObstacleScript(vec3(-2.0f, 0, 0));
+		transform->position = vec3(pos);
+		transform->scale = vec3(scale);
+		ObstacleScript* obstacleScript = new ObstacleScript(velocity);
 		obstacleScript->hasSound = true;
 		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
 
@@ -700,7 +672,7 @@ public:
 		btTransform startTransform;
 		startTransform.setIdentity();
 
-		btScalar mass(1.f);
+		btScalar mass(scale);
 
 		//rigidbody is dynamic if and only if mass is non zero, otherwise static
 		bool isDynamic = (mass != 0.f);
@@ -709,7 +681,7 @@ public:
 		if (isDynamic)
 			colShape->calculateLocalInertia(mass, localInertia);
 
-		startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
+		startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
 
 		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
 		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
@@ -719,7 +691,7 @@ public:
 		GameManager::dynamicsWorld->addRigidBody(body);
 
 		transform->body = body;
-		body->setLinearVelocity(btVector3(-3.f, 0, 0));
+		body->setLinearVelocity(btVector3(velocity.x, velocity.y, velocity.z));
 		body->gameObject = meteor;
 
 		SoundPlayer* soundPlayer = meteor->addComponent<SoundPlayer>();
