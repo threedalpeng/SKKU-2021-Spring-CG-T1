@@ -93,7 +93,7 @@
     <ClInclude Include="src\Tool\MeshMaker.h" />
     <ClInclude Include="src\CreditScene\CreditScene.h" />
     <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
-    <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
+    <ClInclude Include="src\GameScene\Script\Stage1PlayerScript.h" />
     <ClInclude Include="include\engine\Sound\SoundPlayer.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />
@@ -125,6 +125,9 @@
     <ClInclude Include="src\GameScene\Script\GameCameraScript.h" />
     <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
     <ClInclude Include="src\GameScene\PhysicsUtil.h" />
+    <ClInclude Include="src\GameScene\Script\Stage2PlayerScript.h" />
+    <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
+    <ClInclude Include="src\GameScene\Script\StageGUIScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

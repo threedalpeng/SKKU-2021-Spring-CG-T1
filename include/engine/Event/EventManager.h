@@ -14,7 +14,13 @@ struct HpChangedEvent
 };
 
 struct MeteorMoveEvent {
-	int id;
+	vec3 bottomLeft;
+	vec2 range;
+	int meteorNum;
+	vec3 direction;
+	float speed;
+	bool randomVelocity;
+	bool randomScale;
 };
 
 template <typename T>

@@ -8,16 +8,17 @@
 
 // My Application
 #include "Script/ObstacleScript.h"
-#include "Script/PlayerScript.h"
+#include "Script/Stage2PlayerScript.h"
 #include "Script/PlayerAnimationScript.h"
 #include "Script/GameCameraScript.h"
 #include "Script/GameBackgroundScript.h"
-#include "Script/Stage1GUIScript.h"
+#include "Script/Stage2GUIScript.h"
 #include "Script/EmptyBoxScript.h"
 #include "Script/SavePointScript.h"
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
+#include "../Tool/MeteorMaker.h"
 #include "../Custom/CustomRigidBody.h"
 
 //*******************************************************************
@@ -147,7 +148,7 @@ public:
 		{
 			camera = mainCamera->addComponent<Camera>();
 			GameCameraScript* cameraScript = new GameCameraScript();
-			cameraScript->distance = 30.f;
+			cameraScript->distance = 40.f;
 			mainCamera->addComponent<ScriptLoader>()->addScript(cameraScript);
 			camera->addShader(GameManager::basicShader);
 			camera->addShader(GameManager::depthShader);
@@ -169,7 +170,7 @@ public:
 			meshRenderer->hasAlpha = false;
 
 			transform = background->getComponent<Transform>();
-			transform->scale = vec3(50, 100, 50);
+			transform->scale = vec3(100, 100, 100);
 			GameBackgroundScript* backgroundScript = new GameBackgroundScript();
 			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 		}
@@ -198,10 +199,10 @@ public:
 		// player //
 		{
 			transform = player->getComponent<Transform>();
-			transform->position = vec3(0.0f, 21.1f, 0.0f);
-			transform->scale = vec3(0.6f, 0.6f, 0.6f);
+			transform->position = vec3(-330.7f, 0.f, 0.f);
+			transform->scale = vec3(1.f, 1.f, 1.f);
 			transform->mass = 1.0f;
-			PlayerScript* playerScript = new PlayerScript();
+			Stage2PlayerScript* playerScript = new Stage2PlayerScript();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody
@@ -358,8 +359,8 @@ public:
 			addObject(createWall(vec3(-300.0f, -60.0f, 0.0f), -60.f, vec3(61.5f, 3.f, 10.f)));
 			addObject(createWall(vec3(300.0f, 60.0f, 0.0f), -60.f, vec3(61.5f, 3.f, 10.f)));
 			addObject(createWall(vec3(300.0f, -60.0f, 0.0f), 60.f, vec3(61.5f, 3.f, 10.f)));
-			addObject(createWall(vec3(0.0f, 85.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
-			addObject(createWall(vec3(0.0f, -85.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
+			addObject(createWall(vec3(0.0f, 72.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
+			addObject(createWall(vec3(0.0f, -72.f, 0.0f), 0.f, vec3(300.0f, 3.f, 10.f)));
 
 			// middle wall
 			addObject(createCylinderWall(vec3(0.0f, -75.3f, 0.f), vec3(70.f, 70.f, 10.f), true));
@@ -373,29 +374,38 @@ public:
 			addObject(createWall(vec3(-4.11f, 9.21f, 0.0f), -45.f, vec3(7.75f, 3.f, 10.f)));
 
 			// Rocks (Left)
-			addObject(createSphereWall(vec3(-36.3f, -1.1f, 0.f), 10.f));
-			addObject(createSphereWall(vec3(-58.2f, 21.1f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-31.9f, 2.8f, 0.f), 10.f));
+			addObject(createSphereWall(vec3(-45.1f, 29.1f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-63.1f, 11.4f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-66.f, 59.3f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-99.5f, 38.4f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-121.7f, 21.1f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-114.5f, -36.f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-197.2f, -9.8f, 0.f), 20.f));
-			addObject(createSphereWall(vec3(-208.f, 43.4f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-204.1f, -46.9f, 0.f), 5.f));
+			addObject(createSphereWall(vec3(-208.f, 43.4f, 0.f), 5.f));
 			addObject(createSphereWall(vec3(-243.1f, 30.2f, 0.f), 12.f));
 			addObject(createSphereWall(vec3(-264.5f, -42.1f, 0.f), 12.f));
 			addObject(createSphereWall(vec3(-279.f, 46.f, 0.f), 10.f));
 
-			addObject(createSphereWall(vec3(-42.5f, 26.7f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-31.0f, 21.2f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-49.8f, 14.6f, 0.f), 5.f, true));
+			addObject(createSphereWall(vec3(-52.6f, -6.8f, 0.f), 5.f, true));
 			addObject(createSphereWall(vec3(-70.4f, 35.2f, 0.f), 12.f, true));
 			addObject(createSphereWall(vec3(-88.3f, 2.4f, 0.f), 10.f, true));
-			addObject(createSphereWall(vec3(-57.f, -7.9f, 0.f), 5.f, true));
 			addObject(createSphereWall(vec3(-132.4f, 47.6f, 0.f), 5.f, true));
 			addObject(createSphereWall(vec3(-157.4f, -22.85f, 0.f), 10.f, true));
 
 			// Rocks (Right)
-			addObject(createCylinderWall(vec3(104.6f, 57.5f, 0.f), vec3(35.f, 80.f, 10.f), true));
-			addObject(createCylinderWall(vec3(156.6f, -80.9f, 0.f), vec3(35.f, 80.f, 10.f), true));
+			addObject(createCylinderWall(vec3(104.6f, 21.f, 0.f), vec3(35.f, 35.f, 10.f), true));
+			addObject(createCylinderWall(vec3(156.6f, -52.3f, 0.f), vec3(35.f, 35.f, 10.f), true));
+			addObject(createWall(vec3(52.f, 50.1f, 0.f), -60.f, vec3(40.f, 3.f, 10.f), true));
+			addObject(createWall(vec3(155.1f, 55.2f, 0.f), 60.f, vec3(40.f, 3.f, 10.f), true));
+			addObject(createWall(vec3(201.6f, -71.5f, 0.f), -60.f, vec3(40.f, 3.f, 10.f), true));
+			addObject(createWall(vec3(109.f, -74.5f, 0.f), 60.f, vec3(40.f, 3.f, 10.f), true));
+			addObject(createCylinderWall(vec3(252.9f, 42.4f, 0.f), vec3(50.f, 50.f, 10.f), true));
+			addObject(createSphereWall(vec3(218.3f, -30.5f, 0.f), 10.f, true));
+			addObject(createSphereWall(vec3(272.4f, -47.6f, 0.f), 15.f, true));
 		}
 
 		{
@@ -478,13 +488,13 @@ public:
 		// meteor //
 		{
 			meteorMoveEventId = EventManager<MeteorMoveEvent>::addListener([this](const MeteorMoveEvent& e)->bool {
-				spawnMeteor(vec3(), 10.f, 10, vec3());
+				MeteorShowerMaker(e.bottomLeft, e.range, e.meteorNum, e.direction, e.speed, e.randomVelocity, e.randomScale);
 				return true;
 				});
 		}
 
 		// GUI
-		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
+		gui->addComponent<ScriptLoader>()->addScript(new Stage2GUIScript());
 		soundPlayer = gui->addComponent<SoundPlayer>();
 	}
 
@@ -663,65 +673,5 @@ public:
 		body->gameObject = wall;
 
 		return wall;
-	}
-
-	void spawnMeteor(vec3 spawnPos, float spawnRange, int spawnNum, vec3 direction) {
-	}
-
-	GameObject* createMeteor(vec3 pos, vec3 velocity, float scale) {
-		GameObject* meteor = GameObject::create("Meteor");
-
-		MeshRenderer* meshRenderer = meteor->addComponent<MeshRenderer>();
-		meshRenderer->loadMesh(ResourceManager::getMesh("Sphere"));
-		meshRenderer->loadTexture(meteorTexture);
-		meshRenderer->loadShader(GameManager::basicShader);
-		meshRenderer->loadShaderDepth(GameManager::depthShader);
-		meshRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
-		meshRenderer->isShaded = true;
-		meshRenderer->isColored = false;
-		meshRenderer->hasTexture = true;
-
-		Transform* transform = meteor->getComponent<Transform>();
-		transform->position = vec3(pos);
-		transform->scale = vec3(scale);
-		ObstacleScript* obstacleScript = new ObstacleScript(velocity);
-		obstacleScript->hasSound = true;
-		meteor->addComponent<ScriptLoader>()->addScript(obstacleScript);
-
-		//create a dynamic rigidbody
-		btCollisionShape* colShape = new btSphereShape(btScalar(transform->scale.x));
-		collisionShapes.push_back(colShape);
-
-		// Create Dynamic Objects
-		btTransform startTransform;
-		startTransform.setIdentity();
-
-		btScalar mass(scale);
-
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		bool isDynamic = (mass != 0.f);
-
-		btVector3 localInertia(0, 0, 0);
-		if (isDynamic)
-			colShape->calculateLocalInertia(mass, localInertia);
-
-		startTransform.setOrigin(btVector3(pos.x, pos.y, pos.z));
-
-		//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-		btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-		CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::METEOR);
-
-		GameManager::dynamicsWorld->addRigidBody(body);
-
-		transform->body = body;
-		body->setLinearVelocity(btVector3(velocity.x, velocity.y, velocity.z));
-		body->gameObject = meteor;
-
-		SoundPlayer* soundPlayer = meteor->addComponent<SoundPlayer>();
-		soundPlayer->loadSoundFrom("sounds/explode.mp3");
-		soundPlayer->setType(SoundPlayer::Type::Event2D);
-
-		return meteor;
 	}
 };

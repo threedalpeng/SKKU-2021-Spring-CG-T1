@@ -8,7 +8,7 @@
 
 // My Application
 #include "Script/ObstacleScript.h"
-#include "Script/PlayerScript.h"
+#include "Script/Stage1PlayerScript.h"
 #include "Script/PlayerAnimationScript.h"
 #include "Script/GameCameraScript.h"
 #include "Script/GameBackgroundScript.h"
@@ -18,7 +18,7 @@
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
-#include "../Tool/MetourMaker.h"
+#include "../Tool/MeteorMaker.h"
 #include "../Custom/CustomRigidBody.h"
 
 //*******************************************************************
@@ -179,7 +179,7 @@ public:
 			meshRenderer->hasAlpha = false;
 
 			transform = background->getComponent<Transform>();
-			transform->scale = vec3(50, 100, 50);
+			transform->scale = vec3(100, 100, 100);
 			GameBackgroundScript* backgroundScript = new GameBackgroundScript();
 			background->addComponent<ScriptLoader>()->addScript(backgroundScript);
 		}
@@ -211,7 +211,7 @@ public:
 			transform->position = vec3(-3.0f, 0.0f, 0.0f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			transform->mass = 1.0f;
-			PlayerScript* playerScript = new PlayerScript();
+			Stage1PlayerScript* playerScript = new Stage1PlayerScript();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody

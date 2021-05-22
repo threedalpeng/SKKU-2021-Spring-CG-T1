@@ -16,7 +16,7 @@ public:
 private:
 	Transform* transform = nullptr;
 	bool leave = true;
-	float remainLife = 2.0f;
+	float remainLife = 12.0f;
 
 public:
 
@@ -27,6 +27,7 @@ public:
 
 	void update() override
 	{
+		// printf("Meteor pos: %f, %f\n", transform->worldPosition.x, transform->worldPosition.y);
 		// vec3 distance = _velocity * Time::delta();
 		// transform->translate(distance);
 
@@ -57,6 +58,7 @@ public:
 			thisMeshRenderer->color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 			leave = false;
+			remainLife = 2.0f;
 		}
 	}
 
@@ -73,6 +75,6 @@ public:
 		GameObject* thisObject = getObject();
 		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
 		// if (objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
-		if(objBody)	GameManager::removeBodyList.push_back(objBody);
+		if (objBody)	GameManager::removeBodyList.push_back(objBody);
 	}
 };

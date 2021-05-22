@@ -67,19 +67,20 @@ private:
 
 		GameManager::cleanRemoveList();
 		GameManager::cleanRemoveBodyList();
-		
+
 		if (GameManager::dynamicsWorld)
 		{
 			GameManager::dynamicsWorld->stepSimulation(Time::delta(), 10);
-			try{
+			try {
 				collide();
-			}catch( int expn){
-				std::cout << expn << ": there are error in bullet at collision detection step.\r" <<  std::endl;
 			}
-			
+			catch (int expn) {
+				std::cout << expn << ": there are error in bullet at collision detection step.\r" << std::endl;
+			}
 		}
 
 		Application::update();
+
 		if (Input::getKeyDown(GLFW_KEY_ESCAPE)) {
 			glfwSetWindowShouldClose(_window, GL_TRUE);
 		}

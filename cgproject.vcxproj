@@ -220,11 +220,14 @@
     <ClInclude Include="include\irrKlang\ik_vec3d.h" />
     <ClInclude Include="include\irrKlang\irrKlang.h" />
     <ClInclude Include="src\GameScene\PhysicsUtil.h" />
+    <ClInclude Include="src\GameScene\Script\StageGUIScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
     <ClInclude Include="src\GameScene\Script\EventCheckerSphere.h" />
+    <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
     <ClInclude Include="src\GameScene\Script\Stage2GUIScript.h" />
     <ClInclude Include="src\GameScene\Script\GameCameraScript.h" />
     <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
+    <ClInclude Include="src\GameScene\Script\Stage2PlayerScript.h" />
     <ClInclude Include="src\GameScene\Stage_2.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\PlayerAnimationStartScript.h" />
     <ClInclude Include="src\CreditScene\CreditScene.h" />
@@ -268,7 +271,7 @@
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
     <ClInclude Include="include\imgui\imstb_truetype.h" />
-    <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
+    <ClInclude Include="src\GameScene\Script\Stage1PlayerScript.h" />
     <ClInclude Include="src\GameScene\Script\Stage1GUIScript.h" />
     <ClInclude Include="src\GameScene\Script\ObstacleScript.h" />
     <ClInclude Include="src\GameScene\Stage_1.h" />

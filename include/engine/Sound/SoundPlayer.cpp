@@ -10,7 +10,6 @@ SoundPlayer::~SoundPlayer()
 
 void SoundPlayer::loadSoundFrom(std::string soundPath) {
 	clear();
-	std::cout << "Loading sound...: " << soundPath << std::endl;
 	_soundSource = _engine->getSoundSource(soundPath.c_str());
 }
 
