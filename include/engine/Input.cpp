@@ -1,6 +1,8 @@
 #include "Input.h"
 #include "engine/Screen.h"
 
+#include <iostream>
+
 const int Input::KEY_COUNT = GLFW_KEY_LAST + 1;
 std::vector<bool> Input::currentKeys(KEY_COUNT);
 std::vector<Input::KeyState> Input::keys(KEY_COUNT);
@@ -97,12 +99,18 @@ bool Input::getMouseButtonUp(int buttonCode) {
 }
 
 void Input::processKeyEvent(int key, int scancode, int action, int mods) {
+	if(key < 0 || key >= currentKeys.size()){ 
+		std::cout << "there is out of range key in processKeyEvent " << std::endl; 	
+		return;
+	} 
+
 	if (action == GLFW_PRESS) {
 		currentKeys[key] = true;
 	}
 	else if (action == GLFW_RELEASE) {
 		currentKeys[key] = false;
 	}
+	
 }
 void Input::processMouseClickEvent(int button, int action, int mods) {
 	if (action == GLFW_PRESS) {
