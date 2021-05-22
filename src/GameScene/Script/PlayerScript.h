@@ -179,9 +179,6 @@ public:
 		).normalize() * 16;
 		bulletTransform->position += bulletScript->_velocity.normalize() * 2.5;
 
-		SceneManager::scene()->addObject(bullet);
-		/*
-		// 구 모양일 때
 		btCollisionShape* colShape = new btSphereShape(btScalar((bulletTransform->scale).x));
 
 		/// Create Dynamic Objects
@@ -205,7 +202,8 @@ public:
 		bulletTransform->body = body;
 		body->setLinearVelocity(btVector3(bulletScript->_velocity.x, bulletScript->_velocity.y, bulletScript->_velocity.z));
 		body->gameObject = bullet;
-		*/
+
+		SceneManager::scene()->addObject(bullet);
 	}
 
 	void stopPlayer() {
