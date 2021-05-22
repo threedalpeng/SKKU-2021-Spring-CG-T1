@@ -148,12 +148,11 @@ public:
 	{
 		lastShot = 1.0f;
 		MeshRenderer* bulletMeshRenderer;
-		Mesh* sphereMesh = MeshMaker::makeSphere();
+		Mesh* sphereMesh = ResourceManager::getMesh("Sphere");
 		Material* material = ResourceManager::getMaterial("Basic");
 		Transform* bulletTransform;
 
 		GameObject* bullet = GameObject::create("bullet");
-		SceneManager::scene()->addObject(bullet);
 
 		bulletMeshRenderer = bullet->addComponent<MeshRenderer>();
 		bulletMeshRenderer->loadMesh(sphereMesh);
@@ -180,6 +179,7 @@ public:
 		).normalize() * 16;
 		bulletTransform->position += bulletScript->_velocity.normalize() * 2.5;
 
+		SceneManager::scene()->addObject(bullet);
 		/*
 		// 구 모양일 때
 		btCollisionShape* colShape = new btSphereShape(btScalar((bulletTransform->scale).x));
