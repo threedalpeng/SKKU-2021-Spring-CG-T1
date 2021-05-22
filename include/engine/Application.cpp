@@ -98,9 +98,10 @@ void loadingGui() {
 	ImGui::SetNextWindowPos(ImVec2(0.f, 0.f), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
 	ImGui::SetNextWindowBgAlpha(1.f);
-	ImGui::Begin("Hi", NULL, windowFlags);
+	ImGui::Begin("Loading", NULL, windowFlags);
 	{
-		ImGui::Text("Hi");
+		ImGui::Dummy(ImVec2(Screen::width() / 2.f, Screen::height() / 2.f));
+		ImGui::Text("Loading...");
 	}
 	ImGui::End();
 	ImGui::SetNextWindowBgAlpha(0.6f);
@@ -130,6 +131,7 @@ void Application::run()
 	for (_frame_count = 0; !glfwWindowShouldClose(_window); _frame_count++) {
 		if (SceneManager::sceneLoaded) {
 			loadingGui();
+			glfwSwapBuffers(_window);
 			SceneManager::startScene();
 			onSceneLoaded();
 			Time::init();
