@@ -93,17 +93,17 @@ void MeteorShowerMaker(vec3 anchorPoint, vec2 rangeXY, int meteourNum, vec3 dire
 		if (randomVelocity)
 		{
 			vec3 noise = vec3(0);
-			float noiseScale = 2.0f;
-			noise.x = (GameManager::genRandFloat() - .5f) * noiseScale;
-			noise.y = (GameManager::genRandFloat() - .5f) * noiseScale;
+			float noiseScale = 1.0f;
+			noise.x = GameManager::genRandFloat() * noiseScale;
+			noise.y = GameManager::genRandFloat() * noiseScale;
 			velocity += noise;
 		}
 
 		float scale = 1.0f;
 		if (randomScale)
 		{
-			float noiseScale = 2.0f;
-			float noise = (GameManager::genRandFloat() + 1.f) * noiseScale / 2.f;
+			float noiseScale = 1.0f;
+			float noise = (GameManager::genRandFloat() + 1.f) * noiseScale;
 			scale += noise;
 		}
 
