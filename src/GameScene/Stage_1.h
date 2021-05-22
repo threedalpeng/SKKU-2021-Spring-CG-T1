@@ -269,7 +269,7 @@ public:
 			meshRenderer->hasTexture = false;
 
 			transform = lightPoint->getComponent<Transform>();
-			transform->position = vec3(0.0f, 0.0f, 30.0f);
+			transform->position = vec3(-10.0f, 0.0f, 60.0f);
 
 			light = lightPoint->addComponent<Light>();
 			light->setType(Light::Type::Directional);
@@ -486,23 +486,6 @@ public:
 			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
 		}
 
-		// meteor //
-		{
-			meteorMoveEventId = EventManager<MeteorMoveEvent>::addListener([this](const MeteorMoveEvent& e)->bool {
-				GameObject* meteor;
-				meteor = createMeteor(vec3(277.2f, 41.81f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
-				meteor = createMeteor(vec3(293.6f, 30.05f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
-				meteor = createMeteor(vec3(314.1f, 36.48f, 0.f), vec3(-3.f, 0.f, 0.f), 10.f);
-				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
-				addObject(meteor);
-				return true;
-				});
-		}
-
 		// save point 1
 		{
 			meshRenderer = savePoint_1->addComponent<MeshRenderer>();
@@ -516,11 +499,11 @@ public:
 			meshRenderer->isColored = true;
 			meshRenderer->hasTexture = false;
 			meshRenderer->hasAlpha = false;
-			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 1.0f);
+			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 0.6f);
 
 			transform = savePoint_1->getComponent<Transform>();
 			transform->position = vec3(9.0f, 0.0f, 0.0f);
-			transform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+			transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			transform->mass = 0.0f;
 
@@ -554,6 +537,23 @@ public:
 			transform->body = body;
 			body->setLinearVelocity(btVector3(0.f, 0, 0));
 			body->gameObject = savePoint_1;
+		}
+
+		// meteor //
+		{
+			meteorMoveEventId = EventManager<MeteorMoveEvent>::addListener([this](const MeteorMoveEvent& e)->bool {
+				GameObject* meteor;
+				meteor = createMeteor(vec3(277.2f, 41.81f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				meteor = createMeteor(vec3(293.6f, 30.05f, 0.f), vec3(-3.f, 0.f, 0.f), 5.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				meteor = createMeteor(vec3(314.1f, 36.48f, 0.f), vec3(-3.f, 0.f, 0.f), 10.f);
+				meteor->getComponent<ScriptLoader>()->getScripts()[0]->init();
+				addObject(meteor);
+				return true;
+				});
 		}
 
 		// GUI

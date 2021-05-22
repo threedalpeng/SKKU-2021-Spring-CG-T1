@@ -85,6 +85,9 @@ public:
 		/* Depth camera update */
 		eye = getComponent<Transform>()->worldPosition;
 		aspect_ratio = shadowWidth / float(shadowHeight);
+		if (GameObject* parent = getCurrentObject()->getParent()) {
+			at = parent->getComponent<Transform>()->worldPosition;
+		}
 		projection_matrix = mat4::perspective(fovy, aspect_ratio, dNear, dFar);
 		view_matrix = mat4::look_at(eye, at, up);
 		hasDepthMap = false;	// initialize hasDepthMap

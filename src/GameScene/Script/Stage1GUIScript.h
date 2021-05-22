@@ -169,7 +169,6 @@ public:
 			return changeGuiState(e);
 			});
 		hpEventId = EventManager<HpChangedEvent>::addListener([this](const HpChangedEvent& e)->bool {
-			printf("hp changed: %d\n", e.hp);
 			return changeHp(e);
 			});
 	}
@@ -200,11 +199,9 @@ public:
 			soundPlayer->play();
 
 			if (Input::getKeyDown(GLFW_KEY_P)) {
-				std::cout << "Pause.." << std::endl;
 				currentMode = Mode::PAUSE;
 			}
 			if (Input::getKeyDown(GLFW_KEY_F1)) {
-				std::cout << "Help" << std::endl;
 				currentMode = Mode::HELP;
 			}
 			break;

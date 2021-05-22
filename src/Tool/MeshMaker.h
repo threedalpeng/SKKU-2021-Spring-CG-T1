@@ -313,7 +313,6 @@ Mesh* MeshMaker::makeCylinderMesh() {
 		mesh->index_list.push_back(originIdx);	// the origin
 		mesh->index_list.push_back(k + 2);
 		mesh->index_list.push_back(k + 1);
-		printf("%d, %d, %d\n", originIdx, k + 1, k + 2);
 	}
 
 	originIdx += (nCircleVertex + 2);

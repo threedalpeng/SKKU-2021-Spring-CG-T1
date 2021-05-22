@@ -1,4 +1,5 @@
 #pragma once
+
 #include "engine/Core.h"
 #include "EventCheckerSphere.h"
 //*******************************************************************
@@ -21,8 +22,8 @@ public:
 
 	int HP = 100;
 	btVector3 savePoint = btVector3(-3.0f, 0, 0);
-	float 	lastWallCollistion 	= 0.0f;
-	float 	lastShot		   	= 1.0f;
+	float lastWallCollistion = 0.0f;
+	float lastShot = 1.0f;
 
 private:
 	Transform* transform = nullptr;
@@ -42,6 +43,7 @@ private:
 			GameManager::dynamicsWorld->setGravity(btVector3(0.f, 0.f, 0.f));
 			}),
 		EventCheckerSphere(vec3(100.6f, 30.2f, 0.f), 8.5f, [this]() {
+			stopPlayer();
 			savePoint = btVector3(100.6f, 30.2f, 0.f);
 			saveEventProgress = eventProgress + 1;
 			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
@@ -85,7 +87,7 @@ public:
 		if (gameStopped) {
 			return;
 		}
-		for (int i = eventProgress; i < eventCheckers.size(); i++) {
+		for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
 			if (eventCheckers[i].trigger(transform->worldPosition))
 				eventProgress++;
 			else break;
@@ -107,7 +109,7 @@ public:
 			HP = 100;
 			EventManager<HpChangedEvent>::triggerEvent({ HP });
 			eventProgress = saveEventProgress;
-			for (int i = eventProgress; i < eventCheckers.size(); i++) {
+			for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
 				eventCheckers[i].retry();
 			}
 		}
@@ -125,13 +127,11 @@ public:
 	void collide(objectTypes oppositeType) {
 		if (oppositeType == objectTypes::METEOR) {
 			HP -= 10;
-			std::cout << "Now player's HP is " << HP << "\r";
 			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
 		else if (oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f) {
 			HP -= 1;
 			lastWallCollistion = 1.0f;
-			std::cout << "Now player's HP is " << HP << "\r";
 			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
 		else if (oppositeType == objectTypes::RADIOACTIVE_WALL && lastWallCollistion < 0.1f) {
@@ -139,7 +139,7 @@ public:
 			lastWallCollistion = 1.0f;
 			EventManager<HpChangedEvent>::triggerEvent({ HP });
 		}
-		else if(oppositeType == objectTypes::SAVE_POINT){
+		else if (oppositeType == objectTypes::SAVE_POINT) {
 			savePoint = btVector3(transform->position.x, transform->position.y, transform->position.z);
 		}
 	}
@@ -168,7 +168,7 @@ public:
 
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
-		bulletTransform->rotation= Quaternion(0.f, 0.f, 0.f, 1.f);
+		bulletTransform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 		bulletTransform->scale = vec3(0.1f, 0.1f, 0.1f);
 		bulletTransform->mass = 0.1f;
 
@@ -177,9 +177,10 @@ public:
 		bulletScript->init();
 		bulletScript->_velocity = vec3(
 			transform->getVelocityBT().x() + 0.1e-10f, transform->getVelocityBT().y(), transform->getVelocityBT().z()
-			).normalize() * 16;
+		).normalize() * 16;
 		bulletTransform->position += bulletScript->_velocity.normalize() * 2.5;
 
+		/*
 		// 구 모양일 때
 		btCollisionShape* colShape = new btSphereShape(btScalar((bulletTransform->scale).x));
 
@@ -204,6 +205,7 @@ public:
 		bulletTransform->body = body;
 		body->setLinearVelocity(btVector3(bulletScript->_velocity.x, bulletScript->_velocity.y, bulletScript->_velocity.z));
 		body->gameObject = bullet;
+		*/
 	}
 
 	void stopPlayer() {
