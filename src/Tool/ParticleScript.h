@@ -7,8 +7,7 @@
 class ParticleScript : public Script {
 public:
 	ParticleScript() : Script(), _position(0.0f), origin_velocity(0.0f), remainLife(initLife) { }
-	ParticleScript(vec3 position) :Script(), _position(position), remainLife(initLife) {
-		float v_scale = 1.0f;
+	ParticleScript(vec3 position, float v_scale = 1.0f) :Script(), _position(position), remainLife(initLife) {
 		origin_velocity = vec3(0.0f);
 		origin_velocity.x = GameManager::genRandFloat() * v_scale;
 		origin_velocity.y = GameManager::genRandFloat() * v_scale;

@@ -11,7 +11,7 @@ SoundPlayer::~SoundPlayer()
 void SoundPlayer::loadSoundFrom(std::string soundPath) {
 	clear();
 	std::cout << "Loading sound...: " << soundPath << std::endl;
-	_soundSource = _engine->addSoundSourceFromFile(soundPath.c_str());
+	_soundSource = _engine->getSoundSource(soundPath.c_str());
 }
 
 void SoundPlayer::setType(Type type) {

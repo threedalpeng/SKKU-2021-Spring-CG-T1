@@ -16,12 +16,12 @@ class ParticleMaker
 {
 public:
 	static int maxForOne;
-	static void  makeExplodeParticle(vec3 parent_position);
+	static void  makeExplodeParticle(vec3 parent_position, float scale = 1.0f);
 };
 
 int ParticleMaker::maxForOne = 80;
 
-void ParticleMaker::makeExplodeParticle(vec3 parent_position)
+void ParticleMaker::makeExplodeParticle(vec3 parent_position, float scale)
 {
 	MeshRenderer* meshRenderer;
 	Mesh* sphereMesh = MeshMaker::makeSphere();
@@ -49,10 +49,10 @@ void ParticleMaker::makeExplodeParticle(vec3 parent_position)
 		transform = particle->getComponent<Transform>();
 		transform->position = parent_position;
 		transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
-		transform->scale = vec3(0.05f, 0.05f, 0.05f);
+		transform->scale = vec3(0.05f, 0.05f, 0.05f) * scale;
 		transform->mass = 0.1f;
 
-		ParticleScript* particleScript = new ParticleScript(transform->position);
+		ParticleScript* particleScript = new ParticleScript(transform->position, scale);
 		particle->addComponent<ScriptLoader>()->addScript(particleScript);
 		particleScript->meshRenderer = meshRenderer;
 		particleScript->transform = transform;
