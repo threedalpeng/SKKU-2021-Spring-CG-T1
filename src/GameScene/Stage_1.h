@@ -129,7 +129,7 @@ public:
 
 		GameObject* backBox = GameObject::create("back box");
 		GameObject* savePoint_1 = GameObject::create("save point 1");
-		GameObject* bullet = GameObject::create("bullet");
+		// GameObject* bullet = GameObject::create("bullet");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -172,7 +172,7 @@ public:
 		addObject(backBox);
 
 		addObject(savePoint_1);
-		addObject(bullet);
+		// addObject(bullet);
 
 		addObject(gui);
 
@@ -244,6 +244,11 @@ public:
 			Stage1PlayerScript* playerScript = new Stage1PlayerScript();
 			playerScript->axis = playerAxis->getComponent<Transform>();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
+
+			soundPlayer = player->addComponent<SoundPlayer>();
+			soundPlayer->loadSoundFrom("sounds/shot.mp3");
+			soundPlayer->setType(SoundPlayer::Type::Event2D);
+			playerScript->hasSound = true;
 
 			//create a dynamic rigidbody
 			btCollisionShape* colShape = new btSphereShape(btScalar((transform->scale).x));
@@ -514,54 +519,54 @@ public:
 				});
 		}
 
-		// test
-		{
-			meshRenderer = bullet->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(ResourceManager::getMesh("Ufo"));
-			meshRenderer->loadMaterial(material);
-			meshRenderer->loadTexture(ResourceManager::getTexture("ufo"));
-			meshRenderer->loadShader(GameManager::basicShader);
-			meshRenderer->loadShaderDepth(GameManager::depthShader);
+		// // test
+		// {
+		// 	meshRenderer = bullet->addComponent<MeshRenderer>();
+		// 	meshRenderer->loadMesh(ResourceManager::getMesh("Ufo"));
+		// 	meshRenderer->loadMaterial(material);
+		// 	meshRenderer->loadTexture(ResourceManager::getTexture("ufo"));
+		// 	meshRenderer->loadShader(GameManager::basicShader);
+		// 	meshRenderer->loadShaderDepth(GameManager::depthShader);
 
-			meshRenderer->isShaded = true;
-			meshRenderer->isColored = false;
-			meshRenderer->hasTexture = true;
-			meshRenderer->hasAlpha = false;
-			meshRenderer->color = vec4(1.0f, 0.5f, 0.5f, 1.0f);
+		// 	meshRenderer->isShaded = true;
+		// 	meshRenderer->isColored = false;
+		// 	meshRenderer->hasTexture = true;
+		// 	meshRenderer->hasAlpha = false;
+		// 	meshRenderer->color = vec4(1.0f, 0.5f, 0.5f, 1.0f);
 
-			transform = bullet->getComponent<Transform>();
-			transform->position = vec3(0.0f, 0.0f, 0.0f);
-			transform->rotation = Quaternion(1.f, 0.0f, 0.f, 1.f);
-			transform->scale = vec3(0.02f, 0.02f, 0.02f);
-			transform->mass = 1.0f;
+		// 	transform = bullet->getComponent<Transform>();
+		// 	transform->position = vec3(0.0f, 0.0f, 0.0f);
+		// 	transform->rotation = Quaternion(1.f, 0.0f, 0.f, 1.f);
+		// 	transform->scale = vec3(0.02f, 0.02f, 0.02f);
+		// 	transform->mass = 1.0f;
 
-			EnemyScript* enemyScript = new EnemyScript();
-			bullet->addComponent<ScriptLoader>()->addScript(enemyScript);
+		// 	EnemyScript* enemyScript = new EnemyScript();
+		// 	bullet->addComponent<ScriptLoader>()->addScript(enemyScript);
 
 
-			btCollisionShape* colShape = new btSphereShape(btScalar(1.f));
-			/// Create Dynamic Objects
-			btTransform startTransform;
-			startTransform.setIdentity();
-			btScalar mass(transform->mass);
-			//rigidbody is dynamic if and only if mass is non zero, otherwise static
-			bool isDynamic = (transform->mass != 0.f);
-			btVector3 localInertia(0, 0, 0);
-			if (isDynamic)
-				colShape->calculateLocalInertia(transform->mass, localInertia);
-			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
+		// 	btCollisionShape* colShape = new btSphereShape(btScalar(1.f));
+		// 	/// Create Dynamic Objects
+		// 	btTransform startTransform;
+		// 	startTransform.setIdentity();
+		// 	btScalar mass(transform->mass);
+		// 	//rigidbody is dynamic if and only if mass is non zero, otherwise static
+		// 	bool isDynamic = (transform->mass != 0.f);
+		// 	btVector3 localInertia(0, 0, 0);
+		// 	if (isDynamic)
+		// 		colShape->calculateLocalInertia(transform->mass, localInertia);
+		// 	startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
 
-			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
-			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
-			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::ENEMY);
+		// 	//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+		// 	btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+		// 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+		// 	CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::ENEMY);
 
-			GameManager::dynamicsWorld->addRigidBody(body);
+		// 	GameManager::dynamicsWorld->addRigidBody(body);
 
-			transform->body = body;
-			body->setLinearVelocity(btVector3(0.f, 0, 0));
-			body->gameObject = bullet;
-		}
+		// 	transform->body = body;
+		// 	body->setLinearVelocity(btVector3(0.f, 0, 0));
+		// 	body->gameObject = bullet;
+		// }
 
 		// GUI
 		gui->addComponent<ScriptLoader>()->addScript(new Stage1GUIScript());
