@@ -16,7 +16,7 @@ class ParticleMaker
 {
 public:
 	static int maxForOne;
-	static void  makeExplodeParticle(vec3 parent_position, float scale = 1.0f);
+	static void  makeExplodeParticle(vec3 parent_position, float scale = 10.0f);
 };
 
 int ParticleMaker::maxForOne = 80;

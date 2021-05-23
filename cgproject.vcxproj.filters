@@ -131,6 +131,8 @@
     <ClInclude Include="src\EndingScene\EndingGUIScript.h" />
     <ClInclude Include="src\PrologueScene\PrologueGUIScript.h" />
     <ClInclude Include="src\PrologueScene\PrologueScene.h" />
+    <ClInclude Include="src\Tool\ParticleMaker.h" />
+    <ClInclude Include="src\Tool\ParticleScript.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

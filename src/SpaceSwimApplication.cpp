@@ -18,7 +18,9 @@
 
 class SpaceSwimApplication : public Application {
 public:
-	SpaceSwimApplication(const char* title) : Application(title) {};
+	SpaceSwimApplication(const char* title) : Application(title) {
+		_windowSize = ivec2(1280, 720);
+	};
 private:
 	void init() {
 		Application::init();
@@ -173,7 +175,6 @@ private:
 						std::vector<Script*> script_v = obBB->gameObject->getComponent<ScriptLoader>()->getScripts();
 						for (size_t i = 0; i < script_v.size(); i++)	((BulletScript*)script_v.at(i))->collide(obAA->objectType);
 					}
-
 
 					if (obAA->objectType == objectTypes::ENEMY)
 					{
