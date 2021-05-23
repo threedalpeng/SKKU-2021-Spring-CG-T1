@@ -46,6 +46,7 @@ private:
 		// ResourceManager::createTexture("SpaceShip", "textures/SpaceShip.jpg");
 		ResourceManager::createTexture("monster", "textures/monster.png");
 		// ResourceManager::createTexture("asteroid", "textures/asteroid.png");  // too big
+		ResourceManager::createTexture("ufo", "textures/ufo.png");
 
 		ResourceManager::createMaterial("Basic");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
@@ -58,6 +59,7 @@ private:
 		ResourceManager::addMesh("Flag", new Mesh("mesh/flag.vertex.bin", "mesh/flag.index.bin"));
 		ResourceManager::addMesh("SpaceShip", new Mesh("mesh/SpaceShip.vertex.bin", "mesh/SpaceShip.index.bin"));
 		ResourceManager::addMesh("Monster", new Mesh("mesh/monster.vertex.bin", "mesh/monster.index.bin"));
+		ResourceManager::addMesh("Ufo", new Mesh("mesh/ufo.vertex.bin", "mesh/ufo.index.bin"));
 		// ResourceManager::addMesh("Aonster", new Mesh("mesh/asteroid.vertex.bin", "mesh/asteroid.index.bin"));
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
