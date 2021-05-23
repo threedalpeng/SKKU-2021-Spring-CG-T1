@@ -23,7 +23,7 @@ public:
 	vec3 up = vec3(0.f, 1.f, 0.f);
 	mat4	view_matrix = mat4::look_at(eye, at, up);
 
-	float	fovy = PI / 4.0f; // must be in radian
+	float	fovy = PI / 3.0f; // must be in radian
 	float	aspect_ratio;
 	float	dNear = 1.0f;
 	float	dFar = 500.0f;

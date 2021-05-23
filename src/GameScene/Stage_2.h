@@ -240,6 +240,7 @@ public:
 			transform->scale = vec3(1.f, 1.f, 1.f);
 			transform->mass = 1.0f;
 			Stage2PlayerScript* playerScript = new Stage2PlayerScript();
+			playerScript->axis = playerAxis->getComponent<Transform>();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody

@@ -241,6 +241,7 @@ public:
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			transform->mass = 1.0f;
 			Stage1PlayerScript* playerScript = new Stage1PlayerScript();
+			playerScript->axis = playerAxis->getComponent<Transform>();
 			player->addComponent<ScriptLoader>()->addScript(playerScript);
 
 			//create a dynamic rigidbody
@@ -534,7 +535,7 @@ public:
 
 			transform = bullet->getComponent<Transform>();
 			transform->position = vec3(0.0f, 0.0f, 0.0f);
-			transform->rotation= Quaternion(1.f, 0.0f, 0.f, 1.f);
+			transform->rotation = Quaternion(1.f, 0.0f, 0.f, 1.f);
 			transform->scale = vec3(0.02f, 0.02f, 0.02f);
 			// transform->scale = vec3(0.3f, 0.3f, 0.3f);
 			transform->mass = 1.0f;

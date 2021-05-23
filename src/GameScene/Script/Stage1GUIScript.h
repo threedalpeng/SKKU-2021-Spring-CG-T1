@@ -509,8 +509,10 @@ private:
 			ImGui::End();
 		}
 		else {
-			currentMode = Mode::GAME;
-			EventManager<GuiEvent>::triggerEvent({ -1 });
+			// currentMode = Mode::GAME;
+			// EventManager<GuiEvent>::triggerEvent({ -1 });
+			GameManager::setStage(2);
+			GameManager::setChanged(true);
 		}
 	}
 

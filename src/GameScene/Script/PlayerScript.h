@@ -21,6 +21,7 @@ public:
 	btVector3 savePoint = btVector3(-3.0f, 0, 0);
 	float lastWallCollistion = 0.0f;
 	float lastShot = 1.0f;
+	Transform* axis = nullptr;
 
 protected:
 	Transform* transform = nullptr;
@@ -104,7 +105,7 @@ public:
 
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
-		bulletTransform->worldRotation = transform->worldRotation; // ! bug
+		bulletTransform->rotation = axis->rotation * Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), -90.f); // ! bug
 		bulletTransform->scale = vec3(0.3f, 0.3f, 0.3f);
 		bulletTransform->mass = 0.1f;
 

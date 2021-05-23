@@ -53,13 +53,15 @@ public:
 			float angle = atan2f(vel.y, vel.x);
 			getComponent<Transform>()->rotation = Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), angle * 180.f / PI);
 		}
+		else {
+			getComponent<Transform>()->rotate(vec3(1.f, 0.f, 0.f), Time::delta() * 90.f);
+		}
 
 		angle = Time::delta() * legSpeed;
 		acc += angle;
 		if (acc > 360.f) acc -= 360.f;
 		float legSpread = legAngleRange * cosf(acc) * angle;
 
-		getComponent<Transform>()->rotate(vec3(1.f, 0.f, 0.f), Time::delta() * 90.f);
 		leftArmAxis->rotate(vec3(0.f, 1.f, 0.f), Time::delta() * armSpeed);
 		rightArmAxis->rotate(vec3(0.f, 1.f, 0.f), Time::delta() * armSpeed);
 		leftLegAxis->rotate(vec3(0.f, 1.f, 0.f), legSpread);
