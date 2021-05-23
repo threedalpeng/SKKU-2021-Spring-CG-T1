@@ -22,6 +22,7 @@ public:
 	float lastHit = 0.0f;
 	float lastShot = 1.0f;
 	Transform* axis = nullptr;
+	bool  hasSound = false;
 
 protected:
 	Transform* transform = nullptr;
@@ -95,7 +96,9 @@ public:
 	}
 
 	void shot()
-	{
+	{	
+		if (hasSound)
+			getComponent<SoundPlayer>()->play();
 		lastShot = 1.0f;
 		MeshRenderer* bulletMeshRenderer;
 		Transform* bulletTransform;

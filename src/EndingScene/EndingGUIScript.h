@@ -54,7 +54,7 @@ private:
 
 	std::vector <std::vector<std::string>> credit = {
 		{"- Game Design", "Scenario by Kim Jeong-won", "Game Features by Jaesung Park"},
-		{"- Programming", "Kim Jeong-won (System, Audio, Animation...)", "Jaesung Park (System, Physics, AI...)"},
+		{"- Programming", "Kim Jeong-won (System, Audio, Animation, GUI, ...)", "Jaesung Park (System, Physics, Shadow, Particle, AI...)"},
 		{"- Art", "2D Images by Kim Jeong-won", "3D Modeling by Jaesung Park" },
 		{"- Sound", "Original SoundTrack by Kim Jeong-won"},
 		{"Thank You for Playing!"},
