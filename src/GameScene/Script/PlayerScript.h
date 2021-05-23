@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 
 #include "engine/Core.h"
 //*******************************************************************
@@ -20,6 +19,7 @@ public:
 	int HP = 100;
 	btVector3 savePoint = btVector3(-3.0f, 0, 0);
 	float lastWallCollistion = 0.0f;
+	float lastHit = 0.0f;
 	float lastShot = 1.0f;
 	Transform* axis = nullptr;
 
@@ -57,6 +57,7 @@ public:
 
 		transform->addVelocityBT(addVelocity);
 		lastWallCollistion = std::max(0.0f, lastWallCollistion - Time::delta());
+		lastHit = std::max(0.0f, lastHit - Time::delta());
 
 		// shot
 		lastShot = std::max(0.0f, lastShot - Time::delta());
@@ -64,9 +65,14 @@ public:
 	}
 
 	void collide(objectTypes oppositeType) {
-		if (oppositeType == objectTypes::METEOR) {
-			HP -= 10;
-			EventManager<HpChangedEvent>::triggerEvent({ HP });
+		if (oppositeType == objectTypes::METEOR || oppositeType == objectTypes::ENEMY_BULLET || oppositeType == objectTypes::ENEMY) {
+			if(lastHit < .1f)
+			{
+				HP -= 10;
+				EventManager<HpChangedEvent>::triggerEvent({ HP });	
+				lastHit = 1.0f;
+			}
+			
 		}
 		else if (oppositeType == objectTypes::WALL && lastWallCollistion < 0.1f) {
 			HP -= 1;
@@ -105,16 +111,17 @@ public:
 
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
-		bulletTransform->rotation = axis->rotation * Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), -90.f); // ! bug
+		bulletTransform->rotation = axis->rotation * Quaternion::axisAngle(vec3(0.f, 0.f, 1.f), -90.f);
 		bulletTransform->scale = vec3(0.3f, 0.3f, 0.3f);
 		bulletTransform->mass = 0.1f;
 
-		BulletScript* bulletScript = new BulletScript();
+		BulletScript* bulletScript = new BulletScript(objectTypes::PLAYER);
 		bullet->addComponent<ScriptLoader>()->addScript(bulletScript);
 		bulletScript->init();
 		bulletScript->_velocity = vec3(
 			transform->getVelocityBT().x() + 0.1e-10f, transform->getVelocityBT().y(), transform->getVelocityBT().z()
-		).normalize() * 16;
+		);
+		if(bulletScript->_velocity.length() > 0.0f) bulletScript->_velocity = bulletScript->_velocity.normalize() * 16;
 		bulletTransform->position += bulletScript->_velocity.normalize() * 2.5;
 
 		btCollisionShape* colShape = new btSphereShape(btScalar((bulletTransform->scale).x));
@@ -148,4 +155,9 @@ public:
 		gameStopped = true;
 		transform->setVelocityBT(btVector3(0.f, 0.f, 0.f));
 	}
+
+	void gameOver()
+    {
+        
+    }
 };

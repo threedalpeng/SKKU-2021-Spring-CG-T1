@@ -8,10 +8,12 @@ class BulletScript : public Script
 {
 public:
 	BulletScript() : Script() {}
+	BulletScript(objectTypes parent) : Script(), parent(parent) {}
 	BulletScript(vec3 velocity) : Script() { _velocity = velocity; }
-	vec3 _velocity = vec3(0, 0, 0);
+	vec3 _velocity = vec3(16.f, 0, 0);
 	bool hasSound = false;
 	float mass = 0.00000000000001f;
+	objectTypes parent;
 
 private:
 	Transform* transform = nullptr;
@@ -37,7 +39,7 @@ public:
 
 	void collide(objectTypes oppositeType)
 	{		
-		if (oppositeType != objectTypes::PLAYER && leave)
+		if (oppositeType != parent && leave)
 		{
 			leave = false;
 			if (hasSound)	getComponent<SoundPlayer>()->play();

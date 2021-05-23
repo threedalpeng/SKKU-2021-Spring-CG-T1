@@ -15,6 +15,7 @@
 #include "Script/Stage1GUIScript.h"
 #include "Script/EmptyBoxScript.h"
 #include "Script/SavePointScript.h"
+#include "Script/EnemyScript.h"
 
 #include "../Tool/MeshMaker.h"
 #include "../Tool/ParticleMaker.h"
@@ -516,16 +517,11 @@ public:
 		// test
 		{
 			meshRenderer = bullet->addComponent<MeshRenderer>();
-			// meshRenderer->loadMesh(ResourceManager::getMesh("SpaceShip"));
-			// meshRenderer->loadMesh(ResourceManager::getMesh("Monster"));
-			// meshRenderer->loadMesh(ResourceManager::getMesh("Aonster"));
 			meshRenderer->loadMesh(ResourceManager::getMesh("Ufo"));
 			meshRenderer->loadMaterial(material);
-			// meshRenderer->loadTexture(ResourceManager::getTexture("bullet"));
-			// meshRenderer->loadTexture(ResourceManager::getTexture("monster"));
-			// meshRenderer->loadTexture(ResourceManager::getTexture("asteroid"));
 			meshRenderer->loadTexture(ResourceManager::getTexture("ufo"));
 			meshRenderer->loadShader(GameManager::basicShader);
+			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
 			meshRenderer->isShaded = true;
 			meshRenderer->isColored = false;
@@ -537,8 +533,34 @@ public:
 			transform->position = vec3(0.0f, 0.0f, 0.0f);
 			transform->rotation = Quaternion(1.f, 0.0f, 0.f, 1.f);
 			transform->scale = vec3(0.02f, 0.02f, 0.02f);
-			// transform->scale = vec3(0.3f, 0.3f, 0.3f);
 			transform->mass = 1.0f;
+
+			EnemyScript* enemyScript = new EnemyScript();
+			bullet->addComponent<ScriptLoader>()->addScript(enemyScript);
+
+
+			btCollisionShape* colShape = new btSphereShape(btScalar(1.f));
+			/// Create Dynamic Objects
+			btTransform startTransform;
+			startTransform.setIdentity();
+			btScalar mass(transform->mass);
+			//rigidbody is dynamic if and only if mass is non zero, otherwise static
+			bool isDynamic = (transform->mass != 0.f);
+			btVector3 localInertia(0, 0, 0);
+			if (isDynamic)
+				colShape->calculateLocalInertia(transform->mass, localInertia);
+			startTransform.setOrigin(btVector3(transform->position.x, transform->position.y, transform->position.z));
+
+			//using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
+			btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, colShape, localInertia);
+			CustomRigidBody* body = new CustomRigidBody(rbInfo, objectTypes::ENEMY);
+
+			GameManager::dynamicsWorld->addRigidBody(body);
+
+			transform->body = body;
+			body->setLinearVelocity(btVector3(0.f, 0, 0));
+			body->gameObject = bullet;
 		}
 
 		// GUI
