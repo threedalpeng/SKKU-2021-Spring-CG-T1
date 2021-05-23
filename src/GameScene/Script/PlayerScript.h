@@ -72,26 +72,25 @@ public:
 	{
 		lastShot = 1.0f;
 		MeshRenderer* bulletMeshRenderer;
-		Mesh* sphereMesh = ResourceManager::getMesh("Sphere");
-		Material* material = ResourceManager::getMaterial("Basic");
 		Transform* bulletTransform;
 
 		GameObject* bullet = GameObject::create("bullet");
 
 		bulletMeshRenderer = bullet->addComponent<MeshRenderer>();
-		bulletMeshRenderer->loadMesh(sphereMesh);
-		bulletMeshRenderer->loadMaterial(material);
+		bulletMeshRenderer->loadMesh(ResourceManager::getMesh("Bullet"));
+		bulletMeshRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
+		bulletMeshRenderer->loadTexture(ResourceManager::getTexture("bullet"));
 		bulletMeshRenderer->loadShader(GameManager::basicShader);
 
 		bulletMeshRenderer->isShaded = true;
 		bulletMeshRenderer->isColored = true;
 		bulletMeshRenderer->hasTexture = false;
 		bulletMeshRenderer->hasAlpha = false;
-		bulletMeshRenderer->color = vec4(0.5f, 0.5f, 1.0f, 1.0f);
+		bulletMeshRenderer->color = vec4(1.0f, 0.5f, 1.0f, 1.0f);
 
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
-		bulletTransform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
+		bulletTransform->worldRotation = transform->worldRotation; // ! bug
 		bulletTransform->scale = vec3(0.15f, 0.15f, 0.15f);
 		bulletTransform->mass = 0.1f;
 

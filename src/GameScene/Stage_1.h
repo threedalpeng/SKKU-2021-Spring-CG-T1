@@ -128,6 +128,7 @@ public:
 
 		GameObject* backBox = GameObject::create("back box");
 		GameObject* savePoint_1 = GameObject::create("save point 1");
+		GameObject* bullet = GameObject::create("bullet");
 
 		GameObject* gui = GameObject::create("GUI");
 
@@ -170,6 +171,7 @@ public:
 		addObject(backBox);
 
 		addObject(savePoint_1);
+		addObject(bullet);
 
 		addObject(gui);
 

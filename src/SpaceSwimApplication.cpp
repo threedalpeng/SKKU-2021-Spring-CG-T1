@@ -42,6 +42,7 @@ private:
 		ResourceManager::createTexture("mercury", "textures/mercury.jpg");
 		ResourceManager::createTexture("moon", "textures/moon.jpg");
 		ResourceManager::createTexture("radioactive", "textures/radioactive.png");
+		ResourceManager::createTexture("bullet", "textures/bullet.jpg");
 
 		ResourceManager::createMaterial("Basic");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
@@ -50,6 +51,7 @@ private:
 		ResourceManager::addMesh("Box", MeshMaker::makeBoxMesh());
 		ResourceManager::addMesh("Sky Cylinder", MeshMaker::makeSkyCylinderMesh());
 		ResourceManager::addMesh("Sphere", MeshMaker::makeSphere());
+		ResourceManager::addMesh("Bullet", new Mesh("mesh/bullet.vertex.bin", "mesh/bullet.index.bin"));
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
