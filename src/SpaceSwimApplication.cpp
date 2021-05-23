@@ -46,7 +46,6 @@ private:
 		ResourceManager::createTexture("moon", "textures/moon.jpg");
 		ResourceManager::createTexture("radioactive", "textures/radioactive.png");
 		ResourceManager::createTexture("bullet", "textures/bullet.jpg");
-		// ResourceManager::createTexture("SpaceShip", "textures/SpaceShip.jpg");
 		// ResourceManager::createTexture("monster", "textures/monster.png");
 		// ResourceManager::createTexture("asteroid", "textures/asteroid.png");  // too big
 		ResourceManager::createTexture("ufo", "textures/ufo.png");
@@ -60,7 +59,7 @@ private:
 		ResourceManager::addMesh("Sphere", MeshMaker::makeSphere());
 		ResourceManager::addMesh("Bullet", new Mesh("mesh/bullet.vertex.bin", "mesh/bullet.index.bin"));
 		ResourceManager::addMesh("Flag", new Mesh("mesh/flag.vertex.bin", "mesh/flag.index.bin"));
-		// ResourceManager::addMesh("SpaceShip", new Mesh("mesh/SpaceShip.vertex.bin", "mesh/SpaceShip.index.bin"));
+		ResourceManager::addMesh("SpaceShip", new Mesh("mesh/SpaceShip.vertex.bin", "mesh/SpaceShip.index.bin"));
 		// ResourceManager::addMesh("Monster", new Mesh("mesh/monster.vertex.bin", "mesh/monster.index.bin"));
 		// ResourceManager::addMesh("Aonster", new Mesh("mesh/asteroid.vertex.bin", "mesh/asteroid.index.bin"));
 		ResourceManager::addMesh("Ufo", new Mesh("mesh/ufo.vertex.bin", "mesh/ufo.index.bin"));
