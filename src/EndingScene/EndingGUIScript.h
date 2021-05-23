@@ -33,14 +33,30 @@ private:
 	size_t dialogIndex = 0;
 
 	std::vector<std::pair<std::string, std::string>> dialog = {
-		{"Player", "1"},
-		{"Player", "2"},
+		{"Partner", "Oh, It's been 12 hours after he called me."},
+		{"Partner", "Time's up while watching 'Coin Game'.\nI hope he's okay."},
+		{" ", "( As soon as the partner find SpaceWalkie-Talkie... )"},
+		{"Player", "I'm back!!!"},
+		{"Partner", "Uh... How did you get here? Who helped you?"},
+		{" ", "(Explain everything.)"},
+		{"Partner", "So, you swim here? Through the asteroids?"},
+		{"Player", "Yes. As you told."},
+		{"Partner", "And destroy meteor?"},
+		{"Player", "Right."},
+		{"Partner", "Even defeat aliens?"},
+		{"Player", "Sure."},
+		{"Partner", "I cannot belive it. You're kidding."},
+		{"Player", "Well, I realized that swimming in space is quite useful."},
+		{"Player", "I'm think I'm gonna be a space-first space swimmer."},
+		{" ", "( Believe or not, over time, space swimming becomes a sport\n that everyone enjoys! )"},
+		{" ", "The End."},
 	};
 
 	std::vector <std::vector<std::string>> credit = {
-		{"Game Design", "Someeone"},
-		{"3D Modeling", "Someeone"},
-		{"Sound", "Kim Jeong-won"},
+		{"- Game Design", "Scenario by Kim Jeong-won", "Game Features by Jaesung Park"},
+		{"- Programming", "Kim Jeong-won (System, Audio, Animation...)", "Jaesung Park (System, Physics, AI...)"},
+		{"- Art", "2D Images by Kim Jeong-won", "3D Modeling by Jaesung Park" },
+		{"- Sound", "Original SoundTrack by Kim Jeong-won"},
 		{"Thank You for Playing!"},
 	};
 
@@ -51,10 +67,11 @@ private:
 	std::vector<std::string> imagePaths = {
 		"images/ending1.png",
 		"images/ending2.png",
+		"images/ending3.png",
 	};
 	std::vector<GLuint> images = {};
 	std::vector<uint> imageIndex = {
-		0, 1
+		0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2,
 	};
 
 	uint guiEventId = 0;
