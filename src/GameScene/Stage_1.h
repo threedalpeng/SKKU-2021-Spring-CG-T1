@@ -454,7 +454,7 @@ public:
 			meshRenderer->isColored = true;
 			meshRenderer->hasTexture = false;
 			meshRenderer->hasAlpha = false;
-			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 0.6f);
+			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 0.8f);
 
 			transform = savePoint_1->getComponent<Transform>();
 			transform->position = vec3(9.0f, 0.0f, 0.0f);
@@ -510,6 +510,32 @@ public:
 				addObject(meteor);
 				return true;
 				});
+		}
+
+		// test
+		{
+			meshRenderer = bullet->addComponent<MeshRenderer>();
+			meshRenderer->loadMesh(ResourceManager::getMesh("SpaceShip"));
+			// meshRenderer->loadMesh(ResourceManager::getMesh("Monster"));
+			// meshRenderer->loadMesh(ResourceManager::getMesh("Aonster"));
+			meshRenderer->loadMaterial(material);
+			// meshRenderer->loadTexture(ResourceManager::getTexture("bullet"));
+			// meshRenderer->loadTexture(ResourceManager::getTexture("monster"));
+			// meshRenderer->loadTexture(ResourceManager::getTexture("asteroid"));
+			meshRenderer->loadShader(GameManager::basicShader);
+
+			meshRenderer->isShaded = true;
+			meshRenderer->isColored = true;
+			meshRenderer->hasTexture = false;
+			meshRenderer->hasAlpha = false;
+			meshRenderer->color = vec4(1.0f, 0.5f, 0.5f, 1.0f);
+
+			transform = bullet->getComponent<Transform>();
+			transform->position = vec3(0.0f, 0.0f, 0.0f);
+			transform->rotation= Quaternion(1.f, 0.0f, 0.f, 1.f);
+			transform->scale = vec3(0.01f, 0.01f, 0.01f);
+			// transform->scale = vec3(0.3f, 0.3f, 0.3f);
+			transform->mass = 1.0f;
 		}
 
 		// GUI

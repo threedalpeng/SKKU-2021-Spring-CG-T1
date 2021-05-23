@@ -40,6 +40,20 @@ public:
 		if (currentVelocity.getY() >= -8.0f && Input::getKey(GLFW_KEY_DOWN))   addVelocity.setY(-8.0f * Time::delta());
 		else if (currentVelocity.getY() <= 8.0f && Input::getKey(GLFW_KEY_UP))  addVelocity.setY(+8.0f * Time::delta());
 
+		if (Input::getKeyDown(GLFW_KEY_R))
+		{
+			// _velocity = vec3(0);
+			// transform->position = vec3(-3.0f, 0.0f, 0.0f);
+			transform->setVelocityBT(btVector3(0, 0, 0));
+			transform->setWorlPositionBT(savePoint);
+			HP = 100;
+			EventManager<HpChangedEvent>::triggerEvent({ HP });
+			// eventProgress = saveEventProgress;
+			// for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
+			// 	eventCheckers[i].retry();
+			// }
+		}
+
 		transform->addVelocityBT(addVelocity);
 		lastWallCollistion = std::max(0.0f, lastWallCollistion - Time::delta());
 
@@ -91,7 +105,7 @@ public:
 		bulletTransform = bullet->getComponent<Transform>();
 		bulletTransform->position = transform->position;
 		bulletTransform->worldRotation = transform->worldRotation; // ! bug
-		bulletTransform->scale = vec3(0.15f, 0.15f, 0.15f);
+		bulletTransform->scale = vec3(0.3f, 0.3f, 0.3f);
 		bulletTransform->mass = 0.1f;
 
 		BulletScript* bulletScript = new BulletScript();

@@ -36,13 +36,16 @@ private:
 		ResourceManager::createTexture("Milky_Way", "textures/Milky_Way.jpg");
 		ResourceManager::createTexture("venus", "textures/venus.jpg");
 		ResourceManager::createTexture("fire", "textures/fire.jpg");
-		ResourceManager::createTexture("fireParticle", "textures/fireParticle.jpg");
+		ResourceManager::createTexture("fireParticle", "textures/fireParticle.png");
 		ResourceManager::createTexture("white", "textures/white.jpg");
 		ResourceManager::createTexture("Player Head", "textures/spacehead.png");
 		ResourceManager::createTexture("mercury", "textures/mercury.jpg");
 		ResourceManager::createTexture("moon", "textures/moon.jpg");
 		ResourceManager::createTexture("radioactive", "textures/radioactive.png");
 		ResourceManager::createTexture("bullet", "textures/bullet.jpg");
+		// ResourceManager::createTexture("SpaceShip", "textures/SpaceShip.jpg");
+		ResourceManager::createTexture("monster", "textures/monster.png");
+		// ResourceManager::createTexture("asteroid", "textures/asteroid.png");  // too big
 
 		ResourceManager::createMaterial("Basic");
 		// ResourceManager::createShader("basicShader", "shaders/solar-system.vert", "shaders/solar-system.frag");
@@ -53,6 +56,9 @@ private:
 		ResourceManager::addMesh("Sphere", MeshMaker::makeSphere());
 		ResourceManager::addMesh("Bullet", new Mesh("mesh/bullet.vertex.bin", "mesh/bullet.index.bin"));
 		ResourceManager::addMesh("Flag", new Mesh("mesh/flag.vertex.bin", "mesh/flag.index.bin"));
+		ResourceManager::addMesh("SpaceShip", new Mesh("mesh/SpaceShip.vertex.bin", "mesh/SpaceShip.index.bin"));
+		ResourceManager::addMesh("Monster", new Mesh("mesh/monster.vertex.bin", "mesh/monster.index.bin"));
+		// ResourceManager::addMesh("Aonster", new Mesh("mesh/asteroid.vertex.bin", "mesh/asteroid.index.bin"));
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
