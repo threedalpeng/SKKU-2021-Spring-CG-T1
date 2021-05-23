@@ -40,6 +40,7 @@ void SoundPlayer::play() {
 	case Type::Event2D:
 	{
 		_sound = _engine->play2D(_soundSource, false, false, true);
+		_sound = nullptr;
 		break;
 	}
 	}
