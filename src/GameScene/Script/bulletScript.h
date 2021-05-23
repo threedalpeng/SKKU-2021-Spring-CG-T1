@@ -1,4 +1,4 @@
- #pragma once
+#pragma once
 #include "engine/Core.h"
 #include <iostream>
 
@@ -22,12 +22,12 @@ private:
 
 public:
 
-	void init() override 
+	void init() override
 	{
 		transform = getComponent<Transform>();
 	}
 
-	void update() override 
+	void update() override
 	{
 		vec3 distance = _velocity * Time::delta();
 		transform->translate(distance);
@@ -38,7 +38,7 @@ public:
 	}
 
 	void collide(objectTypes oppositeType)
-	{		
+	{
 		if (oppositeType != parent && leave)
 		{
 			leave = false;
@@ -51,7 +51,7 @@ public:
 		GameObject* thisObject = getObject();
 		btRigidBody* objBody = thisObject->getComponent<Transform>()->body;
 		// if(objBody) GameManager::dynamicsWorld->removeCollisionObject(objBody);
-		if(objBody)	GameManager::removeBodyList.push_back(objBody);
+		if (objBody)	GameManager::removeBodyList.push_back(objBody);
 		GameManager::removeList.push_back(thisObject);
 	}
 };

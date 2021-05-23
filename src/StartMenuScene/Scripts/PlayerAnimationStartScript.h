@@ -27,13 +27,13 @@ public:
 		angle = Time::delta() * legSpeed;
 		acc += angle;
 		if (acc > 360.f) acc -= 360.f;
-		float legSpread = legAngleRange * cosf(acc) * angle;
+		float legSpread = legAngleRange * cosf(acc);
 
 		getComponent<Transform>()->rotate(vec3(1.f, 0.f, 0.f), Time::delta() * 90.f);
 		leftArmAxis->rotate(vec3(0.f, 1.f, 0.f), Time::delta() * armSpeed);
 		rightArmAxis->rotate(vec3(0.f, 1.f, 0.f), Time::delta() * armSpeed);
-		leftLegAxis->rotate(vec3(0.f, 1.f, 0.f), legSpread);
-		rightLegAxis->rotate(vec3(0.f, 1.f, 0.f), -legSpread);
+		leftLegAxis->rotation = Quaternion::axisAngle(vec3(0.f, 1.f, 0.f), legSpread);
+		rightLegAxis->rotation = Quaternion::axisAngle(vec3(0.f, 1.f, 0.f), -legSpread);
 	}
 	void printVec3(vec3 v) {
 		std::cout << v.x << ", " << v.y << ", " << v.z;

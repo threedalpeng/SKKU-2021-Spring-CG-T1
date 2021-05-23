@@ -70,28 +70,28 @@ public:
 				std::string text = "Game Start";
 
 				if (drawButton(text + "## 1")) {
-					std::cout << "Game Start!" << std::endl;
 					soundPlayer->stop();
 					GameManager::setStage(8);
 					GameManager::setChanged(true);
 				}
 				if (ImGui::IsItemHovered()) {
-					ImGui::SetTooltip("Game will be started");
+					ImGui::SetTooltip("Game will be started...");
 				}
 
 				ImGui::Spacing();
 
-				if (drawButton("Stage Select (But Stage 2)")) {
-					GameManager::setStage(9);
+				if (drawButton("Skip to Hard Stage")) {
+					GameManager::setStage(2);
 					GameManager::setChanged(true);
 				}
 				if (ImGui::IsItemHovered()) {
-					ImGui::SetTooltip("It'll bring you to Stage 2... this time.");
+					ImGui::SetTooltip("You don't need a tutorial, right?");
 				}
 
 				ImGui::Spacing();
 
 				if (drawButton("Quit")) {
+					Screen::quit();
 				}
 				if (ImGui::IsItemHovered()) {
 					ImGui::SetTooltip("Good bye!");

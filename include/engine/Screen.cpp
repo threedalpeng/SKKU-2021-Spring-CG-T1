@@ -25,6 +25,14 @@ float Screen::dpiScale()
 }
 
 void Screen::processWindowResizeEvent(int width, int height) {
+	if (width != _width) {
+		height = int(float(width) * 9.f / 16.f);
+	}
+	else if (height != _height) {
+		width = int(float(height) * 16.f / 9.f);
+	}
+	setWindowSize(width, height);
+	glViewport(0, 0, width, height);
 	_width = width;
 	_height = height;
 }

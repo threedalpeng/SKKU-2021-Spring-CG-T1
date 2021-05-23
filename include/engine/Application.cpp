@@ -375,8 +375,6 @@ void Application::reshape(GLFWwindow* window, int width, int height)
 	glViewport(window_x, window_y, w, h);
 	Screen::processWindowResizeEvent(w, h);
 	*/
-
-	glViewport(0, 0, width, height);
 	Screen::processWindowResizeEvent(width, height);
 }
 
