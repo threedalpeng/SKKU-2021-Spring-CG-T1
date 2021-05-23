@@ -40,7 +40,7 @@ public:
 		else if (currentVelocity.getX() <= 8.0f && Input::getKey(GLFW_KEY_RIGHT))  addVelocity.setX(+8.0f * Time::delta());
 		if (currentVelocity.getY() >= -8.0f && Input::getKey(GLFW_KEY_DOWN))   addVelocity.setY(-8.0f * Time::delta());
 		else if (currentVelocity.getY() <= 8.0f && Input::getKey(GLFW_KEY_UP))  addVelocity.setY(+8.0f * Time::delta());
-		if (Input::getKeyDown(GLFW_KEY_R))
+		if (Input::getKeyDown(GLFW_KEY_R) || HP < 1 )
 		{
 			// _velocity = vec3(0);
 			// transform->position = vec3(-3.0f, 0.0f, 0.0f);
