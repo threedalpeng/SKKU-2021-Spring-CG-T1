@@ -15,17 +15,16 @@ public:
 	}
 
 	enum class Mode {
-		DIALOG,
-		HELP,
+		HELP = 1,
 		GAME,
 		PAUSE,
-		MONOLOG1,
+		MONOLOG1 = 4,
 		MONOLOG2,
 		MONOLOG3,
 		MONOLOG4,
 		END,
 	};
-	Mode currentMode = Mode::GAME;
+	Mode currentMode = Mode::HELP;
 
 private:
 	int hp = 100;
@@ -36,28 +35,6 @@ private:
 	SoundPlayer* soundPlayer = nullptr;
 
 	size_t dialogIndex = 0;
-	std::vector<std::pair<std::string, std::string>> dialogs = {
-		{" ", "(In the distant future, quite a long time after Elon\nMusk went to Mars...)"},
-		{"Player", "Whoo.. there's nowhere else to go further.\nI should go back."},
-		{" ", "(At that moment, you hear the engine shut down.)"},
-		{"Player", "Uh... The spaceship is running out of fuel.\nI'm gonna be nagged again..."},
-		{" ", "(You take your hand to SpaceWalkie-Talkie.)"},
-		{"Partner", "What? Ran out of fuel again?"},
-		{"Partner", "Get back into space flight school.\nNo, go back to elementary school!"},
-		{"Partner", "Who on earth is rushing into space\nwithout checking the fuel?"},
-		{"Player", "Okay, I'm sorry. I'll be careful next time.\nI'm getting hungry, so hurry up and pick me up."},
-		{"Partner", "You said the same thing last time!\nI'm really not going this time."},
-		{"Player", "What? So what am I supposed to do?"},
-		{"Partner", "I don't know.\nWhy don't you SWIM all the way here?"},
-		{"Player", "Hey, Wait...!"},
-		{" ", "(There is no response...)"},
-		{"Partner", "(If I scared him little, He'll listen me next time.\nLet's wait for an hour and call him again.)"},
-		{"Player", "Hello? Psh, I really don't think he's coming this time."},
-		{"Player", "Wait, SWIM?"},
-		{"Player", "Oh, it's a great idea!"},
-		{" ", "(So you decide to swim back to base.)"},
-		{" ", "(I don't know how but... Good Luck!)"}
-	};
 
 	std::vector<std::pair<std::string, std::string>> monolog1 = {
 		{"Player", "Oh, wait. Radioactive material is being detected in the front\nnow."},
@@ -69,16 +46,17 @@ private:
 	};
 	std::vector<std::pair<std::string, std::string>> monolog3 = {
 		{"Player", "Phew... I need to rest here..."},
-		{"Player", "(Save Point Reached.\nPress 'R' to return here.)"},
+		{"Player", "(You can save your progress by touching 'Green Flag')"},
+		{"Player", "(Then press 'R' to return here.)"},
 	};
 	std::vector<std::pair<std::string, std::string>> monolog4 = {
 		{"Player", "What? that is... METEOR!!! This is so..."},
 		{"Player", "Awesome!\nI always wanted to destroy them."},
-		{"Player", "Let's shoot them out!\n(press 'S?' to shot a bullet)"},
+		{"Player", "Let's shoot them out!\n(press 'Space' to shot a bullet)"},
 	};
 	std::vector<std::pair<std::string, std::string>> endMonolog = {
-		{"Player", "What is happening outside?"},
-		{"Player", ""},
+		{"Player", "I can feel the whole place now shaking.\nWhat is happening outside?"},
+		{" ", "(Stage 1 Cleared!)"},
 	};
 
 	std::vector<std::string> helpTexts = {
@@ -98,8 +76,8 @@ private:
 	std::vector<GLuint> images = {};
 
 	std::vector<std::string> soundList = {
-		"sounds/2 - Can you swim... in space.mp3",
-		"sounds/3 - Space Swim!.mp3",
+		"sounds/OST/2 - Can you swim... in space.mp3",
+		"sounds/OST/3 - Space Swim!.mp3",
 	};
 
 	uint guiEventId = 0;
@@ -174,7 +152,6 @@ public:
 		case Mode::PAUSE:
 			soundPlayer->pause();
 			break;
-		case Mode::DIALOG:
 		case Mode::MONOLOG1:
 		case Mode::MONOLOG2:
 		case Mode::MONOLOG3:
@@ -187,9 +164,6 @@ public:
 		}
 
 		switch (currentMode) {
-		case Mode::DIALOG:
-			showDialog();
-			break;
 		case Mode::HELP:
 			showHelp();
 			break;
@@ -218,60 +192,6 @@ public:
 	}
 
 private:
-
-	void showDialog() {
-		ImGuiWindowFlags windowFlags = 0;
-		windowFlags = windowFlags
-			//| ImGuiWindowFlags_NoTitleBar
-			| ImGuiWindowFlags_NoScrollbar
-			| ImGuiWindowFlags_NoScrollWithMouse
-			| ImGuiWindowFlags_NoResize
-			| ImGuiWindowFlags_NoCollapse
-			//| ImGuiWindowFlags_NoBackground
-			;
-
-		float minDialogHeight = 150.f;
-		float dialogHeight = std::max(minDialogHeight, static_cast<float>(Screen::height()) * 0.35f);
-
-		ImGui::SetNextWindowPos(
-			ImVec2(0, static_cast<float>(Screen::height()) - dialogHeight),
-			ImGuiCond_Always);
-		ImGui::SetNextWindowSize(
-			ImVec2(static_cast<float>(Screen::width()), dialogHeight),
-			ImGuiCond_Always
-		);
-
-		if (dialogIndex < dialogs.size()) {
-			if (16 <= dialogIndex) {
-				soundPlayer->play();
-			}
-			else {
-				soundPlayer->stop();
-			}
-
-			ImGui::Begin(dialogs[dialogIndex].first.c_str(), NULL, windowFlags);
-			{
-				ImVec2 windowSize = ImGui::GetWindowSize();
-
-				ImGui::BeginChild("Dialog Item", windowSize);
-				{
-					ImGui::PushFont(ResourceManager::getFont("consola 20"));
-
-					ImGui::Text(dialogs[dialogIndex].second.c_str());
-
-					ImGui::PopFont();
-				}
-				ImGui::EndChild();
-				if (ImGui::IsItemClicked()) {
-					dialogIndex++;
-				}
-			}
-			ImGui::End();
-		}
-		else {
-			currentMode = Mode::HELP;
-		}
-	}
 
 	void showMonolog1() {
 		ImGuiWindowFlags windowFlags = 0;

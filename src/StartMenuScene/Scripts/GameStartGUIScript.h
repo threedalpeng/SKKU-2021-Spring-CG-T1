@@ -72,7 +72,7 @@ public:
 				if (drawButton(text + "## 1")) {
 					std::cout << "Game Start!" << std::endl;
 					soundPlayer->stop();
-					GameManager::setStage(1);
+					GameManager::setStage(8);
 					GameManager::setChanged(true);
 				}
 				if (ImGui::IsItemHovered()) {
@@ -82,7 +82,7 @@ public:
 				ImGui::Spacing();
 
 				if (drawButton("Stage Select (But Stage 2)")) {
-					GameManager::setStage(2);
+					GameManager::setStage(9);
 					GameManager::setChanged(true);
 				}
 				if (ImGui::IsItemHovered()) {

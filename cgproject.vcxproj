@@ -219,6 +219,8 @@
     <ClInclude Include="include\irrKlang\ik_SAudioStreamFormat.h" />
     <ClInclude Include="include\irrKlang\ik_vec3d.h" />
     <ClInclude Include="include\irrKlang\irrKlang.h" />
+    <ClInclude Include="src\EndingScene\EndingGUIScript.h" />
+    <ClInclude Include="src\EndingScene\EndingScene.h" />
     <ClInclude Include="src\GameScene\PhysicsUtil.h" />
     <ClInclude Include="src\GameScene\Script\StageGUIScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerAnimationScript.h" />
@@ -229,6 +231,8 @@
     <ClInclude Include="src\GameScene\Script\GameBackgroundScript.h" />
     <ClInclude Include="src\GameScene\Script\Stage2PlayerScript.h" />
     <ClInclude Include="src\GameScene\Stage_2.h" />
+    <ClInclude Include="src\PrologueScene\PrologueGUIScript.h" />
+    <ClInclude Include="src\PrologueScene\PrologueScene.h" />
     <ClInclude Include="src\StartMenuScene\Scripts\PlayerAnimationStartScript.h" />
     <ClInclude Include="include\cg\stb_image.h" />
     <ClInclude Include="include\cg\stb_truetype.h" />

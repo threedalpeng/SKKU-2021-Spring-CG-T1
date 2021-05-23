@@ -98,10 +98,13 @@ void loadingGui() {
 	ImGui::SetNextWindowPos(ImVec2(0.f, 0.f), ImGuiCond_Always);
 	ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
 	ImGui::SetNextWindowBgAlpha(1.f);
+	std::string loadingString = "Loading...";
 	ImGui::Begin("Loading", NULL, windowFlags);
 	{
-		ImGui::Dummy(ImVec2(Screen::width() / 2.f, Screen::height() / 2.f));
-		ImGui::Text("Loading...");
+		ImGui::Dummy(ImVec2(0.f, windowSize.y / 2.f - 20.f));
+		ImGui::Spacing();
+		ImGui::SameLine(windowSize.x / 2.f - float(loadingString.size()) * 5.f);
+		ImGui::Text(loadingString.c_str());
 	}
 	ImGui::End();
 	ImGui::SetNextWindowBgAlpha(0.6f);
@@ -132,6 +135,7 @@ void Application::run()
 		if (SceneManager::sceneLoaded) {
 			loadingGui();
 			glfwSwapBuffers(_window);
+			Camera::main = nullptr;
 			SceneManager::startScene();
 			onSceneLoaded();
 			Time::init();
@@ -306,7 +310,7 @@ void Application::render()
 
 	Camera* mainCamera = Camera::main;
 	if (!mainCamera) {
-		std::cout << "No Camera." << std::endl;
+		// std::cout << "No Camera." << std::endl;
 	}
 	else {
 		mainCamera->render();

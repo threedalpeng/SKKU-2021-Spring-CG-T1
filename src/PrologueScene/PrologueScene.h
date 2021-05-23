@@ -7,24 +7,24 @@
 #include "engine/Core.h"
 
 // My Application
-#include "EndingGUIScript.h"
+#include "PrologueGUIScript.h"
 #include "imgui/imgui.h"
 
 #include "../Tool/MeshMaker.h"
 
-class EndingScene : public Scene {
+class PrologueScene : public Scene {
 public:
-	EndingScene() : Scene() {};
+	PrologueScene() : Scene() {};
 
 	void init() {
-		GameObject* gui = GameObject::create("Ending GUI");
+		GameObject* gui = GameObject::create("Prologue GUI");
 
 		addObject(gui);
 
 		/* Initialize Objects with Components */
 		SoundPlayer* soundPlayer;
 
-		EndingGUIScript* guiScript = new EndingGUIScript();
+		PrologueGUIScript* guiScript = new PrologueGUIScript();
 		gui->addComponent<ScriptLoader>()->addScript(guiScript);
 		soundPlayer = gui->addComponent<SoundPlayer>();
 	}

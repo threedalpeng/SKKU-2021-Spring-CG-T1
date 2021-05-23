@@ -127,6 +127,10 @@
     <ClInclude Include="src\GameScene\Script\Stage2PlayerScript.h" />
     <ClInclude Include="src\GameScene\Script\PlayerScript.h" />
     <ClInclude Include="src\GameScene\Script\StageGUIScript.h" />
+    <ClInclude Include="src\EndingScene\EndingScene.h" />
+    <ClInclude Include="src\EndingScene\EndingGUIScript.h" />
+    <ClInclude Include="src\PrologueScene\PrologueGUIScript.h" />
+    <ClInclude Include="src\PrologueScene\PrologueScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

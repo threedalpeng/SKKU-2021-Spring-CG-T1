@@ -30,7 +30,6 @@ private:
 			}),
 		EventCheckerSphere(vec3(100.6f, 30.2f, 0.f), 8.5f, [this]() {
 			stopPlayer();
-			savePoint = btVector3(100.6f, 30.2f, 0.f);
 			saveEventProgress = eventProgress + 1;
 			EventManager<GuiEvent>::triggerEvent({ 6 }); // Monolog 3
 			}),
@@ -77,6 +76,14 @@ public:
 			if (eventCheckers[i].trigger(transform->worldPosition))
 				eventProgress++;
 			else break;
+		}
+
+		if (Input::getKeyDown(GLFW_KEY_R))
+		{
+			eventProgress = saveEventProgress;
+			for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
+				eventCheckers[i].retry();
+			}
 		}
 
 		PlayerScript::update();

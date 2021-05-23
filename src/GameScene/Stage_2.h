@@ -475,12 +475,11 @@ public:
 			backBox->addComponent<ScriptLoader>()->addScript(emptyBoxScript);
 		}
 
-		// save point 1
+		// save point 2
 		{
 			meshRenderer = savePoint_1->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadMesh(ResourceManager::getMesh("Flag"));
 			meshRenderer->loadMaterial(material);
-			meshRenderer->loadTexture(meteorTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
 			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
@@ -488,10 +487,10 @@ public:
 			meshRenderer->isColored = true;
 			meshRenderer->hasTexture = false;
 			meshRenderer->hasAlpha = false;
-			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 0.6f);
+			meshRenderer->color = vec4(0.2f, 0.9f, 0.2f, 0.8f);
 
 			transform = savePoint_1->getComponent<Transform>();
-			transform->position = vec3(9.0f, 0.0f, 0.0f);
+			transform->position = vec3(0.f, 21.1f, 0.f);
 			transform->rotation = Quaternion(0.f, 0.f, 0.f, 1.f);
 			transform->scale = vec3(0.6f, 0.6f, 0.6f);
 			transform->mass = 0.0f;

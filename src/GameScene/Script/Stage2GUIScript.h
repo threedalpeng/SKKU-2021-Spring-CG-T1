@@ -47,6 +47,7 @@ private:
 		{"Player", "It seems to be safe now."},
 		{"Player", "Maybe I have a talent for swimming.\nI'll make a space swimming as a sport when I get back."},
 		{"Player", "Before that, I need some rest."},
+		{" ", "(You win! Congratulations!)"},
 	};
 
 	std::vector<std::string> helpTexts = {
@@ -66,7 +67,7 @@ private:
 	std::vector<GLuint> images = {};
 
 	std::vector<std::string> soundList = {
-		"sounds/4 - Too Dangerous To Swim.mp3",
+		"sounds/OST/4 - Too Dangerous To Swim.mp3",
 	};
 
 	uint guiEventId = 0;
@@ -313,8 +314,9 @@ private:
 			ImGui::End();
 		}
 		else {
-			currentMode = Mode::GAME;
-			EventManager<GuiEvent>::triggerEvent({ -1 });
+			soundPlayer->stop();
+			GameManager::setStage(9);
+			GameManager::setChanged(true);
 		}
 	}
 

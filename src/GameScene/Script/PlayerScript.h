@@ -49,10 +49,6 @@ public:
 			transform->setWorlPositionBT(savePoint);
 			HP = 100;
 			EventManager<HpChangedEvent>::triggerEvent({ HP });
-			// eventProgress = saveEventProgress;
-			// for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
-			// 	eventCheckers[i].retry();
-			// }
 		}
 
 		transform->addVelocityBT(addVelocity);

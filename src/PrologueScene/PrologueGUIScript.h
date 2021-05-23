@@ -7,18 +7,17 @@
 
 #define IM_CLAMP(V, MN, MX)     ((V) < (MN) ? (MN) : (V) > (MX) ? (MX) : (V))
 
-class EndingGUIScript : public Script
+class PrologueGUIScript : public Script
 {
 public:
-	EndingGUIScript() : Script() {}
-	~EndingGUIScript() {
+	PrologueGUIScript() : Script() {}
+	~PrologueGUIScript() {
 		EventManager<GuiEvent>::removeListener(guiEventId);
 		EventManager<HpChangedEvent>::removeListener(hpEventId);
 	}
 
 	enum class Mode {
 		DIALOG = 0,
-		CREDIT = 1,
 	};
 	Mode currentMode = Mode::DIALOG;
 
@@ -31,30 +30,43 @@ private:
 	SoundPlayer* soundPlayer;
 
 	size_t dialogIndex = 0;
-
-	std::vector<std::pair<std::string, std::string>> dialog = {
-		{"Player", "1"},
-		{"Player", "2"},
-	};
-
-	std::vector <std::vector<std::string>> credit = {
-		{"Game Design", "Someeone"},
-		{"3D Modeling", "Someeone"},
-		{"Sound", "Kim Jeong-won"},
-		{"Thank You for Playing!"},
+	std::vector<std::pair<std::string, std::string>> dialogs = {
+		{" ", "Press 'Enter' or 'Click' dialogs to progress story."},
+		{" ", "(In the distant future, quite a long time after Elon\nMusk went to Mars...)"},
+		{"Player", "Whoo.. there's nowhere else to go further.\nI should go back."},
+		{" ", "(At that moment, you hear the engine shut down.)"},
+		{"Player", "Uh... The spaceship is running out of fuel.\nI'm gonna be nagged again..."},
+		{" ", "(You take your hand to SpaceWalkie-Talkie.)"},
+		{"Partner", "What? Ran out of fuel again?"},
+		{"Partner", "Get back into space flight school.\nNo, go back to elementary school!"},
+		{"Partner", "Who on earth is rushing into space\nwithout checking the fuel?"},
+		{"Player", "Okay, I'm sorry. I'll be careful next time.\nI'm getting hungry, so hurry up and pick me up."},
+		{"Partner", "You said the same thing last time!\nI'm really not going this time."},
+		{"Player", "What? So what am I supposed to do?"},
+		{"Partner", "I don't know.\nWhy don't you SWIM all the way here?"},
+		{"Player", "Hey, Wait...!"},
+		{" ", "(There is no response...)"},
+		{"Partner", "(If I scared him little, He'll listen me next time.\nLet's wait for an hour and call him again.)"},
+		{"Player", "Hello? Psh, I really don't think he's coming this time."},
+		{"Player", "Wait, SWIM?"},
+		{"Player", "Well, it's a great idea!"},
+		{" ", "(So you decide to swim back to base.)"},
+		{" ", "(I don't know how but... Good Luck!)"}
 	};
 
 	std::vector<std::string> soundList = {
-		"sounds/OST/5 - Get some rest.mp3",
+		"sounds/OST/2 - Can you swim... in space.mp3",
 	};
 
 	std::vector<std::string> imagePaths = {
-		"images/ending1.png",
-		"images/ending2.png",
+		"images/prologue1.png",
+		"images/prologue2.png",
+		"images/prologue3.png",
+		"images/prologue4.png",
 	};
 	std::vector<GLuint> images = {};
 	std::vector<uint> imageIndex = {
-		0, 1
+		99, 99, 99, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 2, 2, 3, 3,
 	};
 
 	uint guiEventId = 0;
@@ -104,20 +116,14 @@ public:
 				dialogIndex++;
 			}
 			break;
-		case Mode::CREDIT:
-			if (Input::getKeyDown(GLFW_KEY_ENTER)) {
-				dialogIndex++;
-			}
-			soundPlayer->play();
-			break;
 		}
 
 		switch (currentMode) {
 		case Mode::DIALOG:
+			if (dialogIndex == 17) {
+				soundPlayer->play();
+			}
 			showDialog();
-			break;
-		case Mode::CREDIT:
-			showCredit();
 			break;
 		}
 	}
@@ -125,7 +131,7 @@ public:
 private:
 
 	void showDialog() {
-		if (dialogIndex < dialog.size()) {
+		if (dialogIndex < dialogs.size()) {
 			ImGuiWindowFlags windowFlags = 0;
 			windowFlags = windowFlags
 				| ImGuiWindowFlags_NoTitleBar
@@ -179,7 +185,7 @@ private:
 				ImGuiCond_Always
 			);
 
-			ImGui::Begin(dialog[dialogIndex].first.c_str(), NULL, windowFlags);
+			ImGui::Begin(dialogs[dialogIndex].first.c_str(), NULL, windowFlags);
 			{
 				ImVec2 windowSize = ImGui::GetWindowSize();
 
@@ -187,7 +193,7 @@ private:
 				{
 					ImGui::PushFont(ResourceManager::getFont("consola 20"));
 
-					ImGui::Text(dialog[dialogIndex].second.c_str());
+					ImGui::Text(dialogs[dialogIndex].second.c_str());
 
 					ImGui::PopFont();
 				}
@@ -199,63 +205,7 @@ private:
 			ImGui::End();
 		}
 		else {
-			dialogIndex = 0;
-			currentMode = Mode::CREDIT;
-		}
-	}
-
-	void showCredit() {
-		ImGuiWindowFlags windowFlags = 0;
-		windowFlags = windowFlags
-			| ImGuiWindowFlags_NoTitleBar
-			| ImGuiWindowFlags_NoScrollbar
-			| ImGuiWindowFlags_NoScrollWithMouse
-			| ImGuiWindowFlags_NoResize
-			| ImGuiWindowFlags_NoCollapse
-			| ImGuiWindowFlags_NoBackground
-			;
-
-		ImGui::SetNextWindowPos(
-			ImVec2(0.f, 0.f),
-			ImGuiCond_Always);
-		ImGui::SetNextWindowSize(
-			ImVec2(static_cast<float>(Screen::width()), static_cast<float>(Screen::height())),
-			ImGuiCond_Always
-		);
-
-		if (dialogIndex < credit.size()) {
-			ImGui::Begin("Credit", NULL, windowFlags);
-			{
-				ImVec2 windowSize = ImGui::GetWindowSize();
-
-				ImGui::BeginChild("Dialog Item", windowSize);
-				{
-					ImGui::PushFont(ResourceManager::getFont("consola 20"));
-					std::string creditStr = "";
-					int maxWidth = 0;
-					for (size_t i = 0; i < credit[dialogIndex].size(); i++) {
-						creditStr += credit[dialogIndex][i];
-						maxWidth = std::max(maxWidth, int(credit[dialogIndex][i].size()));
-						if (i < credit[dialogIndex].size() - 1) {
-							creditStr += "\n\n";
-						}
-					}
-					int spaces = int(credit[dialogIndex].size() * 2 - 1);
-					ImGui::Dummy(ImVec2(0.f, windowSize.y / 2.f - float(spaces + 1) * 10.f));
-					ImGui::Spacing();
-					ImGui::SameLine(windowSize.x / 2.f - float(maxWidth) * 5.f);
-					ImGui::Text(creditStr.c_str());
-					ImGui::PopFont();
-				}
-				ImGui::EndChild();
-				if (ImGui::IsItemClicked()) {
-					dialogIndex++;
-				}
-			}
-			ImGui::End();
-		}
-		else {
-			GameManager::setStage(0);
+			GameManager::setStage(1);
 			GameManager::setChanged(true);
 		}
 	}

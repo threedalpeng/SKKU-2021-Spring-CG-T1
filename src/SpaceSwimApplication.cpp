@@ -7,6 +7,9 @@
 #include "GameScene/Stage_1.h"
 #include "GameScene/Stage_2.h"
 
+#include "PrologueScene/PrologueScene.h"
+#include "EndingScene/EndingScene.h"
+
 #include "GameScene/Script/ObstacleScript.h"
 #include "GameScene/Script/PlayerScript.h"
 #include "GameScene/Script/BulletScript.h"
@@ -188,7 +191,11 @@ private:
 		case 2:
 			scene = new Stage_2();
 			break;
-		case 3:
+		case 8:
+			scene = new PrologueScene();
+			break;
+		case 9:
+			scene = new EndingScene();
 			break;
 		default:
 			break;

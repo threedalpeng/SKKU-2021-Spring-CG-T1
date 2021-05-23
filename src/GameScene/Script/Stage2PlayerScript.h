@@ -75,6 +75,7 @@ private:
 			stopPlayer();
 			EventManager<GuiEvent>::triggerEvent({ 6 });
 			eventProgress = 6;
+			saveEventProgress = 6;
 			}),
 		EventCheckerSphere(vec3(66.f, -14.6f, 0.0f), 22.5f, [this]() {
 			EventManager<MeteorMoveEvent>::triggerEvent({
@@ -87,7 +88,7 @@ private:
 				true
 				});
 			EventManager<MeteorMoveEvent>::triggerEvent({
-				vec3(81.0f, -37.7f, 0.f),
+				vec3(81.0f, -47.7f, 0.f),
 				vec2(30.f, 20.f),
 				4,
 				vec3(-1.f, 1.f, 0.f),
@@ -98,7 +99,7 @@ private:
 			}),
 		EventCheckerSphere(vec3(123.5f, -21.1f, 0.0f), 10.f, [this]() {
 			EventManager<MeteorMoveEvent>::triggerEvent({
-				vec3(81.0f, -37.7f, 0.f),
+				vec3(81.0f, -47.7f, 0.f),
 				vec2(30.f, 20.f),
 				4,
 				vec3(1.f, 1.f, 0.f),
@@ -148,6 +149,14 @@ public:
 		}
 		for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
 			eventCheckers[i].trigger(transform->worldPosition);
+		}
+
+		if (Input::getKeyDown(GLFW_KEY_R))
+		{
+			eventProgress = saveEventProgress;
+			for (size_t i = eventProgress; i < eventCheckers.size(); i++) {
+				eventCheckers[i].retry();
+			}
 		}
 		PlayerScript::update();
 	}
