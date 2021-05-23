@@ -31,7 +31,7 @@ void Transform::rotateAround(vec3 worldPoint, vec3 axis, float angle)
 }
 
 void Transform::update() {
-	if (body) calWolrPositionBT();
+	if (body) calWorlPositionBT();
 	GameObject* parent = getCurrentObject()->getParent();
 	if (parent) {
 		Transform* parentTransform = parent->getComponent<Transform>();
@@ -77,7 +77,7 @@ vec3 Transform::worldToLocalPoint(vec3 v)
 	return mat3(_modelMatrix).transpose() * v;
 }
 
-void Transform::calWolrPositionBT()
+void Transform::calWorlPositionBT()
 {
 	body->activate();
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
@@ -91,6 +91,13 @@ void Transform::setWorlPositionBT(btVector3 new_position)
 	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
 	trans.setOrigin(new_position);
 	body->setWorldTransform(trans);
+}
+
+btVector3 Transform::getWorlPositionBT()
+{
+	body->activate();
+	btTransform trans;	body->getMotionState()->getWorldTransform(trans);
+	return trans.getOrigin();
 }
 
 btVector3 Transform::getVelocityBT()

@@ -14,7 +14,10 @@ enum objectTypes
 	WALL,
 	RADIOACTIVE_WALL,
 	SAVE_POINT,
-	BULLET
+	BULLET,
+	ENEMY,
+	ENEMY_BULLET
+
 };
 
 class CustomRigidBody : public btRigidBody
