@@ -52,6 +52,7 @@ private:
 		ResourceManager::addMesh("Sky Cylinder", MeshMaker::makeSkyCylinderMesh());
 		ResourceManager::addMesh("Sphere", MeshMaker::makeSphere());
 		ResourceManager::addMesh("Bullet", new Mesh("mesh/bullet.vertex.bin", "mesh/bullet.index.bin"));
+		ResourceManager::addMesh("Flag", new Mesh("mesh/flag.vertex.bin", "mesh/flag.index.bin"));
 
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");

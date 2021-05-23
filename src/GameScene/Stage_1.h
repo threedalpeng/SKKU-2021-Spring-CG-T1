@@ -445,9 +445,8 @@ public:
 		// save point 1
 		{
 			meshRenderer = savePoint_1->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(sphereMesh);
+			meshRenderer->loadMesh(ResourceManager::getMesh("Flag"));
 			meshRenderer->loadMaterial(material);
-			meshRenderer->loadTexture(meteorTexture);
 			meshRenderer->loadShader(GameManager::basicShader);
 			meshRenderer->loadShaderDepth(GameManager::depthShader);
 
