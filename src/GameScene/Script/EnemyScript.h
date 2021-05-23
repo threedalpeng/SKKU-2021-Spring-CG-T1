@@ -67,6 +67,7 @@ public:
 	void collide(objectTypes oppositeType) {
 		if (oppositeType == objectTypes::BULLET) {
 			HP -= 10;
+			direction = (-1) * direction;
             std::cout << "enemy HP is " << HP << std::endl;
 		}
 	}
