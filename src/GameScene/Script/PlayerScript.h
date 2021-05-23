@@ -40,7 +40,6 @@ public:
 		else if (currentVelocity.getX() <= 8.0f && Input::getKey(GLFW_KEY_RIGHT))  addVelocity.setX(+8.0f * Time::delta());
 		if (currentVelocity.getY() >= -8.0f && Input::getKey(GLFW_KEY_DOWN))   addVelocity.setY(-8.0f * Time::delta());
 		else if (currentVelocity.getY() <= 8.0f && Input::getKey(GLFW_KEY_UP))  addVelocity.setY(+8.0f * Time::delta());
-
 		if (Input::getKeyDown(GLFW_KEY_R))
 		{
 			// _velocity = vec3(0);
@@ -54,8 +53,18 @@ public:
 			// 	eventCheckers[i].retry();
 			// }
 		}
-
 		transform->addVelocityBT(addVelocity);
+
+		// to prevent moving along z-aix
+		btVector3 btPosition = transform->getWorlPositionBT();
+		if(btPosition.getZ() < -0.1f ||  0.1f < btPosition.getZ())
+		{
+			btPosition.setZ(0.0f);
+			transform->setWorlPositionBT(btPosition);
+		}
+
+
+
 		lastWallCollistion = std::max(0.0f, lastWallCollistion - Time::delta());
 		lastHit = std::max(0.0f, lastHit - Time::delta());
 
