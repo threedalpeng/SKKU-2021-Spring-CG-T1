@@ -65,7 +65,7 @@ private:
 		if (GameManager::getChanged()) changeScene();
 
 		// reset section
-		glUniform1i(GameManager::depthShader->getUniformLocation("b_shadow"), false);
+		glUniform1i(GameManager::basicShader->getUniformLocation("b_shadow"), false);
 
 		GameManager::cleanRemoveList();
 		GameManager::cleanRemoveBodyList();
