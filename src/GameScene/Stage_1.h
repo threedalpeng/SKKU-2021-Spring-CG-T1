@@ -515,25 +515,27 @@ public:
 		// test
 		{
 			meshRenderer = bullet->addComponent<MeshRenderer>();
-			meshRenderer->loadMesh(ResourceManager::getMesh("SpaceShip"));
+			// meshRenderer->loadMesh(ResourceManager::getMesh("SpaceShip"));
 			// meshRenderer->loadMesh(ResourceManager::getMesh("Monster"));
 			// meshRenderer->loadMesh(ResourceManager::getMesh("Aonster"));
+			meshRenderer->loadMesh(ResourceManager::getMesh("Ufo"));
 			meshRenderer->loadMaterial(material);
 			// meshRenderer->loadTexture(ResourceManager::getTexture("bullet"));
 			// meshRenderer->loadTexture(ResourceManager::getTexture("monster"));
 			// meshRenderer->loadTexture(ResourceManager::getTexture("asteroid"));
+			meshRenderer->loadTexture(ResourceManager::getTexture("ufo"));
 			meshRenderer->loadShader(GameManager::basicShader);
 
 			meshRenderer->isShaded = true;
-			meshRenderer->isColored = true;
-			meshRenderer->hasTexture = false;
+			meshRenderer->isColored = false;
+			meshRenderer->hasTexture = true;
 			meshRenderer->hasAlpha = false;
 			meshRenderer->color = vec4(1.0f, 0.5f, 0.5f, 1.0f);
 
 			transform = bullet->getComponent<Transform>();
 			transform->position = vec3(0.0f, 0.0f, 0.0f);
 			transform->rotation= Quaternion(1.f, 0.0f, 0.f, 1.f);
-			transform->scale = vec3(0.01f, 0.01f, 0.01f);
+			transform->scale = vec3(0.02f, 0.02f, 0.02f);
 			// transform->scale = vec3(0.3f, 0.3f, 0.3f);
 			transform->mass = 1.0f;
 		}
