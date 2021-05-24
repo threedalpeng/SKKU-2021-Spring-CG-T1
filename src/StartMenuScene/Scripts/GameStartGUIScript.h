@@ -8,6 +8,7 @@ class GameStartGUIScript : public Script
 {
 public:
 	GameStartGUIScript() : Script() {}
+	GameObject* title = nullptr;
 
 private:
 	Transform* transform = nullptr;
@@ -41,15 +42,17 @@ public:
 
 		ImGui::SetNextWindowBgAlpha(0.7f);
 
+		ImVec2 childSize;
 		ImGui::Begin("Game Start", NULL, windowFlags);
 		{
 			ImGui::BeginGroup();
 			{
 				ImVec2 windowSize = ImGui::GetWindowSize();
 
-				ImVec2 childSize = ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6) - ImGui::GetFrameHeightWithSpacing());
+				childSize = ImVec2(0, windowSize.y - 3 * std::max(minHeight, float(windowSize.y) / 6) - ImGui::GetFrameHeightWithSpacing());
 				ImGui::BeginChild("Title Text", childSize);
 				{
+					/*
 					std::string titleText = "Space Swim";
 
 					ImGui::PushFont(ResourceManager::getFont("consola 60"));
@@ -61,6 +64,7 @@ public:
 					);
 					ImGui::Text(titleText.c_str());
 					ImGui::PopFont();
+					*/
 				}
 				ImGui::EndChild();
 
@@ -101,6 +105,8 @@ public:
 			ImGui::EndGroup();
 		}
 		ImGui::End();
+
+		title->getComponent<TextRenderer>()->fitToRectangle(vec2(static_cast<float>(Screen::width()), childSize.y * 0.3f), vec2(0.f, childSize.y * 0.7f));
 	}
 
 	float minWidth = 300.f;

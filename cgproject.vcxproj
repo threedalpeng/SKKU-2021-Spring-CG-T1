@@ -158,7 +158,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\engine\Graphics\TextFont.cpp" />
     <ClCompile Include="include\engine\Graphics\Light.cpp" />
+    <ClCompile Include="include\engine\GUI\TextRenderer.cpp" />
     <ClCompile Include="include\engine\Math.cpp" />
     <ClCompile Include="include\engine\Script\ScriptLoader.cpp" />
     <ClCompile Include="include\engine\Component\ComponentGroupInterface.cpp" />
@@ -197,6 +199,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\engine\Event\EventManager.h" />
+    <ClInclude Include="include\engine\Graphics\TextFont.h" />
+    <ClInclude Include="include\engine\GUI\TextRenderer.h" />
     <ClInclude Include="include\engine\Sound\SoundPlayer.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundEngineOptions.h" />
     <ClInclude Include="include\irrKlang\ik_ESoundOutputDrivers.h" />

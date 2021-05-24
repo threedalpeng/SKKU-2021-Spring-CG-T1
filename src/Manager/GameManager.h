@@ -56,6 +56,7 @@ public:
 	static Shader* basicShader;
 	static Shader* depthShader;
 	static Shader* debugShader;
+	static Shader* textShader;
 
 private:
 	static int _stage;
@@ -81,6 +82,7 @@ std::normal_distribution<float> GameManager::dist = std::normal_distribution<flo
 Shader* GameManager::basicShader = nullptr;
 Shader* GameManager::depthShader = nullptr;
 Shader* GameManager::debugShader = nullptr;
+Shader* GameManager::textShader = nullptr;
 
 bool GameManager::setStage(int state)
 {

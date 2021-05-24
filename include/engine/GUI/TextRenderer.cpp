@@ -29,6 +29,12 @@ TextRenderer::TextRenderer(std::shared_ptr<GameObject> obj) : Component(obj) {
 	_mesh = createPlaneMesh();
 }
 
+TextRenderer::~TextRenderer()
+{
+	if (_mesh) delete _mesh;
+	if (_font) delete _font;
+}
+
 void TextRenderer::setText(std::string text, vec4 color)
 {
 	_text = text;
@@ -103,7 +109,7 @@ void TextRenderer::loadMaterial(Material* material)
 	_material = material;
 }
 
-void TextRenderer::loadFont(Font* font)
+void TextRenderer::loadFont(TextFont* font)
 {
 	_font = font;
 }

@@ -15,13 +15,15 @@
 #include "Object/Factory.h"
 
 #include "Graphics/Camera.h"
-#include "Graphics/Font.h"
+#include "Graphics/TextFont.h"
 #include "Graphics/Light.h"
 #include "Graphics/Material.h"
 #include "Graphics/Mesh.h"
 #include "Graphics/MeshRenderer.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Texture.h"
+
+#include "GUI/TextRenderer.h"
 
 #include "Scene/Scene.h"
 #include "Scene/SceneManager.h"

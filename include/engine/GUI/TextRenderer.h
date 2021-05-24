@@ -2,7 +2,7 @@
 #include <string>
 
 #include "engine/Component/Component.h"
-#include "engine/Graphics/Font.h"
+#include "engine/Graphics/TextFont.h"
 #include "engine/Graphics/Mesh.h"
 #include "engine/Graphics/Material.h"
 #include "engine/Graphics/Shader.h"
@@ -11,6 +11,7 @@ class TextRenderer : public Component
 {
 public:
 	TextRenderer(std::shared_ptr<GameObject> obj);
+	~TextRenderer();
 
 	bool isShaded = true;
 
@@ -23,14 +24,14 @@ public:
 
 	void loadMesh(Mesh* mesh);
 	void loadMaterial(Material* material);
-	void loadFont(Font* font);
+	void loadFont(TextFont* font);
 	void loadShader(Shader* shader);
 	void render();
 
 private:
 	Mesh* _mesh = nullptr;
 	Material* _material = nullptr;
-	Font* _font = nullptr;
+	TextFont* _font = nullptr;
 	Shader* _shader = nullptr;
 
 	vec4 _color = vec4(0.2f, 0.8f, 0.2f, 1.0f);

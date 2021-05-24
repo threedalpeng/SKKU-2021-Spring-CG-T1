@@ -6,6 +6,7 @@
 #include "engine/Graphics/Camera.h"
 #include "engine/Graphics/Light.h"
 #include "engine/Graphics/MeshRenderer.h"
+#include "engine/GUI/TextRenderer.h"
 #include "engine/Script/ScriptLoader.h"
 #include "engine/Sound/SoundPlayer.h"
 #include "engine/Transform/Transform.h"
@@ -325,6 +326,13 @@ void Application::render()
 		if (auto componentList = _componentManager.getComponentList<MeshRenderer>()) {
 			for (auto componentPair : *componentList) {
 				MeshRenderer* renderer = componentPair.second.get();
+				renderer->render();
+			}
+		}
+
+		if (auto componentList = _componentManager.getComponentList<TextRenderer>()) {
+			for (auto componentPair : *componentList) {
+				TextRenderer* renderer = componentPair.second.get();
 				renderer->render();
 			}
 		}

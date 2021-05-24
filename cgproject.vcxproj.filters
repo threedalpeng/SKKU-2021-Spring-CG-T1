@@ -37,6 +37,8 @@
     <ClCompile Include="src\Manager\ResourceManager.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\engine\Sound\SoundPlayer.cpp" />
+    <ClCompile Include="include\engine\GUI\TextRenderer.cpp" />
+    <ClCompile Include="include\engine\Graphics\TextFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\cg\stb_image.h" />
@@ -133,6 +135,8 @@
     <ClInclude Include="src\PrologueScene\PrologueScene.h" />
     <ClInclude Include="src\Tool\ParticleMaker.h" />
     <ClInclude Include="src\Tool\ParticleScript.h" />
+    <ClInclude Include="include\engine\GUI\TextRenderer.h" />
+    <ClInclude Include="include\engine\Graphics\TextFont.h" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="bin\fonts\consola.ttf" />

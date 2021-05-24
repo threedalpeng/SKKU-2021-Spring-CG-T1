@@ -69,6 +69,7 @@ private:
 		GameManager::basicShader = new Shader("shaders/solar-system.vert", "shaders/solar-system.frag");
 		GameManager::depthShader = new Shader("shaders/depth.vert", "shaders/depth.frag");
 		GameManager::debugShader = new Shader("shaders/depthDebug.vert", "shaders/depthDebug.frag");
+		GameManager::textShader = new Shader("shaders/text.vert", "shaders/text.frag");
 
 		Scene* scene = new StartMenuScene();
 		SceneManager::loadScene(scene);

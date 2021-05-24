@@ -15,8 +15,11 @@ struct stbtt_char_t
 	GLuint	advance;				// Horizontal offset to advance to next glyph
 };
 
-class Font {
+class TextFont {
 public:
+	TextFont(std::string fontPath) {
+		loadFrom(fontPath);
+	}
 	bool loadFrom(std::string fontPath) {
 		/* codes from text.cpp in */
 		FILE* fp = fopen(fontPath.c_str(), "rb"); if (!fp) { printf("%s(): Unable to open %s\n", __func__, fontPath.c_str()); return false; }

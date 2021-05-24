@@ -61,19 +61,25 @@ private:
 
 	std::vector<std::string> helpTexts = {
 		"Arrows ", " - Move",
-		"ESC ", " - Quit to Desktop\n",
-		"P ", " - Pause Menu\n",
-		"F1 ", " - Help\n",
-		"Click or Press F1 ", " to Leave.\n"
+		"ESC ", " - Quit to Desktop",
+		"P ", " - Pause Menu",
+		"F1 ", " - Help",
+		"R ", " - Return To Save Point",
+		"Space ", " - Shot a bullet",
+		"Click or Press F1 ", " to Leave."
 	};
 	std::vector<std::string> imagePaths = {
 		"images/arrow.jpg",
 		"images/ESC.jpg",
 		"images/P.jpg",
 		"images/F1.jpg",
-		"images/F1.jpg",
+		"images/R.jpg",
+		"images/Space.jpg",
 	};
 	std::vector<GLuint> images = {};
+	std::vector<GLuint> imageIndex = {
+		0, 1, 2, 3, 4, 5, 3
+	};
 
 	std::vector<std::string> soundList = {
 		"sounds/OST/2 - Can you swim... in space.mp3",
@@ -468,11 +474,16 @@ private:
 			ImGui::PushFont(ResourceManager::getFont("consola 20"));
 			ImGui::BeginChild("Help", windowSize);
 			{
-				for (size_t i = 0; i < images.size(); i++) {
+				for (size_t i = 0; i < helpTexts.size() / 2; i++) {
 					ImGui::Dummy(ImVec2(0.f, 10.f));
 					ImGui::Text(helpTexts[2 * i].c_str());
 					ImGui::SameLine();
-					ImGui::Image((void*)(intptr_t)images[i], ImVec2(30.f, 30.f));
+					if (imageIndex[i] == 5) {
+						ImGui::Image((void*)(intptr_t)images[imageIndex[i]], ImVec2(90.f, 30.f));
+					}
+					else {
+						ImGui::Image((void*)(intptr_t)images[imageIndex[i]], ImVec2(30.f, 30.f));
+					}
 					ImGui::SameLine();
 					ImGui::Text(helpTexts[2 * i + 1].c_str());
 				}

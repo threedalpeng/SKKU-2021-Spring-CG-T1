@@ -53,6 +53,7 @@ public:
 		GameObject* playerRightLeg = GameObject::create("Player Right Leg");
 
 		GameObject* gameStartGUI = GameObject::create("Game Start GUI");
+		GameObject* titleText = GameObject::create("Title Text");
 
 		/* Link Objects */
 		addObject(background);
@@ -214,11 +215,18 @@ public:
 
 		// gui
 		GameStartGUIScript* guiScript = new GameStartGUIScript();
+		guiScript->title = titleText;
 		gameStartGUI->addComponent<ScriptLoader>()->addScript(guiScript);
 		soundPlayer = gameStartGUI->addComponent<SoundPlayer>();
 		soundPlayer->loadSoundFrom("sounds/OST/1 - Quite Space.mp3");
 		soundPlayer->setType(SoundPlayer::Type::Background);
 		soundPlayer->setVolume(0.5f);
+
+		TextRenderer* textRenderer = titleText->addComponent<TextRenderer>();
+		textRenderer->loadFont(new TextFont("fonts/consola.ttf"));
+		textRenderer->loadMaterial(ResourceManager::getMaterial("Basic"));
+		textRenderer->loadShader(GameManager::textShader);
+		textRenderer->setText("Space Swim", vec4(0.5f, 0.8f, 0.8f, 0.9f));
 	}
 
 private:
